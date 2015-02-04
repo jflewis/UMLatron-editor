@@ -1,8 +1,7 @@
-*.class
-
-# Package Files #
-*.jar
-*.war
-*.ear
-*.uml
-/bin
+target
+.project
+.classpath
+.idea
+.cache
+nbactions.xml
+nb-configuration.xml
