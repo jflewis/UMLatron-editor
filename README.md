@@ -10,5 +10,13 @@ Instructions for getting and compiling
   import the project as a maven project
 3.)
   run and build :)
+if you are using eclipse!
+- to run hit maven build, then in the goals section put "package exec:exec" (without quotes)
+
+for more information about maven, google it
 
 Updates will be reflected here while the project is being implemented.
+
+Requirements
+------------
+Java 8 -- note, the OpenJDK may give you issues.
