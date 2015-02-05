@@ -75,7 +75,13 @@
                         </goals>
                         <configuration>
                             <executable>${java.home}/bin/java</executable>
-                            <commandlineArgs>${runfx.args}</commandlineArgs>
+                            <arguments>
+							<argument>-classpath</argument>
+							<!-- automatically creates the classpath using all project dependencies,
+							also adding the project build directory -->
+							<classpath/>
+							<argument>${mainClass}</argument>
+							</arguments>
                         </configuration>
                     </execution>
                 </executions>  
