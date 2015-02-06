@@ -1,14 +1,14 @@
 package edu.millersville.umlatron;
 
 import javafx.application.Application;
-import static javafx.application.Application.launch;
 import javafx.event.EventHandler;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Point2D;
 import javafx.scene.Cursor;
 import javafx.scene.Group;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -17,12 +17,12 @@ import javafx.stage.Stage;
 
 public class MainApp extends Application {
 
-   //variables for storing initial position before drag of box
-    private double initX;
-    private double initY;
-    private Point2D dragAnchor;
-    final Rectangle rectangle = new Rectangle(750,750,Color.WHITE);
     
+   //variables for storing initial position before drag of box
+   // private double initX;
+    //private double initY;
+    //private Point2D dragAnchor;
+    final Rectangle rectangle = new Rectangle(750,750,Color.WHITE);
     
     @Override
     public void start(Stage primaryStage) {
@@ -31,81 +31,52 @@ public class MainApp extends Application {
         primaryStage.setTitle("proof of concept uml editor");
         primaryStage.setScene(scene);
         
-        final Rectangle box1 = createBox(Color.BLUE, 250, 250);
-        final Rectangle box3 = createBox(Color.RED, 250,400);
-
-        box1.setTranslateX(250);
-        box1.setTranslateY(250);
+        //final Rectangle box1 = new Box().buildBox(Color.BLUE, 250, 250);
+        //final Rectangle box3 = new Box().buildBox(Color.RED, 250,400);
+        final Rectangle box1 = new Box(Color.BLUE, 250, 250);
+         final Rectangle box3 = new Box(Color.RED, 250,400);
+       // box1.setTranslateX(250);
+       // box1.setTranslateY(250);
         
-        root.getChildren().addAll(rectangle,box1,box3);
         
-        /*
-        rectangle.setOnMouseClicked(new EventHandler<MouseEvent>(){
-            
-            @Override
-            public void handle(MouseEvent me){
-                double x = me.getSceneX();
-                double y = me.getSceneY();
-                System.out.println("You created a box at " + x + " , " + y);
-                root.getChildren().add(createBox(Color.GRAY,x,y));
-                
-                
-            }
-        
-        });
-        */
-        rectangle.setOnMouseClicked((event) -> {
+        EventHandler<MouseEvent> createBox = (event) -> {
             double x = event.getSceneX();
             double y = event.getSceneY();
             System.out.println("You created a box at " + x + " , " + y);
-            root.getChildren().add(createBox(Color.GRAY,x,y));
+            root.getChildren().add(new Box(Color.GRAY,x,y));
+        };
+        
+        EventHandler<MouseEvent> drawLine = (event) -> {
+            System.out.println(event.getEventType());
+            System.out.println("this will eventually work once implemented");
+        };
+        
+        // Menu items -----------------------------------
+        MenuItem itemCreateBox = new MenuItem("Boxes");
+        itemCreateBox.setOnAction((event) -> {
+            rectangle.setOnMouseClicked(createBox);
         });
         
+        MenuItem itemCreateLine = new MenuItem("Lines");
+        itemCreateLine.setOnAction((event) -> {
+            rectangle.setOnMouseClicked(drawLine);
+            System.out.println( event.getEventType()+ "event changed on click");
+        });
+        
+        Menu menu = new Menu("Actions");
+        menu.getItems().addAll(itemCreateBox,itemCreateLine);
+        MenuBar menuBar = new MenuBar();
+        menuBar.getMenus().add(menu);
+        
+        //---------------------------------------------------
+        
+        
+        rectangle.setOnMouseClicked(createBox);
+        root.getChildren().addAll(rectangle,box1,box3,menuBar);
         primaryStage.show();
     }
     
-    /**
-     * Temporary method used to create a box on the scene
-     * @param name name of the box
-     * @param color color of the box
-     * @return an instance of a rectangle object
-     */
-    Rectangle createBox( Color color,double x, double y){
-        final Rectangle box = new Rectangle(70,100,color);
-        box.setTranslateX(x);
-        box.setTranslateY(y);
-        box.setArcWidth(20);
-        box.setArcHeight(20);
-        box.setCursor(Cursor.OPEN_HAND);
-        
-        box.setOnMouseDragged(new EventHandler<MouseEvent>() {
-            public void handle(MouseEvent me) {
-                double dragX = me.getSceneX() - dragAnchor.getX();
-                double dragY = me.getSceneY() - dragAnchor.getY();
-                //calculate new position of the circle
-                double newXPosition = initX + dragX;
-                double newYPosition = initY + dragY;
-                //if new position do not exceeds borders of the rectangle, translate to this position
-                if ((newXPosition>=box.getX()) && (newXPosition<=750-((box.getX()+box.widthProperty().getValue())))) {
-                    box.setTranslateX(newXPosition);
-                }
-                if ((newYPosition>=box.getY()) && (newYPosition<=750-(box.getY()+box.heightProperty().getValue()))){
-                    box.setTranslateY(newYPosition);
-                }
-            }
-        });
-        
-        box.setOnMousePressed(new EventHandler<MouseEvent>() {
-            public void handle(MouseEvent me) {
-                 //when mouse is pressed, store initial position
-                initX = box.getTranslateX();
-                initY = box.getTranslateY();
-                dragAnchor = new Point2D(me.getSceneX(), me.getSceneY());
-            }
-        });
-        
-        return box;
-    }
+   
 
     /**
      * @param args the command line arguments

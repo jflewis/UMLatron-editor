@@ -76,12 +76,12 @@
                         <configuration>
                             <executable>${java.home}/bin/java</executable>
                             <arguments>
-							<argument>-classpath</argument>
-							<!-- automatically creates the classpath using all project dependencies,
-							also adding the project build directory -->
-							<classpath/>
-							<argument>${mainClass}</argument>
-							</arguments>
+                                <argument>-classpath</argument>
+                                <!-- automatically creates the classpath using all project dependencies,
+                                also adding the project build directory -->
+                                <classpath/>
+                                <argument>${mainClass}</argument>
+                            </arguments>
                         </configuration>
                     </execution>
                 </executions>  
