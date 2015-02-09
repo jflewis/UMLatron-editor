@@ -43,13 +43,11 @@ public class MainApp extends Application {
        // box1.setTranslateY(250);
         
          
-         //added by Matt
          //I needed this because I was unsure how to grab the most recent line from root
          ArrayList<UMLLine> lines;
          lines = new ArrayList<UMLLine>();
          ArrayList<UMLDottedLine> dottedLines;
          dottedLines = new ArrayList<UMLDottedLine>();
-         //end of stuff added by Matt
         
         EventHandler<MouseEvent> createBox = (event) -> {
             double x = event.getSceneX();
@@ -59,17 +57,14 @@ public class MainApp extends Application {
         };
         
         EventHandler<MouseEvent> drawLine = (event) -> {
-        	//added stuff by Matt
         	double x = event.getSceneX();
         	double y = event.getSceneY();
             System.out.println(event.getEventType());
             System.out.println("You created a line starting at " + x + " , " + y);
             lines.add(new UMLLine(x,y,x,y));
             root.getChildren().add(lines.get(lines.size() - 1));
-            //end of stuff added by Matt
         };
         
-        //added stuff by Matt
         EventHandler<MouseEvent> updateLine = (event) -> {
         	double x = event.getSceneX();
             double y = event.getSceneY();
@@ -93,40 +88,32 @@ public class MainApp extends Application {
             dottedLines.get(dottedLines.size() - 1).setEndY(y);
         };
         
-        EventHandler<MouseEvent> nothing = (event) -> {
-        };
-        //end of stuff added by Matt
         
         
         // Menu items -----------------------------------
         MenuItem itemCreateBox = new MenuItem("Boxes");
         itemCreateBox.setOnAction((event) -> {
             rectangle.setOnMouseClicked(createBox);
-            //added stuff by Matt
-            rectangle.setOnMousePressed(nothing);
-            rectangle.setOnMouseReleased(nothing);
-            //end of stuff added by Matt
+            rectangle.setOnMouseDragged(null);
+            rectangle.setOnMousePressed(null);
+            rectangle.setOnMouseReleased(null);
         });
         
-        //added stuff by Matt
         MenuItem itemCreateDottedLine = new MenuItem("Dotted Lines");
         itemCreateDottedLine.setOnAction((event) -> {
-        	rectangle.setOnMouseClicked(nothing);
+        	rectangle.setOnMouseClicked(null);
             rectangle.setOnMousePressed(drawDottedLine);
             rectangle.setOnMouseDragged(updateDottedLine);
             rectangle.setOnMouseReleased(updateDottedLine);
         });
-        //end of stuff added by Matt
         
         MenuItem itemCreateLine = new MenuItem("Lines");
         itemCreateLine.setOnAction((event) -> {
-            rectangle.setOnMousePressed(drawLine);  //line changed by Matt
+            rectangle.setOnMousePressed(drawLine);
             
-            //added stuff by Matt
-            rectangle.setOnMouseClicked(nothing);
+            rectangle.setOnMouseClicked(null);
             rectangle.setOnMouseDragged(updateLine);
             rectangle.setOnMouseReleased(updateLine);
-            //end of stuff added by Matt
             
             System.out.println( event.getEventType()+ "event changed on click");
         });
