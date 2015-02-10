@@ -25,7 +25,7 @@ public class MainApp extends Application {
    // private double initX;
     //private double initY;
     //private Point2D dragAnchor;
-    final Rectangle rectangle = new Rectangle(750,750,Color.WHITE);
+    //final Rectangle rectangle = new Rectangle(750,750,Color.WHITE);
     
     @Override
     public void start(Stage primaryStage) {
@@ -101,34 +101,36 @@ public class MainApp extends Application {
         // Menu items -----------------------------------
         MenuItem itemCreateBox = new MenuItem("Boxes");
         itemCreateBox.setOnAction((event) -> {
-            rectangle.setOnMouseClicked(createBox);
+            scene.setOnMousePressed(null);
+            scene.setOnMouseReleased(null);
+            scene.setOnMouseDragged(null);
+            scene.setOnMouseClicked(createBox);
             //added stuff by Matt
-            rectangle.setOnMousePressed(nothing);
-            rectangle.setOnMouseReleased(nothing);
+            
             //end of stuff added by Matt
         });
         
         //added stuff by Matt
         MenuItem itemCreateDottedLine = new MenuItem("Dotted Lines");
         itemCreateDottedLine.setOnAction((event) -> {
-        	rectangle.setOnMouseClicked(nothing);
-            rectangle.setOnMousePressed(drawDottedLine);
-            rectangle.setOnMouseDragged(updateDottedLine);
-            rectangle.setOnMouseReleased(updateDottedLine);
+            scene.setOnMouseClicked(null);
+            scene.setOnMousePressed(drawDottedLine);
+            scene.setOnMouseDragged(updateDottedLine);
+            //scene.setOnMouseReleased(updateDottedLine);
         });
         //end of stuff added by Matt
         
         MenuItem itemCreateLine = new MenuItem("Lines");
         itemCreateLine.setOnAction((event) -> {
-            rectangle.setOnMousePressed(drawLine);  //line changed by Matt
+            scene.setOnMousePressed(drawLine);  //line changed by Matt
             
             //added stuff by Matt
-            rectangle.setOnMouseClicked(nothing);
-            rectangle.setOnMouseDragged(updateLine);
-            rectangle.setOnMouseReleased(updateLine);
+            scene.setOnMouseClicked(null);
+            scene.setOnMouseDragged(updateLine);
+            //scene.setOnMouseReleased(updateLine);
             //end of stuff added by Matt
             
-            System.out.println( event.getEventType()+ "event changed on click");
+            //System.out.println( event.getEventType()+ "event changed on click");
         });
         
         Menu menu = new Menu("Actions");
@@ -139,8 +141,8 @@ public class MainApp extends Application {
         //---------------------------------------------------
         
         
-        rectangle.setOnMouseClicked(createBox);
-        root.getChildren().addAll(rectangle,box1,box3,menuBar);
+        //scene.setOnMouseClicked(createBox);
+        root.getChildren().addAll(menuBar);
         primaryStage.show();
     }
     

@@ -35,12 +35,13 @@ public class Box extends Rectangle{
             double newXPosition = initX + dragX;
             double newYPosition = initY + dragY;
             //if new position do not exceeds borders of the rectangle, translate to this position
-            if ((newXPosition >= getX()) && (newXPosition <= 750 - ((getX() + widthProperty().getValue())))) {
+            if ((newXPosition >= getX()) && (newXPosition <= this.sceneProperty().get().getWidth() - ((getX() + widthProperty().getValue())))) {
                 setTranslateX(newXPosition);
             }
-            if ((newYPosition >= getY()) && (newYPosition <= 750 - (getY() + heightProperty().getValue()))) {
+            if ((newYPosition >= getY()) && (newYPosition <= this.sceneProperty().get().getHeight() - (getY() + heightProperty().getValue()))) {
                 setTranslateY(newYPosition);
             }
+            event.consume();
         });
 
         setOnMousePressed((event) -> {
@@ -48,7 +49,8 @@ public class Box extends Rectangle{
             initX = getTranslateX();
             initY = getTranslateY();
             dragAnchor = new Point2D(event.getSceneX(), event.getSceneY());
-
+            event.consume();
         });
+        setOnMouseClicked(event -> {event.consume();});
     }
 }

@@ -28,7 +28,7 @@ public class UMLLine extends Line
             double newYPosition2 = this.getEndY() - (initY - dragY);
             
             //Makes sure you don't drag the line off the screen
-            if ((newXPosition1 >= 0) && (newXPosition2 >= 0) && (newXPosition1 <= 750) && (newXPosition2 <= 750))
+            if ((newXPosition1 >= 0) && (newXPosition2 >= 0) && (newXPosition1 <= this.sceneProperty().get().getWidth()) && (newXPosition2 <= this.sceneProperty().get().getWidth()))
             {
             	this.setStartX(newXPosition1);
             	this.setEndX(newXPosition2);
@@ -40,6 +40,7 @@ public class UMLLine extends Line
             	this.setEndY(newYPosition2);
             	initY = dragY;
             }
+            event.consume();
         });
 		
 		setOnMousePressed((event) -> 
@@ -47,6 +48,7 @@ public class UMLLine extends Line
             //when mouse is pressed, store initial position.
             initX = event.getSceneX();
             initY = event.getSceneY();
+            event.consume();
         });		
 	}
 }
