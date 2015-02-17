@@ -17,10 +17,14 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Line;
 import javafx.stage.Stage;
 
-
+//I've noticed that all events that use mouse drag break if the mouse is drug too quickly.
+//This is most evident in the new resize line methods, but you can also notice it when dragging boxes,
+//dragging lines, or creating lines by dragging them.
 public class MainApp extends Application {
 
-    
+	 //I needed this because I was unsure how to grab the most recent line from root
+    private UMLLine lines;
+    private UMLDottedLine dottedLines;
   
     @Override
     public void start(Stage primaryStage) {
@@ -29,19 +33,9 @@ public class MainApp extends Application {
         primaryStage.setTitle("proof of concept uml editor");
         primaryStage.setScene(scene);
         
-        
-
         final Rectangle box1 = new Box(Color.BLUE, 250, 250);
         final Rectangle box3 = new Box(Color.RED, 250,400);
 
-        
-         
-         //I needed this because I was unsure how to grab the most recent line from root
-         ArrayList<UMLLine> lines;
-         lines = new ArrayList<UMLLine>();
-         ArrayList<UMLDottedLine> dottedLines;
-         dottedLines = new ArrayList<UMLDottedLine>();
-        
         EventHandler<MouseEvent> createBox = (event) -> {
             double x = event.getSceneX();
             double y = event.getSceneY();
@@ -54,31 +48,31 @@ public class MainApp extends Application {
         	double y = event.getSceneY();
             System.out.println(event.getEventType());
             System.out.println("You created a line starting at " + x + " , " + y);
-            lines.add(new UMLLine(x,y,x,y));
-            root.getChildren().add(lines.get(lines.size() - 1));
+            lines = new UMLLine(x,y,x,y);
+            root.getChildren().add(lines);
         };
         
         EventHandler<MouseEvent> updateLine = (event) -> {
         	double x = event.getSceneX();
             double y = event.getSceneY();
-            lines.get(lines.size() - 1).setEndX(x);
-            lines.get(lines.size() - 1).setEndY(y);
+            lines.setEndX(x);
+            lines.setEndY(y);
         };
 
         EventHandler<MouseEvent> drawDottedLine = (event) -> {
         	double x = event.getSceneX();
         	double y = event.getSceneY();
             System.out.println(event.getEventType());
-            System.out.println("You created a line starting at " + x + " , " + y);
-            dottedLines.add(new UMLDottedLine(x,y,x,y));
-            root.getChildren().add(dottedLines.get(dottedLines.size() - 1));    
+            System.out.println("You created a dotted line starting at " + x + " , " + y);
+            dottedLines = new UMLDottedLine(x,y,x,y);
+            root.getChildren().add(dottedLines);    
         };
 
         EventHandler<MouseEvent> updateDottedLine = (event) -> {
         	double x = event.getSceneX();
             double y = event.getSceneY();
-            dottedLines.get(dottedLines.size() - 1).setEndX(x);
-            dottedLines.get(dottedLines.size() - 1).setEndY(y);
+            dottedLines.setEndX(x);
+            dottedLines.setEndY(y);
         };
         
         
