@@ -52,5 +52,6 @@ public class Box extends Rectangle{
             event.consume();
         });
         setOnMouseClicked(event -> {event.consume();});
+        setOnMouseReleased(event -> {event.consume();});
     }
 }

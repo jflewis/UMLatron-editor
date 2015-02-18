@@ -13,21 +13,32 @@ public class UMLLine extends Line
 	
 	private double initX;
     private double initY;
-    private double side = 10;
+    private boolean startingBoxContains = false;
+    private boolean endingBoxContains = false;
+    private double side = 5;
     
 	public UMLLine(double x1, double y1, double x2, double y2)
 	{
 		super(x1,y1,x2,y2);
 		setCursor(Cursor.OPEN_HAND);
 		
+		
+		setOnMousePressed((event) -> {
+			initX = event.getSceneX();
+            initY = event.getSceneY();
+			startingBoxContains(initX, initY);
+			endingBoxContains(initX, initY);
+			event.consume();
+		});
+		
 		setOnMouseDragged((event) -> {
 			
-			if (startingBoxContains(event.getSceneX(), event.getSceneY()))
+			if (startingBoxContains)
 			{
 				this.setStartX(event.getSceneX());
 				this.setStartY(event.getSceneY());
 			}
-			else if (endingBoxContains(event.getSceneX(), event.getSceneY()))
+			else if (endingBoxContains)
 			{
 				this.setEndX(event.getSceneX());
 				this.setEndY(event.getSceneY());
@@ -60,31 +71,35 @@ public class UMLLine extends Line
             event.consume();
         });
 		
-		setOnMousePressed((event) -> 
-		{
-            //when mouse is pressed, store initial position.
-            initX = event.getSceneX();
-            initY = event.getSceneY();
-            event.consume();
-        });		
+		setOnMouseReleased((event) -> {
+			startingBoxContains = false;
+			endingBoxContains = false;
+			event.consume();
+		});
 	}
 
-	private boolean startingBoxContains(double x, double y) 
+	private void startingBoxContains(double x, double y) 
 	{
-		if (x < this.getStartX() - (side/2) || x > this.getStartX() + (side/2) || y < this.getStartY() - (side/2) || y > this.getStartY() + (side/2))
+		if (x < this.getStartX() - side || x > this.getStartX() + side || y < this.getStartY() - side || y > this.getStartY() + side)
 		{
-			return false;
+			startingBoxContains = false;
 		}
-		return true;
+		else
+		{
+			startingBoxContains = true;
+		}
 	}
 
-	private boolean endingBoxContains(double x, double y) 
+	private void endingBoxContains(double x, double y) 
 	{
-		if (x < this.getEndX() - (side/2) || x > this.getEndX() + (side/2) || y < this.getEndY() - (side/2) || y > this.getEndY() + (side/2))
+		if (x < this.getEndX() - side || x > this.getEndX() + side || y < this.getEndY() - side || y > this.getEndY() + side)
 		{	
-			return false;
+			endingBoxContains = false;
 		}
-		return true;
+		else
+		{
+			endingBoxContains = true;
+		}
 	}
 	
 	
