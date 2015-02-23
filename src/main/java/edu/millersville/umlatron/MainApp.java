@@ -6,6 +6,7 @@ import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
 import javafx.scene.Cursor;
+import javafx.scene.Node;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Menu;
@@ -17,19 +18,21 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Line;
 import javafx.stage.Stage;
 
-
+//I've noticed that all events that use mouse drag break if the mouse is drug too quickly.
+//This is most evident in the new resize line methods, but you can also notice it when dragging boxes,
+//dragging lines, or creating lines by dragging them.
 public class MainApp extends Application {
 
-    
-  
+    //I needed this because I was unsure how to grab the most recent line from root
+    private UMLLine lines;
+    private UMLDottedLine dottedLines;
+
     @Override
     public void start(Stage primaryStage) {
         Group root = new Group();
         Scene scene = new Scene(root, 750, 750);
         primaryStage.setTitle("proof of concept uml editor");
         primaryStage.setScene(scene);
-        
-        
 
         final Rectangle box1 = new Box(Color.BLUE, 250, 250);
         final Rectangle box3 = new Box(Color.RED, 250,400);
@@ -39,54 +42,56 @@ public class MainApp extends Application {
          lines = new ArrayList<UMLLine>();
          ArrayList<UMLDottedLine> dottedLines;
          dottedLines = new ArrayList<UMLDottedLine>();
-        
+
         EventHandler<MouseEvent> createBox = (event) -> {
+            //only place if not on a node 
+            if (event.getPickResult().getIntersectedNode() == null) {
+                double x = event.getSceneX();
+                double y = event.getSceneY();
+                System.out.println("You created a box at " + x + " , " + y);
+                root.getChildren().add(new Box(Color.GRAY, x, y));
+            }
+        };
+
+        EventHandler<MouseEvent> drawLine = (event) -> {
             double x = event.getSceneX();
             double y = event.getSceneY();
-            System.out.println("You created a box at " + x + " , " + y);
-            root.getChildren().add(new Box(Color.GRAY,x,y));
-        };
-         
-        EventHandler<MouseEvent> drawLine = (event) -> {
-        	double x = event.getSceneX();
-        	double y = event.getSceneY();
             System.out.println(event.getEventType());
             System.out.println("You created a line starting at " + x + " , " + y);
-            lines.add(new UMLLine(x,y,x,y));
-            root.getChildren().add(lines.get(lines.size() - 1));
+            lines = new UMLLine(x, y, x, y);
+            root.getChildren().add(lines);
         };
-        
+
         EventHandler<MouseEvent> updateLine = (event) -> {
-        	double x = event.getSceneX();
+            double x = event.getSceneX();
             double y = event.getSceneY();
-            lines.get(lines.size() - 1).setEndX(x);
-            lines.get(lines.size() - 1).setEndY(y);
+            lines.setEndX(x);
+            lines.setEndY(y);
         };
 
         EventHandler<MouseEvent> drawDottedLine = (event) -> {
-        	double x = event.getSceneX();
-        	double y = event.getSceneY();
+            double x = event.getSceneX();
+            double y = event.getSceneY();
             System.out.println(event.getEventType());
-            System.out.println("You created a line starting at " + x + " , " + y);
-            dottedLines.add(new UMLDottedLine(x,y,x,y));
-            root.getChildren().add(dottedLines.get(dottedLines.size() - 1));    
+            System.out.println("You created a dotted line starting at " + x + " , " + y);
+            dottedLines = new UMLDottedLine(x, y, x, y);
+            root.getChildren().add(dottedLines);
         };
 
         EventHandler<MouseEvent> updateDottedLine = (event) -> {
-        	double x = event.getSceneX();
+            double x = event.getSceneX();
             double y = event.getSceneY();
-            dottedLines.get(dottedLines.size() - 1).setEndX(x);
-            dottedLines.get(dottedLines.size() - 1).setEndY(y);
+            dottedLines.setEndX(x);
+            dottedLines.setEndY(y);
         };
-        
+
         EventHandler<MouseEvent> createClassBox = (event) -> {
             double x = event.getSceneX();
             double y = event.getSceneY();
             System.out.println("You created a ClassBox at " + x + " , " + y);
             root.getChildren().add(new ClassBox(x,y));
         };
-        
-        
+
         // Menu items -----------------------------------
         MenuItem itemCreateBox = new MenuItem("Boxes");
         itemCreateBox.setOnAction((event) -> {
@@ -94,9 +99,8 @@ public class MainApp extends Application {
             scene.setOnMouseReleased(null);
             scene.setOnMouseDragged(null);
             scene.setOnMouseClicked(createBox);
-            
         });
-        
+
         MenuItem itemCreateDottedLine = new MenuItem("Dotted Lines");
         itemCreateDottedLine.setOnAction((event) -> {
             scene.setOnMouseClicked(null);
@@ -105,16 +109,16 @@ public class MainApp extends Application {
             scene.setOnMouseReleased(updateDottedLine);
 
         });
-        
+
         MenuItem itemCreateLine = new MenuItem("Lines");
         itemCreateLine.setOnAction((event) -> {
             scene.setOnMouseClicked(null);
-            scene.setOnMousePressed(drawLine);        
+            scene.setOnMousePressed(drawLine);
             scene.setOnMouseDragged(updateLine);
             scene.setOnMouseReleased(updateLine);
 
         });
-        
+
         MenuItem itemCreateClassBox = new MenuItem("ClassBox");
         itemCreateBox.setOnAction((event) -> {
             scene.setOnMousePressed(null);
@@ -129,16 +133,12 @@ public class MainApp extends Application {
         menu.getItems().addAll(itemCreateBox,itemCreateLine, itemCreateDottedLine, itemCreateClassBox);
         MenuBar menuBar = new MenuBar();
         menuBar.getMenus().add(menu);
-        
+
         //---------------------------------------------------
-        
-        
         scene.setOnMouseClicked(createBox);
         root.getChildren().addAll(menuBar);
         primaryStage.show();
     }
-    
-   
 
     /**
      * @param args the command line arguments
