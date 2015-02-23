@@ -33,9 +33,7 @@ public class MainApp extends Application {
 
         final Rectangle box1 = new Box(Color.BLUE, 250, 250);
         final Rectangle box3 = new Box(Color.RED, 250,400);
-
-        
-         
+  
          //I needed this because I was unsure how to grab the most recent line from root
          ArrayList<UMLLine> lines;
          lines = new ArrayList<UMLLine>();
@@ -48,7 +46,7 @@ public class MainApp extends Application {
             System.out.println("You created a box at " + x + " , " + y);
             root.getChildren().add(new Box(Color.GRAY,x,y));
         };
-        
+         
         EventHandler<MouseEvent> drawLine = (event) -> {
         	double x = event.getSceneX();
         	double y = event.getSceneY();
@@ -81,6 +79,12 @@ public class MainApp extends Application {
             dottedLines.get(dottedLines.size() - 1).setEndY(y);
         };
         
+        EventHandler<MouseEvent> createClassBox = (event) -> {
+            double x = event.getSceneX();
+            double y = event.getSceneY();
+            System.out.println("You created a ClassBox at " + x + " , " + y);
+            root.getChildren().add(new ClassBox(x,y));
+        };
         
         
         // Menu items -----------------------------------
@@ -90,7 +94,7 @@ public class MainApp extends Application {
             scene.setOnMouseReleased(null);
             scene.setOnMouseDragged(null);
             scene.setOnMouseClicked(createBox);
-           
+            
         });
         
         MenuItem itemCreateDottedLine = new MenuItem("Dotted Lines");
@@ -111,8 +115,18 @@ public class MainApp extends Application {
 
         });
         
+        MenuItem itemCreateClassBox = new MenuItem("ClassBox");
+        itemCreateBox.setOnAction((event) -> {
+            scene.setOnMousePressed(null);
+            scene.setOnMouseReleased(null);
+            scene.setOnMouseDragged(null);
+            scene.setOnMouseClicked(createClassBox);
+           
+        });
+        
+        
         Menu menu = new Menu("Actions");
-        menu.getItems().addAll(itemCreateBox,itemCreateLine, itemCreateDottedLine);
+        menu.getItems().addAll(itemCreateBox,itemCreateLine, itemCreateDottedLine, itemCreateClassBox);
         MenuBar menuBar = new MenuBar();
         menuBar.getMenus().add(menu);
         
