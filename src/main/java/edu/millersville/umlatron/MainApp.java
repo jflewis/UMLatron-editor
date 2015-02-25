@@ -110,8 +110,9 @@ public class MainApp extends Application {
         menu.getItems().addAll(itemCreateBox, itemCreateLine, itemCreateDottedLine);
         MenuBar menuBar = new MenuBar();
         menuBar.getMenus().add(menu);
-
         //---------------------------------------------------
+        
+        
         scene.setOnMouseClicked(createBox);
         root.getChildren().addAll(menuBar);
         primaryStage.show();

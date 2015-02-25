@@ -15,7 +15,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 /**
- *
+ * 
  * @author John Lewis
  */
 public class Box extends Rectangle{

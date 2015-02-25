@@ -23,6 +23,7 @@ public class UMLLine extends Line {
     public UMLLine(double x1, double y1, double x2, double y2) {
         super(x1, y1, x2, y2);
         setCursor(Cursor.OPEN_HAND);
+        setStrokeWidth(2.0);
 
         setOnMousePressed((event) -> {
             initX = event.getSceneX();
@@ -98,6 +99,7 @@ public class UMLLine extends Line {
             startingBoxContains = true;
         }
     }
+
 
     private void endingBoxContains(double x, double y) {
         if (x < this.getEndX() - side || x > this.getEndX() + side || y < this.getEndY() - side || y > this.getEndY() + side) {
