@@ -37,12 +37,6 @@ public class MainApp extends Application {
         final Rectangle box1 = new Box(Color.BLUE, 250, 250);
         final Rectangle box3 = new Box(Color.RED, 250,400);
   
-         //I needed this because I was unsure how to grab the most recent line from root
-         ArrayList<UMLLine> lines;
-         lines = new ArrayList<UMLLine>();
-         ArrayList<UMLDottedLine> dottedLines;
-         dottedLines = new ArrayList<UMLDottedLine>();
-
         EventHandler<MouseEvent> createBox = (event) -> {
             //only place if not on a node 
             if (event.getPickResult().getIntersectedNode() == null) {
@@ -120,7 +114,7 @@ public class MainApp extends Application {
         });
 
         MenuItem itemCreateClassBox = new MenuItem("ClassBox");
-        itemCreateBox.setOnAction((event) -> {
+        itemCreateClassBox.setOnAction((event) -> {
             scene.setOnMousePressed(null);
             scene.setOnMouseReleased(null);
             scene.setOnMouseDragged(null);

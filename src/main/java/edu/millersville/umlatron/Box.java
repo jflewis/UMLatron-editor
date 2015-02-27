@@ -73,6 +73,7 @@ public class Box extends Rectangle{
             }else{
                 contextMenu.hide();
             }
+            event.consume();
         });
         
         setOnMouseReleased(event -> {event.consume();});
