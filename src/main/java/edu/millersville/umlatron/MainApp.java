@@ -79,11 +79,23 @@ public class MainApp extends Application {
             dottedLines.setEndY(y);
         };
 
+
         EventHandler<MouseEvent> createClassBox = (event) -> {
             double x = event.getSceneX();
             double y = event.getSceneY();
             System.out.println("You created a ClassBox at " + x + " , " + y);
             root.getChildren().add(new ClassBox(x,y));
+
+        };
+        EventHandler<MouseEvent> createDiamndLine = (event) -> {
+            //only place if not on a node 
+            if (event.getPickResult().getIntersectedNode() == null) {
+                double x = event.getSceneX();
+                double y = event.getSceneY();
+                System.out.println("You created a diamandLine at " + x + " , " + y);
+                root.getChildren().add(new DiamondLine(x, y));
+            }
+
         };
 
         // Menu items -----------------------------------
@@ -93,6 +105,14 @@ public class MainApp extends Application {
             scene.setOnMouseReleased(null);
             scene.setOnMouseDragged(null);
             scene.setOnMouseClicked(createBox);
+        });
+
+        MenuItem itemDiamandLine = new MenuItem("DimandLine");
+        itemDiamandLine.setOnAction((event) -> {
+            scene.setOnMousePressed(null);
+            scene.setOnMouseReleased(null);
+            scene.setOnMouseDragged(null);
+            scene.setOnMouseClicked(createDiamndLine);
         });
 
         MenuItem itemCreateDottedLine = new MenuItem("Dotted Lines");
@@ -124,15 +144,17 @@ public class MainApp extends Application {
         
         
         Menu menu = new Menu("Actions");
-        menu.getItems().addAll(itemCreateBox,itemCreateLine, itemCreateDottedLine, itemCreateClassBox);
+
+        menu.getItems().addAll(itemCreateBox, itemCreateLine, itemCreateDottedLine, itemDiamandLine, itemCreateClassBox);
+
         MenuBar menuBar = new MenuBar();
         menuBar.getMenus().add(menu);
-
         //---------------------------------------------------
+
         scene.setOnMouseClicked(createBox);
         root.getChildren().addAll(menuBar);
         primaryStage.show();
-    }
+    } 
 
     /**
      * @param args the command line arguments
