@@ -71,21 +71,20 @@ public class UMLLine extends Line {
             endingBoxContains = false;
             event.consume();
         });
-        
+
         MenuItem delete = new MenuItem("delete");
-        delete.setOnAction(event ->{
-            Group group = (Group)this.getParent();
+        delete.setOnAction(event -> {
+            Group group = (Group) this.getParent();
             group.getChildren().remove(this);
         });
-        
+
         ContextMenu contextMenu = new ContextMenu(delete);
 
-        
         setOnMouseClicked(event -> {
-            if(event.getButton() == MouseButton.SECONDARY){
+            if (event.getButton() == MouseButton.SECONDARY) {
                 System.out.println("hello");
                 contextMenu.show(this, event.getScreenX(), event.getScreenY());
-            }else{
+            } else {
                 contextMenu.hide();
             }
         });
@@ -99,7 +98,6 @@ public class UMLLine extends Line {
             startingBoxContains = true;
         }
     }
-
 
     private void endingBoxContains(double x, double y) {
         if (x < this.getEndX() - side || x > this.getEndX() + side || y < this.getEndY() - side || y > this.getEndY() + side) {
