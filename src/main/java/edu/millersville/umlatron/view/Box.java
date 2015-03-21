@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package edu.millersville.umlatron;
+package edu.millersville.umlatron.view;
 
 import javafx.geometry.Point2D;
 import javafx.scene.Cursor;

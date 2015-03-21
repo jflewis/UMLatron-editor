@@ -1,4 +1,4 @@
-package edu.millersville.umlatron;
+package edu.millersville.umlatron.view;
 
 
 
