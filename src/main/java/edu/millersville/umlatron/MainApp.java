@@ -16,7 +16,7 @@ public class MainApp extends Application {
     @Override
     public void start(Stage primaryStage) {
         
-        UmlatronController controller = new UmlatronController();
+        UmlatronController controller = new UmlatronController(primaryStage);
         Scene scene = new Scene(controller.getView(), 950, 750);
         primaryStage.setTitle("proof of concept uml editor");
         primaryStage.setScene(scene);

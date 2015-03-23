@@ -11,6 +11,7 @@ import javafx.scene.Group;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.input.MouseButton;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
@@ -59,8 +60,8 @@ public class Box extends Rectangle{
         
         MenuItem delete = new MenuItem("delete");
         delete.setOnAction(event ->{
-            Group group = (Group)this.getParent();
-            group.getChildren().remove(this);
+            Pane pane = (Pane)this.getParent();
+            pane.getChildren().remove(Box.this);
         });
         
         ContextMenu contextMenu = new ContextMenu(delete);
