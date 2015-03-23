@@ -4,5 +4,6 @@ target
 .classpath
 .idea
 .cache
+.DS_Store
 nbactions.xml
 nb-configuration.xml
