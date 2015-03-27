@@ -10,15 +10,13 @@ import edu.millersville.umlatron.view.UMLLine;
 public class UMLDottedLine extends UMLLine
 {
 	/**
-	 * Creates a dotted line.
-	 * @param x1			x value of starting point.
-     * @param y1			y value of starting point.
-     * @param x2			x value of ending point.
-     * @param y2			y value of ending point.
+	 * 
+	 * @param b1 The box that the starting point of the line is attached to.
+     * @param b2 The box that the ending point of the line is attached to.
 	 */
-	public UMLDottedLine(double x1, double y1, double x2, double y2) 
+	public UMLDottedLine(Box b1, Box b2) 
 	{
-		super(x1, y1, x2, y2);
+		super(b1, b2);
 		this.getStrokeDashArray().addAll(5d, 5d, 5d, 5d);
 	}
 
