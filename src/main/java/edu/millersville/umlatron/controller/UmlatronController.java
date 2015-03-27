@@ -6,12 +6,15 @@
 package edu.millersville.umlatron.controller;
 
 import edu.millersville.umlatron.model.State;
-import edu.millersville.umlatron.view.Box;
 import edu.millersville.umlatron.model.UmlModel;
+import edu.millersville.umlatron.view.Box;
 import edu.millersville.umlatron.view.ClassBox;
+import edu.millersville.umlatron.view.DiamondLine;
+import edu.millersville.umlatron.view.UMLLine;
 import edu.millersville.umlatron.view.UmlView;
 import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
+import javafx.scene.Node;
 import javafx.scene.control.Toggle;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
@@ -43,9 +46,8 @@ public class UmlatronController {
         this.stage = stage;
 
         //set intial select state 
-
         model.getStateProperty().addListener((ObservableValue<? extends State> ov, State old_state, State new_state) -> {
-            System.out.println("model state has changed");
+            //System.out.println("model state has changed");
 
             switch (new_state) {
                 case SELECT:
@@ -55,6 +57,7 @@ public class UmlatronController {
 
                 case LINE:
                     System.out.println("state changed to line");
+                    setBoxState();
                     break;
 
                 case ASSOCIATION:
@@ -79,22 +82,22 @@ public class UmlatronController {
                     } else {
                         switch ((State) new_toggle.getUserData()) {
                             case SELECT:
-                                System.out.println("select mode");
+                                //System.out.println("select mode");
                                 model.setState(State.SELECT);
                                 break;
 
                             case LINE:
-                                System.out.println("Line mode");
+                                //System.out.println("Line mode");
                                 model.setState(State.LINE);
                                 break;
 
                             case ASSOCIATION:
-                                System.out.println("association mode");
+                                //System.out.println("association mode");
                                 model.setState(State.ASSOCIATION);
                                 break;
 
                             case CLASSBOX:
-                                System.out.println("classbox mode");
+                                //System.out.println("classbox mode");
                                 model.setState(State.CLASSBOX);
                                 break;
 
@@ -106,14 +109,42 @@ public class UmlatronController {
 
                     }
                 });
+        
+        //filter out clicks on nodes for currenlty selected
+        view.getEditPane().addEventFilter(MouseEvent.MOUSE_PRESSED, 
+                new EventHandler<MouseEvent>(){
+                    @Override
+                    public void handle(MouseEvent e){
+                        Node selectedNode = e.getPickResult().getIntersectedNode();
+                        Node filteredNode = whatNodeAmI(selectedNode);
+                        if(filteredNode != null){
+                            model.getCurrentlySelectedNodeProperty().setValue(filteredNode);
+                        }
+                    }
+        });
 
     }
 
     public BorderPane getView() {
         return view;
     }
+    
+    //TODO: Implement this a a visitor patern so we do not have to do all this typecasting
+    private Node whatNodeAmI(Node n){   
+       if(n instanceof Box ){
+           return ((Box)n);
+       }else if(n instanceof ClassBox){
+           return (ClassBox)n;
+       }else if(n instanceof UMLLine){
+           return (UMLLine)n;
+       }else if(n instanceof DiamondLine){
+           return (DiamondLine)n;
+       }else{
+           return null;
+       }     
+    }
 
-    /*
+    
     private void setBoxState() {
         
         EventHandler<MouseEvent> createBox = (event) -> {
@@ -128,7 +159,7 @@ public class UmlatronController {
 
         view.getEditPane().setOnMouseClicked(createBox);
     }
-    */
+    
 
     private void setClassBoxState() {
         
@@ -136,7 +167,7 @@ public class UmlatronController {
             double x = event.getX();
             double y = event.getY();
             System.out.println("You created a ClassBox at " + x + " , " + y);
-            view.getEditPane().getChildren().add(new Box(Color.GRAY, x, y));
+            view.getEditPane().getChildren().add(new ClassBox(x, y));
         };
         
         view.getEditPane().setOnMouseClicked(createClassBox);
@@ -214,15 +245,4 @@ public class UmlatronController {
  *
  * });
  *
- *
- * Menu menu = new Menu("Actions");
- *
- * menu.getItems().addAll(itemCreateBox, itemCreateLine, itemCreateDottedLine,
- * itemDiamandLine, itemCreateClassBox);
- *
- * MenuBar menuBar = new MenuBar(); menuBar.getMenus().add(menu);
- * //---------------------------------------------------
- *
- * scene.setOnMouseClicked(createBox); root.getChildren().addAll(menuBar);
- * primaryStage.show(); }
- */
+ 

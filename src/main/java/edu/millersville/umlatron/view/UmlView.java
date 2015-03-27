@@ -6,15 +6,20 @@
 package edu.millersville.umlatron.view;
 
 import edu.millersville.umlatron.model.State;
+import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 
 /**
  * This class creates and supplies the view for the program.
@@ -32,7 +37,8 @@ public class UmlView extends BorderPane {
         super();
         toggleButtons = createToggleButtons();
         currentlySelectedPanel = createCurrentlySelectedPanel();
-        
+        editPane.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
+        //editPane.setStyle("-fx-background: #FFFFFF;");
         this.setCenter(editPane);
        
         this.setTop(createTopPanel(toggleButtons,currentlySelectedPanel));
