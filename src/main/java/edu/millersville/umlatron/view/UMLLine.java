@@ -36,7 +36,7 @@ public class UMLLine extends Line
      */
     public UMLLine(Box b1, Box b2) 
     {
-        super(b1.getAnchorPoint(3).getX(), b1.getAnchorPoint(3).getY(), b2.getAnchorPoint(3).getX(), b2.getAnchorPoint(3).getY());
+        super(b1.getAnchorPoint(0).getX(), b1.getAnchorPoint(0).getY(), b2.getAnchorPoint(0).getX(), b2.getAnchorPoint(0).getY());
         
         box1 = b1;
         box2 = b2;

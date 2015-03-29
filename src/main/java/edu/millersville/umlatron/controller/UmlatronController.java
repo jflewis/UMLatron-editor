@@ -57,7 +57,7 @@ public class UmlatronController {
 
                 case LINE:
                     System.out.println("state changed to line");
-                    setLineState();
+                    setTestLineState();
                     break;
 
                 case ASSOCIATION:
@@ -145,7 +145,7 @@ public class UmlatronController {
     }
 
     
-    private void setLineState() {
+    private void setTestLineState() {
         
         EventHandler<MouseEvent> createBox = (event) -> {
             if (event.getPickResult().getIntersectedNode() != null) {
@@ -166,6 +166,17 @@ public class UmlatronController {
         };
 
         view.getEditPane().setOnMouseClicked(createBox);
+    }
+    
+    
+    private void setLineState() {   
+        EventHandler<MouseEvent> createLine = (event) -> {
+            if (event.getPickResult().getIntersectedNode() != null) {
+                
+            }
+        };
+
+        view.getEditPane().setOnMouseClicked(createLine);
     }
     
 

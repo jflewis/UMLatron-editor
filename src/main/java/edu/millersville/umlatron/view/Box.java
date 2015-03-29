@@ -21,11 +21,12 @@ import javafx.scene.shape.Rectangle;
  * 
  * @author John Lewis
  */
-public class Box extends Rectangle{
+public class Box extends Rectangle implements AnchorPoints{
     
     private double initX;
     private double initY;
-    private int side = 50;
+    private int width = 50;
+    private int height = 50;
     private int anchorCount;
     private Point2D[] anchorPoints;
     private Point2D dragAnchor;
@@ -56,7 +57,7 @@ public class Box extends Rectangle{
             //if new position do not exceeds borders of the rectangle, translate to this position
             if ((newXPosition >= getX()) && (newXPosition <= this.sceneProperty().get().getWidth() - ((getX() + widthProperty().getValue())))) {
                 setTranslateX(newXPosition);
-                setAnchorPoints(newXPosition, newYPosition);
+                updateXAnchorPoints(newXPosition);
                 
                 for (int i = 0; i < lines.size(); ++i)
                 {
@@ -73,9 +74,10 @@ public class Box extends Rectangle{
             }
             if ((newYPosition >= getY()) && (newYPosition <= this.sceneProperty().get().getHeight() - (getY() + heightProperty().getValue()))) {
                 setTranslateY(newYPosition);
-                setAnchorPoints(newXPosition, newYPosition);
+                updateYAnchorPoints(newYPosition);
                 for (int i = 0; i < lines.size(); ++i)
                 {
+                	lines.get(i).updateAnchorPoints();
                 	if (pointTypes.get(i).equals("start"))
                 	{
                 		lines.get(i).setStartY(anchorPoints[lines.get(i).getAnchorPoint1Int()].getY());
@@ -119,87 +121,83 @@ public class Box extends Rectangle{
         setOnMouseReleased(event -> {event.consume();});
     }
     
-    /**
-     * 
-     * @param x The x position of the box after moving
-     * @param y The y position of the box after moving
-     */
-    private void setAnchorPoints(double x, double y) 
+    @Override
+    public void setAnchorPoints(double x, double y) 
     {
-    	anchorPoints[0] = new Point2D(x, y + (side / 2)); //left
-        anchorPoints[1] = new Point2D(x + (side / 2), y);  //top
-        anchorPoints[2] = new Point2D(x + side, y + (side / 2)); //right
-        anchorPoints[3] = new Point2D(x + (side / 2), y + side); //bottom	
+    	anchorPoints[0] = new Point2D(x, y + (height / 2)); 		//left
+        anchorPoints[1] = new Point2D(x + (width / 2), y);  		//top
+        anchorPoints[2] = new Point2D(x + width, y + (height / 2)); //right
+        anchorPoints[3] = new Point2D(x + (width / 2), y + height); //bottom	
 	}
-
-    /**
-     * 
-     * @param i The index of the anchor point
-     * @return Returns index i of anchorPoints
-     */
-	public Point2D getAnchorPoint(int i)
+    
+    @Override
+    public void updateXAnchorPoints(double x)
     {
-    	return anchorPoints[i];
+    	anchorPoints[0] = new Point2D(x, anchorPoints[0].getY());
+    	anchorPoints[1] = new Point2D(x + (width / 2), anchorPoints[1].getY());
+    	anchorPoints[2] = new Point2D(x + width, anchorPoints[2].getY());
+    	anchorPoints[3] = new Point2D(x + (width / 2), anchorPoints[3].getY());
     }
     
-	/**
-	 * 
-	 * @return Returns how many anchor points this box has
-	 */
+    @Override
+    public void updateYAnchorPoints(double y)
+    {
+    	anchorPoints[0] = new Point2D(anchorPoints[0].getX(), y + (height / 2));
+    	anchorPoints[1] = new Point2D(anchorPoints[1].getX(), y);
+    	anchorPoints[2] = new Point2D(anchorPoints[2].getX(), y + (height / 2));
+    	anchorPoints[3] = new Point2D(anchorPoints[3].getX(), y + height);
+    }
+
+    @Override
+	public Point2D getAnchorPoint(int i)
+    {
+		if (i < anchorPoints.length)
+		{
+			return anchorPoints[i];
+		}
+		else
+		{
+			return null;
+		}
+    }
+    
+    @Override
     public int getAnchorCount()
     {
     	return anchorCount;
     }
     
-    /**
-     * 
-     * @param d The value that initX will be set to.
-     */
+    @Override
     public void setInitX(double d)
     {
     	initX = d;
     }
     
-    /**
-     * 
-     * @param d The value that initY will be set to.
-     */
+    @Override
     public void setInitY(double d)
     {
     	initY = d;
     }
     
-    /**
-     * 
-     * @return Returns initX.
-     */
+    @Override
     public double getInitX()
     {
     	return initX;
     }
     
-    /**
-     * 
-     * @return Returns initY.
-     */
+    @Override
     public double getInitY()
     {
     	return initY;
     }
 
-    /**
-     * 
-     * @param str The String that signifies whether this lineType is a startPoint or endPoint.
-     */
+    @Override
 	public void addLineType(String str) 
 	{
 		pointTypes.add(str);	
 	}
 
-	/**
-	 * 
-	 * @param line Adds a UMLLine line to Lines.
-	 */
+    @Override
 	public void addLine(UMLLine line) 
 	{
 		lines.add(line);	
