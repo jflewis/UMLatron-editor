@@ -26,36 +26,37 @@ public class UMLLine extends Line
     private int point2Int;
     private Point2D dragAnchor1;
     private Point2D dragAnchor2;
-    private Box box1;
-    private Box box2;
+    private AnchorPoint anchorPoint1;
+    private AnchorPoint anchorPoint2;
 
     /**
      * 
-     * @param b1 The box that the starting point of the line is attached to.
-     * @param b2 The box that the ending point of the line is attached to.
+     * @param a1 The box that the starting point of the line is attached to.
+     * @param a2 The box that the ending point of the line is attached to.
      */
-    public UMLLine(Box b1, Box b2) 
+    public UMLLine(AnchorPoint a1, AnchorPoint a2) 
     {
-        super(b1.getAnchorPoint(0).getX(), b1.getAnchorPoint(0).getY(), b2.getAnchorPoint(0).getX(), b2.getAnchorPoint(0).getY());
+        super(a1.getAnchorPoint(0).getX(), a1.getAnchorPoint(0).getY(), a2.getAnchorPoint(0).getX(), a2.getAnchorPoint(0).getY());
         
-        box1 = b1;
-        box2 = b2;
+        anchorPoint1 = a1;
+        anchorPoint2 = a2;
         
         //sets the anchorPoints
         updateAnchorPoints();
                
-        setCursor(Cursor.OPEN_HAND);
+		// setCursor(Cursor.OPEN_HAND);
         setStrokeWidth(2.0);
 
+        /*
         setOnMousePressed((event) -> 
         {
             initX = event.getSceneX();
             initY = event.getSceneY();
-            box1.setInitX(box1.getTranslateX());
-            box1.setInitY(box1.getTranslateX());
+            anchorPoint1.setInitX(anchorPoint1.getTranslateX());
+            anchorPoint1.setInitY(anchorPoint1.getTranslateX());
             dragAnchor1 = new Point2D(event.getSceneX(), event.getSceneY());
-            box2.setInitX(box2.getTranslateX());
-            box2.setInitY(box2.getTranslateX());
+            anchorPoint2.setInitX(anchorPoint2.getTranslateX());
+            anchorPoint2.setInitY(anchorPoint2.getTranslateX());
             dragAnchor2 = new Point2D(event.getSceneX(), event.getSceneY());
             event.consume();
         });
@@ -67,10 +68,10 @@ public class UMLLine extends Line
             double dragXBox2 = event.getSceneX() - dragAnchor2.getX();
             double dragYBox2 = event.getSceneY() - dragAnchor2.getY();
             
-            double newXPositionB1 = box1.getInitX() + dragXBox1;
-            double newYPositionB1 = box1.getInitY() + dragYBox1;
-            double newXPositionB2 = box2.getInitX() + dragXBox2;
-            double newYPositionB2 = box2.getInitY() + dragYBox2;
+            double newXPositionB1 = anchorPoint1.getInitX() + dragXBox1;
+            double newYPositionB1 = anchorPoint1.getInitY() + dragYBox1;
+            double newXPositionB2 = anchorPoint2.getInitX() + dragXBox2;
+            double newYPositionB2 = anchorPoint2.getInitY() + dragYBox2;
 
             double dragX = event.getSceneX();
             double dragY = event.getSceneY();
@@ -84,34 +85,35 @@ public class UMLLine extends Line
             //Makes sure you don't drag the line off the screen
             if ((newXPosition1 >= 0) && (newXPosition2 >= 0) 
              && (newXPosition1 <= this.sceneProperty().get().getWidth()) && (newXPosition2 <= this.sceneProperty().get().getWidth())
-             && (newXPositionB1 >= box1.getX())  && (newXPositionB1 <= box1.sceneProperty().get().getWidth() - ((box1.getX() + box1.widthProperty().getValue())))
-             && (newXPositionB2 >= box2.getX())  && (newXPositionB2 <= box2.sceneProperty().get().getWidth() - ((box2.getX() + box2.widthProperty().getValue()))))
+             && (newXPositionB1 >= anchorPoint1.getX())  && (newXPositionB1 <= anchorPoint1.sceneProperty().get().getWidth() - ((anchorPoint1.getX() + anchorPoint1.widthProperty().getValue())))
+             && (newXPositionB2 >= anchorPoint2.getX())  && (newXPositionB2 <= anchorPoint2.sceneProperty().get().getWidth() - ((anchorPoint2.getX() + anchorPoint2.widthProperty().getValue()))))
             {
                 this.setStartX(newXPosition1);
                 this.setEndX(newXPosition2);
-                box1.setTranslateX(newXPositionB1);
-                box2.setTranslateX(newXPositionB2);
+                anchorPoint1.setTranslateX(newXPositionB1);
+                anchorPoint2.setTranslateX(newXPositionB2);
                 initX = dragX;
             }
             if ((newYPosition1 >= 0) && (newYPosition2 >= 0) 
              && (newYPosition1 <= 750) && (newYPosition2 <= 750)
-             &&  (newYPositionB1 >= box1.getY()) && (newYPositionB1 <= box1.sceneProperty().get().getHeight() - (box1.getY() + box1.heightProperty().getValue()))  
-             &&  (newYPositionB2 >= box2.getY()) && (newYPositionB2 <= box2.sceneProperty().get().getHeight() - (box2.getY() + box2.heightProperty().getValue()))) 
+             &&  (newYPositionB1 >= anchorPoint1.getY()) && (newYPositionB1 <= anchorPoint1.sceneProperty().get().getHeight() - (anchorPoint1.getY() + anchorPoint1.heightProperty().getValue()))  
+             &&  (newYPositionB2 >= anchorPoint2.getY()) && (newYPositionB2 <= anchorPoint2.sceneProperty().get().getHeight() - (anchorPoint2.getY() + anchorPoint2.heightProperty().getValue()))) 
             {
                 this.setStartY(newYPosition1);
                 this.setEndY(newYPosition2);
-                box1.setTranslateY(newYPositionB1);
-                box2.setTranslateY(newYPositionB2);
+                anchorPoint1.setTranslateY(newYPositionB1);
+                anchorPoint2.setTranslateY(newYPositionB2);
                 initY = dragY;
             }        
             event.consume();
         });
-
+        
         setOnMouseReleased((event) -> 
         {
             event.consume();
         });
-
+        */
+        
         MenuItem delete = new MenuItem("delete");
 
         delete.setOnAction((event) ->
@@ -145,12 +147,12 @@ public class UMLLine extends Line
     	double min = 999999999;
         point1Int = 0;
         point2Int = 0;
-        for (int i = 0; i < box1.getAnchorCount(); ++i)
+        for (int i = 0; i < anchorPoint1.getAnchorCount(); ++i)
         {
-            startingAnchor = new Point2D(box1.getAnchorPoint(i).getX(), box1.getAnchorPoint(i).getY());
-        	for (int j = 0; j < box2.getAnchorCount(); ++j)
+            startingAnchor = new Point2D(anchorPoint1.getAnchorPoint(i).getX(), anchorPoint1.getAnchorPoint(i).getY());
+        	for (int j = 0; j < anchorPoint2.getAnchorCount(); ++j)
         	{
-        		endingAnchor = new Point2D(box2.getAnchorPoint(j).getX(), box2.getAnchorPoint(j).getY());
+        		endingAnchor = new Point2D(anchorPoint2.getAnchorPoint(j).getX(), anchorPoint2.getAnchorPoint(j).getY());
         		if (startingAnchor.distance(endingAnchor) < min)
         		{
         			min = startingAnchor.distance(endingAnchor);
@@ -159,10 +161,10 @@ public class UMLLine extends Line
         		}
         	}
         }
-        this.setStartX(box1.getAnchorPoint(point1Int).getX());
-        this.setStartY(box1.getAnchorPoint(point1Int).getY());
-        this.setEndX(box2.getAnchorPoint(point2Int).getX());
-        this.setEndY(box2.getAnchorPoint(point2Int).getY());
+        this.setStartX(anchorPoint1.getAnchorPoint(point1Int).getX());
+        this.setStartY(anchorPoint1.getAnchorPoint(point1Int).getY());
+        this.setEndX(anchorPoint2.getAnchorPoint(point2Int).getX());
+        this.setEndY(anchorPoint2.getAnchorPoint(point2Int).getY());
 		
 	}
     
