@@ -122,7 +122,6 @@ public class UmlatronController {
                         }
                     }
         });
-
     }
 
     public BorderPane getView() {
