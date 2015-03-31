@@ -5,6 +5,8 @@
  */
 package edu.millersville.umlatron.controller;
 
+import java.awt.event.ActionEvent;
+
 import edu.millersville.umlatron.model.State;
 import edu.millersville.umlatron.model.UmlModel;
 import edu.millersville.umlatron.view.AnchorPoint;
@@ -247,6 +249,7 @@ public class UmlatronController {
 		line = true;
 		view.getEditPane().setOnMouseClicked(null);
 	}
+
 
 	private void setClassBoxState() {
 
