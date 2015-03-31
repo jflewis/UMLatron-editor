@@ -1,0 +1,32 @@
+.menu-bar{
+  -fx-background-color: #3E3E3E;
+  -fx-border-color:  #000000;
+ -fx-border-width: 1;
+
+}
+
+.menu-bar .label {
+    -fx-font-size: 14 pt;
+    -fx-font-family: "Segoe UI Light";
+    -fx-text-fill: #dedede;
+
+}
+
+
+.menu:hover {
+    -fx-background-color: #303030;
+}
+
+.menu .label{
+    -fx-font-size: 14 pt;
+    -fx-label-line-length: 8;
+}
+.context-menu {
+	-fx-background-color: #3E3E3E;
+}
+.menu-item:focused {
+    -fx-background-color: #303030;
+}
+.menu:focused {
+	 -fx-background-color: #303030;
+}
