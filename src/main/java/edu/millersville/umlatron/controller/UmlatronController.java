@@ -31,6 +31,7 @@ import javafx.stage.Stage;
  */
 public class UmlatronController {
 
+
 	UmlModel model = new UmlModel();
 	UmlView view = new UmlView();
 	Pane editPane;
