@@ -5,6 +5,10 @@
  */
 package edu.millersville.umlatron.view;
 
+import javafx.scene.control.SeparatorMenuItem;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
 import edu.millersville.umlatron.model.State;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -24,21 +28,49 @@ import javafx.scene.layout.VBox;
  */
 public class UmlView extends BorderPane {
     private ToggleGroup stateToggle = new ToggleGroup();
+    private MenuBar mainApp;
     private HBox toggleButtons;
     private HBox currentlySelectedPanel;
     private Pane editPane = new Pane();
 
     public UmlView(){
         super();
+        mainApp = applicationBar();
         toggleButtons = createToggleButtons();
         currentlySelectedPanel = createCurrentlySelectedPanel();
         
         this.setCenter(editPane);
        
-        this.setTop(createTopPanel(toggleButtons,currentlySelectedPanel));
+        this.setTop(createTopPanel(mainApp, toggleButtons,currentlySelectedPanel));
   
     }
-    
+    private MenuBar applicationBar(){
+    	
+    	MenuBar menuBar = new MenuBar();
+        menuBar.useSystemMenuBarProperty();
+        menuBar.getStylesheets().add("/styles/MenuBar.css");
+        
+        Menu menuFile = new Menu("File");
+        Menu menuTemp1 = new Menu("TempField1");
+        Menu menuTemp2 = new Menu("TempField2");
+        
+        MenuItem newThing = new MenuItem("New");
+        //currently does nothing
+        MenuItem exit = new MenuItem("Exit");
+        exit.setOnAction((event) -> {
+        		System.exit(0);
+        });
+        menuBar.getMenus().addAll(menuFile, menuTemp1, menuTemp2);
+        menuBar.prefWidthProperty().bind(editPane.widthProperty());
+        menuBar.setStyle("-fx-padding: 2 2 2 5;");
+        
+        menuFile.getItems().addAll(newThing, new SeparatorMenuItem(), exit);
+        
+        return menuBar;
+    	
+    	
+    	
+    }
     
     private HBox createToggleButtons(){
         HBox hbox = new HBox();
@@ -96,10 +128,10 @@ public class UmlView extends BorderPane {
         return hbox;
     }
     
-    private VBox createTopPanel(HBox states, HBox selectedPanel)
+    private VBox createTopPanel(MenuBar mainApp, HBox states, HBox selectedPanel)
     {
         VBox panel = new VBox();
-        panel.getChildren().addAll(states,selectedPanel);
+        panel.getChildren().addAll(mainApp, states,selectedPanel);
         return panel;
     }
     
