@@ -54,7 +54,8 @@ public class UmlView extends BorderPane {
     	
     	MenuBar menuBar = new MenuBar();
         menuBar.setUseSystemMenuBar(true);
-        //menuBar.getStylesheets().add("/styles/MenuBar.css");
+
+        menuBar.getStylesheets().add("/styles/MenuBar.css");
         
         Menu menuFile = new Menu("File");
         //Menu menuTemp1 = new Menu("TempField1");
@@ -66,11 +67,12 @@ public class UmlView extends BorderPane {
         exit.setOnAction((event) -> {
         		System.exit(0);
         });
+        
         menuBar.getMenus().addAll(menuFile);
         menuBar.prefWidthProperty().bind(editPane.widthProperty());
         menuBar.setStyle("-fx-padding: 2 2 2 5;");
         
-        menuFile.getItems().addAll(newThing, exit);
+        menuFile.getItems().addAll(newThing, new SeparatorMenuItem(), exit);
         
         return menuBar;
     	
