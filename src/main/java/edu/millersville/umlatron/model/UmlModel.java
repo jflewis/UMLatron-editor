@@ -20,6 +20,7 @@ public class UmlModel {
         this.state = new SimpleObjectProperty();
         state.setValue(State.SELECT);
         
+        
         this.currentlySelectedNode = new SimpleObjectProperty();
         currentlySelectedNode.addListener((ObservableValue<? extends Node> ov,
                 Node last_selected, Node new_selected) -> {

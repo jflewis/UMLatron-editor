@@ -7,9 +7,11 @@ package edu.millersville.umlatron.model;
 
 /**
  * This represents the current edit state that the user is in
+ *
  * @author John Lewis
  */
 public enum State {
-	LINE, CLASSBOX, SELECT, ASSOCIATION
-    
+
+    LINE, CLASSBOX, SELECT, ASSOCIATION
+
 }
