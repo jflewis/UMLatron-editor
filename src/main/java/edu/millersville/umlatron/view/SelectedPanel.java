@@ -5,10 +5,18 @@
  */
 package edu.millersville.umlatron.view;
 
+import javafx.scene.layout.HBox;
+
 /**
- * Will be used for the visitor pattern
+ * Will be used for the visitor pattern/maybe
  * @author John Lewis
  */
 public interface SelectedPanel {
+    
+    /**
+     * all objects implementing this will be able to create a currently selected panel
+     * @return a selected panel
+     */
+     void createAndGeneratePanel(HBox h);
     
 }

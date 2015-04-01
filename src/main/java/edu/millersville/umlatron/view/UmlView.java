@@ -120,7 +120,9 @@ public class UmlView extends BorderPane {
     
     private HBox createCurrentlySelectedPanel(){
         HBox hbox = new HBox();
-        hbox.setSpacing(4);
+        hbox.setPadding(new Insets(4, 12, 4, 12));
+        hbox.setSpacing(10);
+
         Label label = new Label("Currently selected node : filler space ");
                
         Button bt1 = new Button("place holder");
@@ -132,7 +134,6 @@ public class UmlView extends BorderPane {
         HBox.setHgrow(bt2, Priority.ALWAYS);
 
         hbox.getChildren().addAll(label,bt1,bt2);
-        hbox.setStyle("-fx-border-color: black;");
         return hbox;
     }
     

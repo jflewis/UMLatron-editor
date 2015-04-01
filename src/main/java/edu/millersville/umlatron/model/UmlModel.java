@@ -3,6 +3,10 @@
  */
 package edu.millersville.umlatron.model;
 
+import edu.millersville.umlatron.view.Box;
+import edu.millersville.umlatron.view.ClassBox;
+import edu.millersville.umlatron.view.DiamondLine;
+import edu.millersville.umlatron.view.UMLLine;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.Node;
@@ -22,11 +26,7 @@ public class UmlModel {
         
         
         this.currentlySelectedNode = new SimpleObjectProperty();
-        currentlySelectedNode.addListener((ObservableValue<? extends Node> ov,
-                Node last_selected, Node new_selected) -> {
-                    System.out.println(new_selected.toString());
-                });
-        
+       
         
     }
     
@@ -41,6 +41,7 @@ public class UmlModel {
     public SimpleObjectProperty<Node> getCurrentlySelectedNodeProperty(){
         return currentlySelectedNode;
     }
+    
     
     
 }

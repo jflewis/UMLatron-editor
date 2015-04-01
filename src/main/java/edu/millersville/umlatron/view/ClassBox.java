@@ -9,19 +9,16 @@ import javafx.scene.control.TextArea;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.VBox;
 import javafx.geometry.Point2D;
-import javafx.scene.Cursor;
 import javafx.scene.Group;
-import javafx.event.EventHandler;
 import javafx.scene.Cursor;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Region;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 
 /**
  *
  * @author Greg Polhemus
  */
-public class ClassBox extends VBox implements AnchorPoint {
+public class ClassBox extends VBox implements AnchorPoint , SelectedPanel {
 
 	private double initX;
 	private double initY;
@@ -284,5 +281,10 @@ public class ClassBox extends VBox implements AnchorPoint {
 	}
 
 	/************************************************************************************************/
+        
+        
+        @Override
+        public void createAndGeneratePanel(HBox h){
+        }
 
 }

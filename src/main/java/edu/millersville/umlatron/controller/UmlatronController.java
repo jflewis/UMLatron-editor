@@ -5,24 +5,17 @@
  */
 package edu.millersville.umlatron.controller;
 
-import edu.millersville.umlatron.model.LineType;
-import edu.millersville.umlatron.model.State;
-import edu.millersville.umlatron.model.UmlModel;
-import edu.millersville.umlatron.view.AnchorPoint;
-import edu.millersville.umlatron.view.Box;
-import edu.millersville.umlatron.view.ClassBox;
-import edu.millersville.umlatron.view.DiamondLine;
-import edu.millersville.umlatron.view.UMLLine;
-import edu.millersville.umlatron.view.UmlView;
-import java.util.ArrayList;
+import edu.millersville.umlatron.model.*;
+import edu.millersville.umlatron.view.*;
 import javafx.beans.value.ObservableValue;
+import java.util.ArrayList;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.control.Toggle;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 /**
@@ -127,7 +120,7 @@ public class UmlatronController {
                     if (model.getStateProperty().get() == State.LINE && filteredNode instanceof AnchorPoint) {
                         clickedNodes.add(filteredNode);
                         if (clickedNodes.size() == 2) {
-                            UMLLine lineTest = new UMLLine(
+                            UMLArrowLine lineTest = new UMLArrowLine(
                                     (AnchorPoint) clickedNodes.get(0),
                                     (AnchorPoint) clickedNodes.get(1));
                             ((AnchorPoint) clickedNodes.get(0)).addLine(lineTest);
@@ -136,7 +129,7 @@ public class UmlatronController {
                                     .addLineType(LineType.START);
                             ((AnchorPoint) clickedNodes.get(1))
                                     .addLineType(LineType.END);
-                            view.getEditPane().getChildren().add(lineTest);
+                            view.getEditPane().getChildren().addAll(lineTest,lineTest.getLine1(),lineTest.getLine2());
                             clickedNodes.clear();
 
                         }
@@ -144,6 +137,30 @@ public class UmlatronController {
                 }
             }
         });
+
+        model.getCurrentlySelectedNodeProperty().addListener((ObservableValue<? extends Node> ov,
+                Node last_selected, Node new_selected) -> {
+            
+                if(new_selected instanceof SelectedPanel){
+                    ((SelectedPanel)new_selected).createAndGeneratePanel(view.getCurrentlySelectedPane());
+                   
+                }
+
+            /*
+                    if (new_selected instanceof Se) {
+                        
+                    } else if (new_selected instanceof ClassBox) {
+                        
+                    } else if (new_selected instanceof UMLArrowLine) {
+                        
+                    } else if (new_selected instanceof DiamondLine) {
+                        
+                    } else {
+                        //wait what?
+                    }
+            */
+
+                });
 
     }
 
