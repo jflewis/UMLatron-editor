@@ -2,7 +2,6 @@ package edu.millersville.umlatron.view;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -140,12 +139,13 @@ public class UMLArrowLine extends UMLLine implements SelectedPanel {
 
     }
 
+    @Override
     public void createAndGeneratePanel(HBox h) {
 
         h.getChildren().clear();
         DropShadow shadow = new DropShadow();
 
-        Button setDashed = new Button("dashed");
+        Button setDashed = new Button("Dashed");
         setDashed.setMaxWidth(Double.MAX_VALUE);
         HBox.setHgrow(setDashed, Priority.ALWAYS);
         setDashed.setOnAction((ActionEvent e) -> {
@@ -167,7 +167,7 @@ public class UMLArrowLine extends UMLLine implements SelectedPanel {
                     }
                 });
 
-        Button setSolid = new Button("solid");
+        Button setSolid = new Button("Solid");
         setSolid.setMaxWidth(Double.MAX_VALUE);
         HBox.setHgrow(setSolid, Priority.ALWAYS);
         setSolid.setOnAction((ActionEvent e) -> {
