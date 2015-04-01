@@ -2,14 +2,12 @@ package edu.millersville.umlatron.view;
 
 
 
-import javafx.scene.Cursor;
 import javafx.geometry.Point2D;
-import javafx.scene.Group;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.input.MouseButton;
+import javafx.scene.layout.Pane;
 import javafx.scene.shape.Line;
-import javafx.scene.paint.Color;
 
 /**
  * 
@@ -118,8 +116,8 @@ public class UMLLine extends Line
 
         delete.setOnAction((event) ->
         {
-            Group group = (Group)this.getParent();
-            group.getChildren().remove(this);
+            Pane pane = (Pane)this.getParent();
+            pane.getChildren().remove(this);
         });
 
         ContextMenu contextMenu = new ContextMenu(delete);
