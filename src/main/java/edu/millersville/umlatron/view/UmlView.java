@@ -53,7 +53,7 @@ public class UmlView extends BorderPane {
     private MenuBar applicationBar(){
     	
     	MenuBar menuBar = new MenuBar();
-        menuBar.setUseSystemMenuBar(true);
+        menuBar.useSystemMenuBarProperty().set(true); //if it's mac put's it up top
 
         menuBar.getStylesheets().add("/styles/MenuBar.css");
         

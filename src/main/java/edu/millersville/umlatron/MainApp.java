@@ -1,6 +1,6 @@
 package edu.millersville.umlatron;
 
-import edu.millersville.umlatron.view.UMLDottedLine;
+import edu.millersville.umlatron.view.UMLArrowLine;
 import edu.millersville.umlatron.view.UMLLine;
 import edu.millersville.umlatron.controller.UmlatronController;
 

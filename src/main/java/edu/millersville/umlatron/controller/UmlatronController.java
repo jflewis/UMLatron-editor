@@ -5,6 +5,9 @@
  */
 package edu.millersville.umlatron.controller;
 
+import java.awt.event.ActionEvent;
+
+import edu.millersville.umlatron.model.LineType;
 import edu.millersville.umlatron.model.State;
 import edu.millersville.umlatron.model.UmlModel;
 import edu.millersville.umlatron.view.AnchorPoint;
@@ -29,15 +32,13 @@ import javafx.stage.Stage;
  */
 public class UmlatronController {
 
-
 	UmlModel model = new UmlModel();
 	UmlView view = new UmlView();
 	Pane editPane;
 	Stage stage;
-	
+
 	Node temp1, temp2;
 	int count = 0;
-	boolean line = false;
 
 	EventHandler<MouseEvent> createClassBox = (event) -> {
 		double x = event.getSceneX();
@@ -51,7 +52,7 @@ public class UmlatronController {
 		this.editPane = view.getEditPane();
 		this.stage = stage;
 
-		// set intial select state
+		// set initial select state
 		model.getStateProperty().addListener(
 				(ObservableValue<? extends State> ov, State old_state,
 						State new_state) -> {
@@ -123,34 +124,34 @@ public class UmlatronController {
 							}
 						});
 
-		
 		view.getEditPane().addEventFilter(MouseEvent.MOUSE_PRESSED,
-				new EventHandler<MouseEvent>() 
-				{
+				new EventHandler<MouseEvent>() {
 					@Override
-					public void handle(MouseEvent e) 
-					{
-						if (line) 
-						{
-							Node selectedNode = e.getPickResult().getIntersectedNode();
-							if (selectedNode != null && selectedNode instanceof AnchorPoint) 
-							{
-								if (count == 0) 
-								{
+					public void handle(MouseEvent e) {
+						if (model.getStateProperty().getValue()
+								.equals(State.LINE)) {
+							Node selectedNode = e.getPickResult()
+									.getIntersectedNode();
+							if (selectedNode != null
+									&& selectedNode instanceof AnchorPoint) {
+								if (count == 0) {
 									++count;
 									temp1 = selectedNode;
-								} 
-								else if (count == 1 && temp1 != selectedNode) 
-								{
+								} else if (count == 1 && temp1 != selectedNode) {
 									temp2 = selectedNode;
 									count = 0;
 									// create line
-									UMLLine lineTest = new UMLLine((AnchorPoint) temp1, (AnchorPoint) temp2);
+									UMLLine lineTest = new UMLLine(
+											(AnchorPoint) temp1,
+											(AnchorPoint) temp2);
 									((AnchorPoint) temp1).addLine(lineTest);
 									((AnchorPoint) temp2).addLine(lineTest);
-									((AnchorPoint) temp1).addLineType("start");
-									((AnchorPoint) temp2).addLineType("end");
-									view.getEditPane().getChildren().add(lineTest);
+									((AnchorPoint) temp1)
+											.addLineType(LineType.START);
+									((AnchorPoint) temp2)
+											.addLineType(LineType.END);
+									view.getEditPane().getChildren()
+											.add(lineTest);
 									temp1 = null;
 									temp2 = null;
 								}
@@ -158,7 +159,6 @@ public class UmlatronController {
 						}
 					}
 				});
-				
 
 		// filter out clicks on nodes for currently selected
 		/*
@@ -204,48 +204,29 @@ public class UmlatronController {
 			}
 		};
 		view.getEditPane().setOnMouseClicked(createBox);
-		line = false;
 	}
 
-	
 	private void setLineState() {
-    
-        //This caused some weird errors if you toggle between states a lot.
-        //The error allows you to create lines with one click with the startpoint at wherever the last endpoint was.
+
+		// This caused some weird errors if you toggle between states a lot.
+		// The error allows you to create lines with one click with the
+		// startpoint at wherever the last endpoint was.
 		/*
-		view.getEditPane().addEventFilter(MouseEvent.MOUSE_PRESSED,
-				new EventHandler<MouseEvent>() 
-				{
-					@Override
-					public void handle(MouseEvent e) 
-					{
-						Node selectedNode = e.getPickResult().getIntersectedNode();
-						if (selectedNode != null && selectedNode instanceof AnchorPoint) 
-						{
-							if (count == 0) 
-							{
-								++count;
-								temp1 = selectedNode;
-							} 
-							else if (count == 1 && temp1 != selectedNode) 
-							{
-								temp2 = selectedNode;
-								count = 0; 
-								//create line
-								UMLLine lineTest = new UMLLine((AnchorPoint) temp1, (AnchorPoint) temp2);
-								((AnchorPoint) temp1).addLine(lineTest);
-								((AnchorPoint) temp2).addLine(lineTest);
-								((AnchorPoint) temp1).addLineType("start");
-								((AnchorPoint) temp2).addLineType("end");
-								view.getEditPane().getChildren().add(lineTest);
-								temp1 = null;
-								temp2 = null;
-							}
-						}
-					}
-				});
-		*/
-		line = true;
+		 * view.getEditPane().addEventFilter(MouseEvent.MOUSE_PRESSED, new
+		 * EventHandler<MouseEvent>() {
+		 * 
+		 * @Override public void handle(MouseEvent e) { Node selectedNode =
+		 * e.getPickResult().getIntersectedNode(); if (selectedNode != null &&
+		 * selectedNode instanceof AnchorPoint) { if (count == 0) { ++count;
+		 * temp1 = selectedNode; } else if (count == 1 && temp1 != selectedNode)
+		 * { temp2 = selectedNode; count = 0; //create line UMLLine lineTest =
+		 * new UMLLine((AnchorPoint) temp1, (AnchorPoint) temp2); ((AnchorPoint)
+		 * temp1).addLine(lineTest); ((AnchorPoint) temp2).addLine(lineTest);
+		 * ((AnchorPoint) temp1).addLineType("start"); ((AnchorPoint)
+		 * temp2).addLineType("end");
+		 * view.getEditPane().getChildren().add(lineTest); temp1 = null; temp2 =
+		 * null; } } } });
+		 */
 		view.getEditPane().setOnMouseClicked(null);
 	}
 
@@ -259,13 +240,10 @@ public class UmlatronController {
 		};
 
 		view.getEditPane().setOnMouseClicked(createClassBox);
-		line = false;
-
 	}
 
 	private void setSelectState() {
 		view.getEditPane().setOnMouseClicked(null);
-		line = false;
 	}
 }
 /**
