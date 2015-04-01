@@ -10,6 +10,6 @@ package edu.millersville.umlatron.model;
  * @author John Lewis
  */
 public enum State {
-    LINE,CLASSBOX,SELECT,ASSOCIATION
+	LINE, CLASSBOX, SELECT, ASSOCIATION
     
 }

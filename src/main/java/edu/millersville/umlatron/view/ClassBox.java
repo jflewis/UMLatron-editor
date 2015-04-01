@@ -1,6 +1,7 @@
 package edu.millersville.umlatron.view;
 
 import java.util.ArrayList;
+import edu.millersville.umlatron.model.LineType;
 
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
@@ -14,6 +15,7 @@ import javafx.event.EventHandler;
 import javafx.scene.Cursor;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Region;
+import javafx.scene.layout.Pane;
 
 /**
  *
@@ -26,7 +28,7 @@ public class ClassBox extends VBox implements AnchorPoint {
 	private double height, width;
 	private int anchorCount;
 	private Point2D[] anchorPoints;
-	private ArrayList<String> pointTypes;
+	private ArrayList<LineType> pointTypes;
 	private ArrayList<UMLLine> lines;
 	private Point2D dragAnchor;
 	private String name = "Enter A Class Name Here";
@@ -34,12 +36,12 @@ public class ClassBox extends VBox implements AnchorPoint {
 	private String functions = "Enter Functions Here";
 
 	public ClassBox(double x, double y) {
-		
+
 		super();
 		anchorCount = 4;
 		anchorPoints = new Point2D[anchorCount];
-		setAnchorPoints(x,y);
-		pointTypes = new ArrayList<String>();
+		setAnchorPoints(x, y);
+		pointTypes = new ArrayList<LineType>();
 		lines = new ArrayList<UMLLine>();
 		setCursor(Cursor.OPEN_HAND);
 		setTranslateX(x);
@@ -47,12 +49,13 @@ public class ClassBox extends VBox implements AnchorPoint {
 		System.out.println(computePrefHeight(height));
 		setStyle("-fx-border-style: solid;" + "-fx-border-width: 2;"
 				+ "-fx-border-color: black;");
-		
-/*	Children of ClassBox
- * 	Consists of 3 TextAreas with default column and row sizes
- *  VBox grows to meet these upon creation
- * 	They are set to wrap text, given a prompt text, and are set to transparent until corresponding button says otherwise	
- */
+
+		/*
+		 * Children of ClassBox Consists of 3 TextAreas with default column and
+		 * row sizes VBox grows to meet these upon creation They are set to wrap
+		 * text, given a prompt text, and are set to transparent until
+		 * corresponding button says otherwise
+		 */
 
 		TextArea classTextName = new TextArea();
 		classTextName.setPromptText(name);
@@ -60,7 +63,7 @@ public class ClassBox extends VBox implements AnchorPoint {
 		classTextName.setPrefColumnCount(10);
 		classTextName.setWrapText(true);
 		classTextName.setMouseTransparent(true);
-		
+
 		TextArea classMethods = new TextArea();
 		classMethods.setPromptText(methods);
 		classMethods.setPrefRowCount(2);
@@ -74,14 +77,14 @@ public class ClassBox extends VBox implements AnchorPoint {
 		classFunctions.setPrefColumnCount(10);
 		classFunctions.setWrapText(true);
 		classFunctions.setMouseTransparent(true);
-		
+
 		getChildren().addAll(classTextName, classMethods, classFunctions);
 
-/*	Movement Handling/Mouse Events
- * 	Creation of ClassBox on Mouse Press
- * 	Mouse Drag determined by getting the current value of the classBox after creation (it is initialized to 0.0 by default)
- * 
- */
+		/*
+		 * Movement Handling/Mouse Events Creation of ClassBox on Mouse Press
+		 * Mouse Drag determined by getting the current value of the classBox
+		 * after creation (it is initialized to 0.0 by default)
+		 */
 		setOnMousePressed((event) -> {
 			// when mouse is pressed, store initial position
 			initX = getTranslateX();
@@ -90,75 +93,98 @@ public class ClassBox extends VBox implements AnchorPoint {
 			event.consume();
 		});
 
-// Dragging Movement of ClassBox *********************************************************************************/
-		
+		// Dragging Movement of ClassBox
+		// *********************************************************************************/
+
 		setOnMouseDragged((event) -> {
 			double dragX = event.getSceneX() - dragAnchor.getX();
 			double dragY = event.getSceneY() - dragAnchor.getY();
 			double newXPosition = initX + dragX;
 			double newYPosition = initY + dragY;
+			width = widthProperty().getValue();
+			height = heightProperty().getValue();
 			if ((newXPosition >= this.sceneProperty().get().getX())
 					&& (newXPosition <= this.sceneProperty().get().getWidth()
-							- (this.sceneProperty().get().getX() + widthProperty().getValue()))) {
+							- (this.sceneProperty().get().getX() + widthProperty()
+									.getValue()))) {
 				setTranslateX(newXPosition);
-				width = widthProperty().getValue();
 				updateXAnchorPoints(newXPosition);
-				for (int i = 0; i < lines.size(); ++i) {
-					lines.get(i).updateAnchorPoints();
-					if (pointTypes.get(i).equals("start")) {
-						lines.get(i).setStartX(
-								anchorPoints[lines.get(i).getAnchorPoint1Int()]
-										.getX());
-					}
-					if (pointTypes.get(i).equals("end")) {
-						lines.get(i).setEndX(
-								anchorPoints[lines.get(i).getAnchorPoint2Int()]
-										.getX());
-					}
+			} else if (newXPosition >= this.sceneProperty().get().getX()) {
+				setTranslateX(this.sceneProperty().get().getWidth()
+						- widthProperty().getValue());
+				updateXAnchorPoints(this.sceneProperty().get().getWidth()
+						- widthProperty().getValue());
+			} else {
+				setTranslateX(0);
+				updateXAnchorPoints(0);
+			}
+			for (int i = 0; i < lines.size(); ++i) {
+				lines.get(i).updateAnchorPoints();
+				if (pointTypes.get(i).equals(LineType.START)) {
+					lines.get(i).setStartX(
+							anchorPoints[lines.get(i).getAnchorPoint1Int()]
+									.getX());
+				}
+				if (pointTypes.get(i).equals(LineType.END)) {
+					lines.get(i).setEndX(
+							anchorPoints[lines.get(i).getAnchorPoint2Int()]
+									.getX());
 				}
 			}
 			if ((newYPosition >= this.sceneProperty().get().getY())
 					&& (newYPosition <= this.sceneProperty().get().getHeight()
-							- (this.sceneProperty().get().getY() + heightProperty().getValue()))) {
+							- (this.sceneProperty().get().getY() + heightProperty()
+									.getValue()))) {
 				setTranslateY(newYPosition);
-				height = heightProperty().getValue();
 				updateYAnchorPoints(newYPosition);
-				for (int i = 0; i < lines.size(); ++i) {
-					lines.get(i).updateAnchorPoints();
-					if (pointTypes.get(i).equals("start")) {
-						lines.get(i).setStartY(
-								anchorPoints[lines.get(i).getAnchorPoint1Int()]
-										.getY());
-					}
-					if (pointTypes.get(i).equals("end")) {
-						lines.get(i).setEndY(
-								anchorPoints[lines.get(i).getAnchorPoint2Int()]
-										.getY());
-					}
+
+			} else if (newYPosition >= this.sceneProperty().get().getY()) {
+				setTranslateY(this.sceneProperty().get().getHeight()
+						- heightProperty().getValue());
+				updateYAnchorPoints(this.sceneProperty().get().getHeight()
+						- heightProperty().getValue());
+			} else {
+				setTranslateY(0);
+				updateYAnchorPoints(0);
+			}
+			for (int i = 0; i < lines.size(); ++i) {
+				lines.get(i).updateAnchorPoints();
+				if (pointTypes.get(i).equals(LineType.START)) {
+					lines.get(i).setStartY(
+							anchorPoints[lines.get(i).getAnchorPoint1Int()]
+									.getY());
+				}
+				if (pointTypes.get(i).equals(LineType.END)) {
+					lines.get(i).setEndY(
+							anchorPoints[lines.get(i).getAnchorPoint2Int()]
+									.getY());
 				}
 			}
-			
 			event.consume();
 		});
-		
-/*********************************************************************************************************/
-		
-/* Menu Functionality For Class Box with right click
- * Currently set to just Delete
- * Added into the menu that the textArea gives, for each textArea
- * Cannot Delete Unless TextArea has focus, currently
- */
-		
+
+		/*********************************************************************************************************/
+
+		/*
+		 * Menu Functionality For Class Box with right click Currently set to
+		 * just Delete Added into the menu that the textArea gives, for each
+		 * textArea Cannot Delete Unless TextArea has focus, currently
+		 */
+
 		MenuItem delete = new MenuItem("delete");
 		delete.setOnAction(event -> {
 			Group group = (Group) this.getParent();
+			for (int i = 0; i < lines.size(); ++i) {
+				lines.get(i).deleteSelf();
+			}
 			group.getChildren().remove(this);
 		});
 
 		ContextMenu contextMenu = new ContextMenu(delete);
-		
-//Right Click Menu Event with addition of Delete in each TextArea ****************************************/
-		
+
+		// Right Click Menu Event with addition of Delete in each TextArea
+		// ****************************************/
+
 		classTextName.setOnMouseClicked(event -> {
 			if (event.getButton() == MouseButton.SECONDARY) {
 				System.out.println("right click registered");
@@ -195,36 +221,33 @@ public class ClassBox extends VBox implements AnchorPoint {
 		setOnMouseClicked(event -> {
 			event.consume();
 		});
-		
+
 	}
 
-/***********************************************************************************************************/
-//Anchor Points Set/Updates	
+	/***********************************************************************************************************/
+	// Anchor Points Set/Updates
 
 	public void setAnchorPoints(double x, double y) {
-		anchorPoints[0] = new Point2D(x, y + (height / 2)); // left
-		anchorPoints[1] = new Point2D(x + (width / 2), y); // top
+		anchorPoints[0] = new Point2D(x + (width / 2), y); // top
+		anchorPoints[1] = new Point2D(x, y + (height / 2)); // left
 		anchorPoints[2] = new Point2D(x + width, y + (height / 2)); // right
 		anchorPoints[3] = new Point2D(x + (width / 2), y + height); // bottom
 	}
 
-	
 	public void updateXAnchorPoints(double x) {
-		anchorPoints[0] = new Point2D(x, anchorPoints[0].getY());
-		anchorPoints[1] = new Point2D(x + (width / 2), anchorPoints[1].getY());
+		anchorPoints[0] = new Point2D(x + (width / 2), anchorPoints[0].getY());
+		anchorPoints[1] = new Point2D(x, anchorPoints[1].getY());
 		anchorPoints[2] = new Point2D(x + width, anchorPoints[2].getY());
 		anchorPoints[3] = new Point2D(x + (width / 2), anchorPoints[3].getY());
 	}
 
-	
 	public void updateYAnchorPoints(double y) {
-		anchorPoints[0] = new Point2D(anchorPoints[0].getX(), y + (height / 2));
-		anchorPoints[1] = new Point2D(anchorPoints[1].getX(), y);
+		anchorPoints[0] = new Point2D(anchorPoints[0].getX(), y);
+		anchorPoints[1] = new Point2D(anchorPoints[1].getX(), y + (height / 2));
 		anchorPoints[2] = new Point2D(anchorPoints[2].getX(), y + (height / 2));
 		anchorPoints[3] = new Point2D(anchorPoints[3].getX(), y + height);
 	}
 
-	
 	public Point2D getAnchorPoint(int i) {
 		if (i < anchorPoints.length) {
 			return anchorPoints[i];
@@ -239,7 +262,7 @@ public class ClassBox extends VBox implements AnchorPoint {
 	}
 
 	@Override
-	public void addLineType(String str) {
+	public void addLineType(LineType str) {
 		pointTypes.add(str);
 	}
 
@@ -248,6 +271,18 @@ public class ClassBox extends VBox implements AnchorPoint {
 		lines.add(line);
 	}
 
-/************************************************************************************************/
-		
+	@Override
+	public void deleteLine(int id) {
+		Pane pane = (Pane) this.getParent();
+		for (int i = 0; i < lines.size(); ++i) {
+			if (lines.get(i).getIntId() == id) {
+				if (pane != null) {
+					pane.getChildren().remove(lines.get(i));
+				}
+			}
+		}
+	}
+
+	/************************************************************************************************/
+
 }

@@ -7,6 +7,7 @@ package edu.millersville.umlatron.view;
 
 import java.util.ArrayList;
 
+import edu.millersville.umlatron.model.LineType;
 import javafx.geometry.Point2D;
 import javafx.scene.Cursor;
 import javafx.scene.Group;
@@ -30,12 +31,12 @@ public class Box extends Rectangle implements AnchorPoint {
 	private int anchorCount;
 	private Point2D[] anchorPoints;
 	private Point2D dragAnchor;
-	private ArrayList<String> pointTypes;
+	private ArrayList<LineType> pointTypes;
 	private ArrayList<UMLLine> lines;
 
 	public Box(Color color, double x, double y) {
 		super(50, 50, color);
-		pointTypes = new ArrayList<String>();
+		pointTypes = new ArrayList<LineType>();
 		lines = new ArrayList<UMLLine>();
 		setTranslateX(x);
 		setTranslateY(y);
@@ -60,19 +61,30 @@ public class Box extends Rectangle implements AnchorPoint {
 							- (getX() + widthProperty().getValue()))) {
 				setTranslateX(newXPosition);
 				updateXAnchorPoints(newXPosition);
+			}
+			else if (newXPosition >= getX())
+			{
+				setTranslateX(this.sceneProperty().get().getWidth() - widthProperty().getValue());
+				updateXAnchorPoints(this.sceneProperty().get().getWidth() - widthProperty().getValue());
+			}
+			else
+			{
+				setTranslateX(0);
+				updateXAnchorPoints(0);
+			}
+			
 
-				for (int i = 0; i < lines.size(); ++i) {
-					lines.get(i).updateAnchorPoints();
-					if (pointTypes.get(i).equals("start")) {
-						lines.get(i).setStartX(
-								anchorPoints[lines.get(i).getAnchorPoint1Int()]
-										.getX());
-					}
-					if (pointTypes.get(i).equals("end")) {
-						lines.get(i).setEndX(
-								anchorPoints[lines.get(i).getAnchorPoint2Int()]
-										.getX());
-					}
+			for (int i = 0; i < lines.size(); ++i) {
+				lines.get(i).updateAnchorPoints();
+				if (pointTypes.get(i).equals(LineType.START)) {
+					lines.get(i).setStartX(
+							anchorPoints[lines.get(i).getAnchorPoint1Int()]
+									.getX());
+				}
+				if (pointTypes.get(i).equals(LineType.END)) {
+					lines.get(i).setEndX(
+							anchorPoints[lines.get(i).getAnchorPoint2Int()]
+									.getX());
 				}
 			}
 			if ((newYPosition >= getY())
@@ -80,18 +92,28 @@ public class Box extends Rectangle implements AnchorPoint {
 							- (getY() + heightProperty().getValue()))) {
 				setTranslateY(newYPosition);
 				updateYAnchorPoints(newYPosition);
-				for (int i = 0; i < lines.size(); ++i) {
-					lines.get(i).updateAnchorPoints();
-					if (pointTypes.get(i).equals("start")) {
-						lines.get(i).setStartY(
-								anchorPoints[lines.get(i).getAnchorPoint1Int()]
-										.getY());
-					}
-					if (pointTypes.get(i).equals("end")) {
-						lines.get(i).setEndY(
-								anchorPoints[lines.get(i).getAnchorPoint2Int()]
-										.getY());
-					}
+				
+			}
+ else if (newYPosition >= getY()) {
+				setTranslateY(this.sceneProperty().get().getHeight()
+						- heightProperty().getValue());
+				updateYAnchorPoints(this.sceneProperty().get().getHeight()
+						- heightProperty().getValue());
+			} else {
+				setTranslateY(0);
+				updateYAnchorPoints(0);
+			}
+			for (int i = 0; i < lines.size(); ++i) {
+				lines.get(i).updateAnchorPoints();
+				if (pointTypes.get(i).equals(LineType.START)) {
+					lines.get(i).setStartY(
+							anchorPoints[lines.get(i).getAnchorPoint1Int()]
+									.getY());
+				}
+				if (pointTypes.get(i).equals(LineType.END)) {
+					lines.get(i).setEndY(
+							anchorPoints[lines.get(i).getAnchorPoint2Int()]
+									.getY());
 				}
 			}
 			event.consume();
@@ -108,6 +130,9 @@ public class Box extends Rectangle implements AnchorPoint {
 		MenuItem delete = new MenuItem("delete");
 		delete.setOnAction(event -> {
 			Pane pane = (Pane) this.getParent();
+			for (int i = 0; i < lines.size(); ++i) {
+				lines.get(i).deleteSelf();
+			}
 			pane.getChildren().remove(Box.this);
 		});
 
@@ -131,24 +156,24 @@ public class Box extends Rectangle implements AnchorPoint {
 
 	@Override
 	public void setAnchorPoints(double x, double y) {
-		anchorPoints[0] = new Point2D(x, y + (height / 2)); // left
-		anchorPoints[1] = new Point2D(x + (width / 2), y); // top
+		anchorPoints[0] = new Point2D(x + (width / 2), y); // top
+		anchorPoints[1] = new Point2D(x, y + (height / 2)); // left
 		anchorPoints[2] = new Point2D(x + width, y + (height / 2)); // right
 		anchorPoints[3] = new Point2D(x + (width / 2), y + height); // bottom
 	}
 
 	@Override
 	public void updateXAnchorPoints(double x) {
-		anchorPoints[0] = new Point2D(x, anchorPoints[0].getY());
-		anchorPoints[1] = new Point2D(x + (width / 2), anchorPoints[1].getY());
+		anchorPoints[0] = new Point2D(x + (width / 2), anchorPoints[0].getY());
+		anchorPoints[1] = new Point2D(x, anchorPoints[1].getY());
 		anchorPoints[2] = new Point2D(x + width, anchorPoints[2].getY());
 		anchorPoints[3] = new Point2D(x + (width / 2), anchorPoints[3].getY());
 	}
 
 	@Override
 	public void updateYAnchorPoints(double y) {
-		anchorPoints[0] = new Point2D(anchorPoints[0].getX(), y + (height / 2));
-		anchorPoints[1] = new Point2D(anchorPoints[1].getX(), y);
+		anchorPoints[0] = new Point2D(anchorPoints[0].getX(), y);
+		anchorPoints[1] = new Point2D(anchorPoints[1].getX(), y + (height / 2));
 		anchorPoints[2] = new Point2D(anchorPoints[2].getX(), y + (height / 2));
 		anchorPoints[3] = new Point2D(anchorPoints[3].getX(), y + height);
 	}
@@ -168,12 +193,25 @@ public class Box extends Rectangle implements AnchorPoint {
 	}
 
 	@Override
-	public void addLineType(String str) {
+	public void addLineType(LineType str) {
 		pointTypes.add(str);
 	}
 
 	@Override
 	public void addLine(UMLLine line) {
 		lines.add(line);
+	}
+
+	@Override
+	public void deleteLine(int id) {
+		Pane pane = (Pane) this.getParent();
+		for (int i = 0; i < lines.size(); ++i) {
+			if (lines.get(i).getIntId() == id) {
+				if (pane != null)
+				{
+					pane.getChildren().remove(lines.get(i));
+				}
+			}
+		}
 	}
 }

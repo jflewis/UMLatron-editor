@@ -1,5 +1,6 @@
 package edu.millersville.umlatron.view;
 
+import edu.millersville.umlatron.model.LineType;
 import javafx.geometry.Point2D;
 
 public interface AnchorPoint {
@@ -47,10 +48,10 @@ public interface AnchorPoint {
 	/**
 	 * 
 	 * @param str
-	 *            The String that signifies whether this lineType is a
-	 *            startPoint or endPoint.
+	 *            The enum that signifies whether this lineType is a startPoint
+	 *            or endPoint.
 	 */
-	public void addLineType(String str);
+	public void addLineType(LineType str);
 
 	/**
 	 * 
@@ -58,4 +59,12 @@ public interface AnchorPoint {
 	 *            Adds a UMLLine line to Lines.
 	 */
 	public void addLine(UMLLine line);
+
+	/**
+	 * 
+	 * @param id
+	 *            The unique id of the line to determine which line needs to be
+	 *            deleted.
+	 */
+	public void deleteLine(int id);
 }
