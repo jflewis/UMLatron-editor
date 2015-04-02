@@ -1,10 +1,11 @@
 package edu.millersville.umlatron.view;
-
+import javafx.scene.control.ScrollPane;
 import java.util.ArrayList;
+import java.util.Observable;
+
 import edu.millersville.umlatron.model.LineType;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
@@ -19,6 +20,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
+import javafx.geometry.HPos;
 
 /**
  *
@@ -54,6 +56,7 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel {
         setCursor(Cursor.OPEN_HAND);
         setTranslateX(x);
         setTranslateY(y);
+        isResizable();
         System.out.println(computePrefHeight(height));
         setStyle("-fx-border-style: solid;" + "-fx-border-width: 2;"
                 + "-fx-border-color: black;");
@@ -71,8 +74,10 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel {
         classTextName.setWrapText(true);
         classTextName.setMouseTransparent(true);
         classTextName.setEditable(false);
+        classTextName.isResizable();
+       
+    
         
-
         classMethods = new TextArea();
         classMethods.setPromptText(methods);
         classMethods.setPrefRowCount(2);
@@ -80,6 +85,8 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel {
         classMethods.setWrapText(true);
         classMethods.setMouseTransparent(true);
         classMethods.setEditable(false);
+        classMethods.isResizable();
+        setVgrow(classMethods, Priority.ALWAYS);
 
         classFunctions = new TextArea();
         classFunctions.setPromptText(functions);
@@ -88,6 +95,8 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel {
         classFunctions.setWrapText(true);
         classFunctions.setMouseTransparent(true);
         classFunctions.setEditable(false);
+        classFunctions.isResizable();
+        setVgrow(classFunctions, Priority.ALWAYS);
 
         getChildren().addAll(classTextName, classMethods, classFunctions);
 
@@ -103,7 +112,7 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel {
             dragAnchor = new Point2D(event.getSceneX(), event.getSceneY());
             event.consume();
         });
-
+        
         // Dragging Movement of ClassBox
         // *********************************************************************************/
         setOnMouseDragged((event) -> {
@@ -315,6 +324,43 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel {
     /**
      * *********************************************************************************************
      */
+    public void applyActions(TextArea text) {
+    	text.requestFocus();
+    	text.setEditable(true);
+    	text.setMouseTransparent(false);
+    	text.setStyle("-fx-background-color: green");
+    }
+    
+    public void revertActions(TextArea text){
+    	if(text == classTextName){
+    		classMethods.setEditable(false);
+    		classMethods.setMouseTransparent(true);
+    		classMethods.setStyle("-fx-background-color: white");
+    		classFunctions.setEditable(false);
+    		classFunctions.setMouseTransparent(true);
+    		classFunctions.setStyle("-fx-background-color: white");
+    	} else if(text == classMethods){
+    		classTextName.setEditable(false);
+    		classTextName.setMouseTransparent(true);
+    		classTextName.setStyle("-fx-background-color: white");
+    		classFunctions.setEditable(false);
+    		classFunctions.setMouseTransparent(true);
+    		classFunctions.setStyle("-fx-background-color: white");
+    	} else {
+    		classTextName.setEditable(false);
+    		classTextName.setMouseTransparent(true);
+    		classTextName.setStyle("-fx-background-color: white");
+    		classMethods.setEditable(false);
+    		classMethods.setMouseTransparent(true);
+    		classMethods.setStyle("-fx-background-color: white");
+    	}
+    }
+    public void removeActions(){
+    	revertActions(classTextName);
+    	revertActions(classMethods);
+    	revertActions(classFunctions);
+    	
+    }
     /**
      * creates the currently selected panel for this Node
      *
@@ -331,10 +377,11 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel {
         HBox.setHgrow(editName, Priority.ALWAYS);
         editName.setOnAction((ActionEvent e) -> {
             //do the action here
-        	classTextName.requestFocus();
-        	classTextName.setEditable(true);
-        	classTextName.setMouseTransparent(false);
-        	classTextName.setStyle("-fx-background-color: green");
+        	TextArea text = classTextName;
+        	applyActions(text);
+        	revertActions(text);
+        	
+        	
         });
         editName.addEventHandler(MouseEvent.MOUSE_ENTERED,
                 new EventHandler<MouseEvent>() {
@@ -356,10 +403,9 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel {
         HBox.setHgrow(editAttr, Priority.ALWAYS);
         editAttr.setOnAction((ActionEvent e) -> {
             //do the action here
-        	classMethods.requestFocus();
-        	classMethods.setEditable(true);
-        	classMethods.setMouseTransparent(false);
-        	classMethods.setStyle("-fx-background-color: green");
+        	TextArea text = classMethods;
+        	applyActions(text);
+        	revertActions(text);
         });
         editAttr.addEventHandler(MouseEvent.MOUSE_ENTERED,
                 new EventHandler<MouseEvent>() {
@@ -381,10 +427,9 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel {
         HBox.setHgrow(editOps, Priority.ALWAYS);
         editOps.setOnAction((ActionEvent e) -> {
             //do the action here
-        	classFunctions.requestFocus();
-        	classFunctions.setEditable(true);
-        	classFunctions.setMouseTransparent(false);
-        	classFunctions.setStyle("-fx-background-color: green");
+        	TextArea text = classFunctions;
+        	applyActions(text);
+        	revertActions(text);
         });
         editOps.addEventHandler(MouseEvent.MOUSE_ENTERED,
                 new EventHandler<MouseEvent>() {
