@@ -223,8 +223,9 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel {
 
     private void deleteSelf() {
         Pane pane = (Pane) this.getParent();
-        for (int i = 0; i < lines.size(); ++i) {
-            lines.get(i).deleteSelf();
+        int t = lines.size();
+        for (int i = t; i > 0; --i) {
+            lines.get(i-1).deleteSelf();
         }
         pane.getChildren().remove(this);
     }
@@ -292,10 +293,12 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel {
                     }
                     pointTypes.remove(pointTypes.get(i));
                     lines.remove(lines.get(i));
-
+                    break;
+                    
                 }
+                
             }
-            break;
+            
 
         }
     }
