@@ -9,7 +9,9 @@ import javafx.scene.control.SeparatorMenuItem;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.TextArea;
 import edu.millersville.umlatron.model.State;
+import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
@@ -78,7 +80,7 @@ public class UmlView extends BorderPane {
 
     private HBox createToggleButtons() {
         HBox hbox = new HBox();
-
+        
         ToggleButton tb1 = new ToggleButton("Select");
         tb1.setUserData(State.SELECT);
         tb1.setToggleGroup(stateToggle);
@@ -89,6 +91,7 @@ public class UmlView extends BorderPane {
         tb2.setUserData(State.CLASSBOX);
         tb2.setToggleGroup(stateToggle);
         tb2.setMaxWidth(Double.MAX_VALUE);
+       
 
         ToggleButton tb3 = new ToggleButton("Line");
         tb3.setUserData(State.LINE);
