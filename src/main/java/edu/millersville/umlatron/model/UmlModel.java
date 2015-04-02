@@ -5,7 +5,6 @@ package edu.millersville.umlatron.model;
 
 import edu.millersville.umlatron.view.Box;
 import edu.millersville.umlatron.view.ClassBox;
-import edu.millersville.umlatron.view.DiamondLine;
 import edu.millersville.umlatron.view.UMLLine;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ObservableValue;

@@ -106,10 +106,12 @@ public class UmlatronController {
                 if (filteredNode != null) {
                     model.getCurrentlySelectedNodeProperty().setValue(filteredNode);
                     //if we are in the line state and the node clicked on is able to have a line attached to it continue
-                    if (model.getStateProperty().get() == State.LINE && filteredNode instanceof AnchorPoint) {
+                    if (model.getStateProperty().get() == State.LINE || model.getStateProperty().get() == State.ASSOCIATION && filteredNode instanceof AnchorPoint) {
                         clickedNodes.add(filteredNode);
                         if (clickedNodes.size() == 2) {
-                            UMLArrowLine lineTest = new UMLArrowLine(
+                            switch(model.getStateProperty().get()){
+                                 case ASSOCIATION:
+                                     Association lineTest = new Association(
                                     (AnchorPoint) clickedNodes.get(0),
                                     (AnchorPoint) clickedNodes.get(1));
                             ((AnchorPoint) clickedNodes.get(0)).addLine(lineTest);
@@ -118,8 +120,28 @@ public class UmlatronController {
                                     .addLineType(LineType.START);
                             ((AnchorPoint) clickedNodes.get(1))
                                     .addLineType(LineType.END);
-                            view.getEditPane().getChildren().addAll(lineTest,lineTest.arrowHead());
+                            view.getEditPane().getChildren().addAll(lineTest,lineTest.diamond());
                             clickedNodes.clear();
+                                     
+                                        break;
+
+                                    case LINE:
+                                        UMLArrowLine lineTest1 = new UMLArrowLine(
+                                    (AnchorPoint) clickedNodes.get(0),
+                                    (AnchorPoint) clickedNodes.get(1));
+                            ((AnchorPoint) clickedNodes.get(0)).addLine(lineTest1);
+                            ((AnchorPoint) clickedNodes.get(1)).addLine(lineTest1);
+                            ((AnchorPoint) clickedNodes.get(0))
+                                    .addLineType(LineType.START);
+                            ((AnchorPoint) clickedNodes.get(1))
+                                    .addLineType(LineType.END);
+                            view.getEditPane().getChildren().addAll(lineTest1,lineTest1.arrowHead());
+                            clickedNodes.clear();
+                                        break;
+                            }
+                            
+                            
+                            
 
                         }
                     }

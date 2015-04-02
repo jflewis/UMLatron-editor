@@ -129,11 +129,7 @@ public class UMLArrowLine extends UMLLine implements SelectedPanel {
             group.setTranslateY(this.getEndY());
             rotate.setAngle(-slopeInDegrees);
 
-            
-        }else{
-            System.out.println("what");
         }
-        
         
     }
 
