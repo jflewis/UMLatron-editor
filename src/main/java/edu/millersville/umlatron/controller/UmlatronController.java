@@ -170,6 +170,10 @@ public class UmlatronController {
 
         model.getCurrentlySelectedNodeProperty().addListener((ObservableValue<? extends Node> ov,
                 Node last_selected, Node new_selected) -> {
+                	
+                	if(last_selected instanceof ClassBox){
+                		((ClassBox)last_selected).removeActions();
+                	}
             
                 if(new_selected instanceof SelectedPanel){
                     ((SelectedPanel)new_selected).createAndGeneratePanel(view.getCurrentlySelectedPane());  
