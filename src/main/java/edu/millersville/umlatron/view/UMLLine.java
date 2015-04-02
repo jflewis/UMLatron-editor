@@ -26,7 +26,7 @@ public class UMLLine extends Line {
     protected AnchorPoint anchorPoint1;
     protected AnchorPoint anchorPoint2;
     private static int lineCount;
-    private int id;
+    protected int id;
 
     /**
      *
@@ -114,6 +114,7 @@ public class UMLLine extends Line {
         return point2Int;
     }
 
+ 
     public void deleteSelf() {
         anchorPoint1.deleteLine(id);
         anchorPoint2.deleteLine(id);

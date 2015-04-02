@@ -15,7 +15,6 @@ import javafx.scene.control.Toggle;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
@@ -86,6 +85,10 @@ public class UmlatronController {
                                     case CLASSBOX:
                                         model.setState(State.CLASSBOX);
                                         break;
+                                        
+                                    case GENERALIZATION:
+                                        model.setState(State.GENERALIZATION);
+                                        break;
 
                                     default:
                                         // something went wrong
@@ -106,7 +109,8 @@ public class UmlatronController {
                 if (filteredNode != null) {
                     model.getCurrentlySelectedNodeProperty().setValue(filteredNode);
                     //if we are in the line state and the node clicked on is able to have a line attached to it continue
-                    if (model.getStateProperty().get() == State.LINE || model.getStateProperty().get() == State.ASSOCIATION && filteredNode instanceof AnchorPoint) {
+                    if (model.getStateProperty().get() == State.LINE || model.getStateProperty().get() == State.ASSOCIATION 
+                            || model.getStateProperty().get() == State.GENERALIZATION && filteredNode instanceof AnchorPoint) {
                         clickedNodes.add(filteredNode);
                         if (clickedNodes.size() == 2) {
                             switch(model.getStateProperty().get()){
@@ -138,6 +142,21 @@ public class UmlatronController {
                             view.getEditPane().getChildren().addAll(lineTest1,lineTest1.arrowHead());
                             clickedNodes.clear();
                                         break;
+                                        
+                                        
+                                    case GENERALIZATION:
+                                         Generalization lineTest2 = new Generalization(
+                                    (AnchorPoint) clickedNodes.get(0),
+                                    (AnchorPoint) clickedNodes.get(1));
+                            ((AnchorPoint) clickedNodes.get(0)).addLine(lineTest2);
+                            ((AnchorPoint) clickedNodes.get(1)).addLine(lineTest2);
+                            ((AnchorPoint) clickedNodes.get(0))
+                                    .addLineType(LineType.START);
+                            ((AnchorPoint) clickedNodes.get(1))
+                                    .addLineType(LineType.END);
+                            view.getEditPane().getChildren().addAll(lineTest2,lineTest2.filledArrow());
+                            clickedNodes.clear();
+                                        
                             }
                             
                             

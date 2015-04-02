@@ -3,12 +3,12 @@ package edu.millersville.umlatron.view;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
-import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
@@ -21,7 +21,6 @@ import javafx.scene.transform.Rotate;
  */
 public class Association extends UMLLine implements SelectedPanel {
 
-    final Group group = new Group();
     Rotate rotate = new Rotate();
     Polygon polygon = new Polygon();
 
@@ -98,6 +97,13 @@ public class Association extends UMLLine implements SelectedPanel {
         return polygon;
     }
     
+    @Override
+    public void deleteSelf(){
+        Pane pane = (Pane)this.getParent();
+        pane.getChildren().remove(polygon);
+        anchorPoint1.deleteLine(id);
+        anchorPoint2.deleteLine(id);  
+    }
     
     /**
      * creates the currently selected panel for this Node

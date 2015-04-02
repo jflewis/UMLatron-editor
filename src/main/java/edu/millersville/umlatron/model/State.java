@@ -12,6 +12,6 @@ package edu.millersville.umlatron.model;
  */
 public enum State {
 
-    LINE, CLASSBOX, SELECT, ASSOCIATION
+    LINE, CLASSBOX, SELECT, ASSOCIATION, GENERALIZATION
 
 }

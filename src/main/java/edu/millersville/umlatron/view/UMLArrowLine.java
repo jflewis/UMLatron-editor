@@ -11,6 +11,7 @@ import javafx.scene.effect.DropShadow;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Line;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.transform.Rotate;
 
@@ -94,6 +95,14 @@ public class UMLArrowLine extends UMLLine implements SelectedPanel {
         this.getStrokeDashArray().clear();
         dashed = false;
 
+    }
+    
+    @Override
+    public void deleteSelf(){
+        Pane pane = (Pane)this.getParent();
+        pane.getChildren().remove(group);
+        anchorPoint1.deleteLine(id);
+        anchorPoint2.deleteLine(id);  
     }
     
     @Override

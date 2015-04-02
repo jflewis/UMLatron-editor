@@ -11,7 +11,6 @@ import javafx.scene.control.TextArea;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.VBox;
 import javafx.geometry.Point2D;
-import javafx.scene.Group;
 import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -96,7 +95,7 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel {
             event.consume();
         });
 
-		// Dragging Movement of ClassBox
+        // Dragging Movement of ClassBox
         // *********************************************************************************/
         setOnMouseDragged((event) -> {
             double dragX = event.getSceneX() - dragAnchor.getX();
@@ -181,7 +180,7 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel {
 
         ContextMenu contextMenu = new ContextMenu(delete);
 
-		// Right Click Menu Event with addition of Delete in each TextArea
+        // Right Click Menu Event with addition of Delete in each TextArea
         // ****************************************/
         classTextName.setOnMouseClicked(event -> {
             if (event.getButton() == MouseButton.SECONDARY) {
@@ -221,20 +220,19 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel {
         });
 
     }
-    
-    private void deleteSelf(){
+
+    private void deleteSelf() {
         Pane pane = (Pane) this.getParent();
-            for (int i = 0; i < lines.size(); ++i) {
-                lines.get(i).deleteSelf();
-                pointTypes.clear();
-            }
-            pane.getChildren().remove(this);
+        for (int i = 0; i < lines.size(); ++i) {
+            lines.get(i).deleteSelf();
+        }
+        pane.getChildren().remove(this);
     }
 
     /**
      * ********************************************************************************************************
      */
-	// Anchor Points Set/Updates
+    // Anchor Points Set/Updates
     public void setAnchorPoints(double x, double y) {
         anchorPoints[0] = new Point2D(x + (width / 2), y); // top
         anchorPoints[1] = new Point2D(x, y + (height / 2)); // left
@@ -272,6 +270,8 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel {
     @Override
     public void addLineType(LineType str) {
         pointTypes.add(str);
+        System.out.println(pointTypes.size() + " , " + lines.size());
+        
     }
 
     @Override
@@ -282,21 +282,30 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel {
     @Override
     public void deleteLine(int id) {
         Pane pane = (Pane) this.getParent();
+        int t = lines.size();
         for (int i = 0; i < lines.size(); ++i) {
             if (lines.get(i).getIntId() == id) {
                 if (pane != null) {
-                    pane.getChildren().remove(lines.get(i));
+                    System.out.println("test");
+                    if(pointTypes.get(i).equals(LineType.END)){
+                        pane.getChildren().remove(lines.get(i));
+                    }
+                    pointTypes.remove(pointTypes.get(i));
+                    lines.remove(lines.get(i));
+
                 }
             }
+            break;
+
         }
     }
 
     /**
      * *********************************************************************************************
      */
-    
     /**
      * creates the currently selected panel for this Node
+     *
      * @param h the views HBox
      */
     @Override
@@ -332,7 +341,7 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel {
         HBox.setHgrow(editAttr, Priority.ALWAYS);
         editAttr.setOnAction((ActionEvent e) -> {
             //do the action here
-            
+
         });
         editAttr.addEventHandler(MouseEvent.MOUSE_ENTERED,
                 new EventHandler<MouseEvent>() {
@@ -348,13 +357,13 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel {
                         editAttr.setEffect(null);
                     }
                 });
-        
+
         Button editOps = new Button("Edit operations");
         editOps.setMaxWidth(Double.MAX_VALUE);
         HBox.setHgrow(editOps, Priority.ALWAYS);
         editOps.setOnAction((ActionEvent e) -> {
             //do the action here
-            
+
         });
         editOps.addEventHandler(MouseEvent.MOUSE_ENTERED,
                 new EventHandler<MouseEvent>() {
@@ -395,7 +404,7 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel {
 
         Label label = new Label("Currently selected node : Class Box ");
 
-        h.getChildren().addAll(label,editName ,editAttr,editOps , deleteB);
+        h.getChildren().addAll(label, editName, editAttr, editOps, deleteB);
     }
 
 }
