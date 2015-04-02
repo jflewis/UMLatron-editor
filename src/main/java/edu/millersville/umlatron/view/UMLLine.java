@@ -27,6 +27,8 @@ public class UMLLine extends Line {
     protected AnchorPoint anchorPoint2;
     private static int lineCount;
     protected int id;
+    protected boolean dashed = false;
+
 
     /**
      *
@@ -93,6 +95,20 @@ public class UMLLine extends Line {
         this.setStartY(anchorPoint1.getAnchorPoint(point1Int).getY());
         this.setEndX(anchorPoint2.getAnchorPoint(point2Int).getX());
         this.setEndY(anchorPoint2.getAnchorPoint(point2Int).getY());
+
+    }
+    
+      protected void setDashed() {
+        if(dashed == false){
+            this.getStrokeDashArray().addAll(9d, 9d, 9d, 9d);
+            dashed = true;
+        }
+
+    }
+
+    protected void setSolid() {
+        this.getStrokeDashArray().clear();
+        dashed = false;
 
     }
 
