@@ -23,6 +23,7 @@ public class Association extends UMLLine implements SelectedPanel {
 
     Rotate rotate = new Rotate();
     Polygon polygon = new Polygon();
+    Boolean filled = false;
 
     /**
      *
@@ -40,7 +41,10 @@ public class Association extends UMLLine implements SelectedPanel {
             -12.0,7.0
             
         });
-        polygon.setFill(Color.BLACK);
+        
+        polygon.setFill(Color.WHITE);
+        polygon.setStrokeWidth(1);
+        polygon.setStroke(Color.BLACK);
         double deltaX = this.getStartY() - this.getEndY();
         double deltaY = this.getEndX() - this.getStartX();
         double slopeInDegrees = Math.toDegrees(Math.atan2(deltaX,deltaY));
@@ -105,6 +109,22 @@ public class Association extends UMLLine implements SelectedPanel {
         anchorPoint2.deleteLine(id);  
     }
     
+    private void setFillWhite(){
+        if(polygon != null){
+            filled = false;
+            polygon.setFill(Color.WHITE);
+            
+        }
+    }
+    
+    private void setFillBlack(){
+        if(polygon != null){
+            filled = true;
+            polygon.setFill(Color.BLACK);
+            
+        }
+    }
+    
     /**
      * creates the currently selected panel for this Node
      * @param h the views HBox
@@ -115,46 +135,46 @@ public class Association extends UMLLine implements SelectedPanel {
         h.getChildren().clear();
         DropShadow shadow = new DropShadow();
 
-        Button setDashed = new Button("Dashed");
-        setDashed.setMaxWidth(Double.MAX_VALUE);
-        HBox.setHgrow(setDashed, Priority.ALWAYS);
-        setDashed.setOnAction((ActionEvent e) -> {
-            //setDashed();
+        Button aggregation = new Button("Aggregation");
+        aggregation.setMaxWidth(Double.MAX_VALUE);
+        HBox.setHgrow(aggregation, Priority.ALWAYS);
+        aggregation.setOnAction((ActionEvent e) -> {
+            setFillWhite();
 
         });
-        setDashed.addEventHandler(MouseEvent.MOUSE_ENTERED,
+        aggregation.addEventHandler(MouseEvent.MOUSE_ENTERED,
                 new EventHandler<MouseEvent>() {
                     @Override
                     public void handle(MouseEvent e) {
-                        setDashed.setEffect(shadow);
+                        aggregation.setEffect(shadow);
                     }
                 });
-        setDashed.addEventHandler(MouseEvent.MOUSE_EXITED,
+        aggregation.addEventHandler(MouseEvent.MOUSE_EXITED,
                 new EventHandler<MouseEvent>() {
                     @Override
                     public void handle(MouseEvent e) {
-                        setDashed.setEffect(null);
+                        aggregation.setEffect(null);
                     }
                 });
 
-        Button setSolid = new Button("Solid");
-        setSolid.setMaxWidth(Double.MAX_VALUE);
-        HBox.setHgrow(setSolid, Priority.ALWAYS);
-        setSolid.setOnAction((ActionEvent e) -> {
-           // setSolid();
+        Button comp = new Button("Composition");
+        comp.setMaxWidth(Double.MAX_VALUE);
+        HBox.setHgrow(comp, Priority.ALWAYS);
+        comp.setOnAction((ActionEvent e) -> {
+           setFillBlack();
         });
-        setSolid.addEventHandler(MouseEvent.MOUSE_ENTERED,
+        comp.addEventHandler(MouseEvent.MOUSE_ENTERED,
                 new EventHandler<MouseEvent>() {
                     @Override
                     public void handle(MouseEvent e) {
-                        setSolid.setEffect(shadow);
+                        comp.setEffect(shadow);
                     }
                 });
-        setSolid.addEventHandler(MouseEvent.MOUSE_EXITED,
+        comp.addEventHandler(MouseEvent.MOUSE_EXITED,
                 new EventHandler<MouseEvent>() {
                     @Override
                     public void handle(MouseEvent e) {
-                        setSolid.setEffect(null);
+                        comp.setEffect(null);
                     }
                 });
         
@@ -183,7 +203,7 @@ public class Association extends UMLLine implements SelectedPanel {
         Label label = new Label("Currently selected node : Association ");
 
 
-        h.getChildren().addAll(label,setDashed, setSolid,deleteB);
+        h.getChildren().addAll(label,aggregation, comp,deleteB);
 
     }
 }
