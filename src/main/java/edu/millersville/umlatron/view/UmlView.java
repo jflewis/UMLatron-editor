@@ -123,17 +123,6 @@ public class UmlView extends BorderPane {
         hbox.setPadding(new Insets(4, 12, 4, 12));
         hbox.setSpacing(10);
 
-        Label label = new Label("Currently selected node : filler space ");
-               
-        Button bt1 = new Button("place holder");
-        bt1.setMaxWidth(Double.MAX_VALUE);
-        HBox.setHgrow(bt1, Priority.ALWAYS);
-        
-        Button bt2= new Button("place holder");
-        bt2.setMaxWidth(Double.MAX_VALUE);
-        HBox.setHgrow(bt2, Priority.ALWAYS);
-
-        hbox.getChildren().addAll(label,bt1,bt2);
         return hbox;
     }
     
