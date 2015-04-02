@@ -7,9 +7,7 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-//I've noticed that all events that use mouse drag break if the mouse is drug too quickly.
-//This is most evident in the new resize line methods, but you can also notice it when dragging boxes,
-//dragging lines, or creating lines by dragging them.
+
 public class MainApp extends Application {
 
     @Override

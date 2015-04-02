@@ -42,6 +42,7 @@ public class UmlView extends BorderPane {
         mainApp = applicationBar();
         toggleButtons = createToggleButtons();
         currentlySelectedPanel = createCurrentlySelectedPanel();
+        this.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
         editPane.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
         this.setCenter(editPane);
         this.setTop(createTopPanel(mainApp, toggleButtons,currentlySelectedPanel));

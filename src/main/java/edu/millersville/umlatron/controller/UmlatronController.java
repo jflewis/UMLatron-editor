@@ -13,6 +13,7 @@ import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.control.Toggle;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -134,6 +135,22 @@ public class UmlatronController {
                 }
 
                 });
+        
+        
+        /**
+         * almost scrolling because why not
+         */
+         view.getEditPane().setOnScroll(new EventHandler<ScrollEvent>() {
+            @Override public void handle(ScrollEvent event) {
+                double scaleFactor = (event.getDeltaY() > 0) ? 1.5 : 1 / 1.5;
+                
+                if(view.getEditPane().getScaleX() * scaleFactor >= 1.0){
+                    view.getEditPane().setScaleX(view.getEditPane().getScaleX() * scaleFactor);
+                    view.getEditPane().setScaleY(view.getEditPane().getScaleY() * scaleFactor);
+                }
+                
+            }
+        });
 
     }
 
@@ -145,8 +162,7 @@ public class UmlatronController {
         return view;
     }
 
-
-    /**
+     /**
      * Checks if what you clicked on is the pane
      *
      * @param n what you clicked on
