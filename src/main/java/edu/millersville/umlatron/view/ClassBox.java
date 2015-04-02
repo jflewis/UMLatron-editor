@@ -37,10 +37,15 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel {
     private String name = "Enter A Class Name Here";
     private String methods = "Enter Methods Here";
     private String functions = "Enter Functions Here";
+    private TextArea classTextName;
+    private TextArea classMethods;
+    private TextArea classFunctions;
 
     public ClassBox(double x, double y) {
 
         super();
+        height = 178.0;
+        width = 167.0;
         anchorCount = 4;
         anchorPoints = new Point2D[anchorCount];
         setAnchorPoints(x, y);
@@ -59,26 +64,30 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel {
          * text, given a prompt text, and are set to transparent until
          * corresponding button says otherwise
          */
-        TextArea classTextName = new TextArea();
+        classTextName = new TextArea();
         classTextName.setPromptText(name);
         classTextName.setPrefRowCount(1);
         classTextName.setPrefColumnCount(10);
         classTextName.setWrapText(true);
         classTextName.setMouseTransparent(true);
+        classTextName.setEditable(false);
+        
 
-        TextArea classMethods = new TextArea();
+        classMethods = new TextArea();
         classMethods.setPromptText(methods);
         classMethods.setPrefRowCount(2);
         classMethods.setPrefColumnCount(10);
         classMethods.setWrapText(true);
         classMethods.setMouseTransparent(true);
+        classMethods.setEditable(false);
 
-        TextArea classFunctions = new TextArea();
+        classFunctions = new TextArea();
         classFunctions.setPromptText(functions);
         classFunctions.setPrefRowCount(3);
         classFunctions.setPrefColumnCount(10);
         classFunctions.setWrapText(true);
         classFunctions.setMouseTransparent(true);
+        classFunctions.setEditable(false);
 
         getChildren().addAll(classTextName, classMethods, classFunctions);
 
@@ -322,7 +331,10 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel {
         HBox.setHgrow(editName, Priority.ALWAYS);
         editName.setOnAction((ActionEvent e) -> {
             //do the action here
-
+        	classTextName.requestFocus();
+        	classTextName.setEditable(true);
+        	classTextName.setMouseTransparent(false);
+        	classTextName.setStyle("-fx-background-color: green");
         });
         editName.addEventHandler(MouseEvent.MOUSE_ENTERED,
                 new EventHandler<MouseEvent>() {
@@ -344,7 +356,10 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel {
         HBox.setHgrow(editAttr, Priority.ALWAYS);
         editAttr.setOnAction((ActionEvent e) -> {
             //do the action here
-
+        	classMethods.requestFocus();
+        	classMethods.setEditable(true);
+        	classMethods.setMouseTransparent(false);
+        	classMethods.setStyle("-fx-background-color: green");
         });
         editAttr.addEventHandler(MouseEvent.MOUSE_ENTERED,
                 new EventHandler<MouseEvent>() {
@@ -366,7 +381,10 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel {
         HBox.setHgrow(editOps, Priority.ALWAYS);
         editOps.setOnAction((ActionEvent e) -> {
             //do the action here
-
+        	classFunctions.requestFocus();
+        	classFunctions.setEditable(true);
+        	classFunctions.setMouseTransparent(false);
+        	classFunctions.setStyle("-fx-background-color: green");
         });
         editOps.addEventHandler(MouseEvent.MOUSE_ENTERED,
                 new EventHandler<MouseEvent>() {
