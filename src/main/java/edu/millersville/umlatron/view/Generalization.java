@@ -15,6 +15,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 import javafx.scene.transform.Rotate;
 
@@ -35,6 +36,9 @@ public class Generalization extends UMLLine implements SelectedPanel {
             -12.0, 7.0
 
         });
+        polygon.setFill(Color.WHITE);
+        polygon.setStrokeWidth(1);
+        polygon.setStroke(Color.BLACK);
 
         double deltaX = this.getStartY() - this.getEndY();
         double deltaY = this.getEndX() - this.getStartX();
@@ -112,7 +116,7 @@ public class Generalization extends UMLLine implements SelectedPanel {
         setDashed.setMaxWidth(Double.MAX_VALUE);
         HBox.setHgrow(setDashed, Priority.ALWAYS);
         setDashed.setOnAction((ActionEvent e) -> {
-            //setDashed();
+            setDashed();
 
         });
         setDashed.addEventHandler(MouseEvent.MOUSE_ENTERED,
@@ -134,7 +138,7 @@ public class Generalization extends UMLLine implements SelectedPanel {
         setSolid.setMaxWidth(Double.MAX_VALUE);
         HBox.setHgrow(setSolid, Priority.ALWAYS);
         setSolid.setOnAction((ActionEvent e) -> {
-           // setSolid();
+           setSolid();
         });
         setSolid.addEventHandler(MouseEvent.MOUSE_ENTERED,
                 new EventHandler<MouseEvent>() {

@@ -148,4 +148,8 @@ public class UmlView extends BorderPane {
     public Pane getEditPane() {
         return editPane;
     }
+    
+    public HBox getToggleButtons(){
+        return toggleButtons;
+    }
 }

@@ -289,7 +289,6 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel {
     @Override
     public void addLineType(LineType str) {
         pointTypes.add(str);
-        System.out.println(pointTypes.size() + " , " + lines.size());
         
     }
 
@@ -305,7 +304,6 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel {
         for (int i = 0; i < lines.size(); ++i) {
             if (lines.get(i).getIntId() == id) {
                 if (pane != null) {
-                    System.out.println("test");
                     if(pointTypes.get(i).equals(LineType.END)){
                         pane.getChildren().remove(lines.get(i));
                     }

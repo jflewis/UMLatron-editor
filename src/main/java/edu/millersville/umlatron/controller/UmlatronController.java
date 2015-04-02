@@ -203,10 +203,15 @@ public class UmlatronController {
      * return the view 
      * @return view
      */
-    public BorderPane getView() {
+    public UmlView getView() {
         return view;
     }
+    
+    public UmlModel getModel() {
+        return model;
+    }
 
+        
      /**
      * Checks if what you clicked on is the pane
      *

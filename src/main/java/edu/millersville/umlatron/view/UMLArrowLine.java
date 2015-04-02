@@ -24,7 +24,6 @@ public class UMLArrowLine extends UMLLine implements SelectedPanel {
 
     private Line minSpreadLine;
     private Line maxSpreadLine;
-    private boolean dashed = false;
     final Group group = new Group();
     Rotate rotate = new Rotate();
 
@@ -83,19 +82,7 @@ public class UMLArrowLine extends UMLLine implements SelectedPanel {
         
     }
 
-    private void setDashed() {
-        if(dashed == false){
-            this.getStrokeDashArray().addAll(9d, 9d, 9d, 9d);
-            dashed = true;
-        }
-
-    }
-
-    private void setSolid() {
-        this.getStrokeDashArray().clear();
-        dashed = false;
-
-    }
+  
     
     @Override
     public void deleteSelf(){
