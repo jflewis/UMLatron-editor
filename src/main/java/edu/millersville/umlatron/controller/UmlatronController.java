@@ -38,27 +38,23 @@ public class UmlatronController {
                 (ObservableValue<? extends State> ov, State old_state,
                         State new_state) -> {
 
-                    if (new_state != State.LINE) {
+                    if (new_state != State.LINE ) {
                         clickedNodes.clear();
                     }
 
                     switch (new_state) {
                         case SELECT:
-                            System.out.println("state changed to select");
                             setSelectState();
                             break;
 
                         case LINE:
-                            System.out.println("state changed to line");
                             setLineState();
                             break;
 
                         case ASSOCIATION:
-                            System.out.println("state set to association");
                             break;
 
                         case CLASSBOX:
-                            System.out.println("state set to classbox");
                             setClassBoxState();
                             break;
                     }
@@ -66,35 +62,27 @@ public class UmlatronController {
                 });
 
         // Monitors the change of the toggle buttons
-        view.getStateToggle()
-                .selectedToggleProperty()
-                .addListener(
+        view.getStateToggle().selectedToggleProperty().addListener(
                         (ObservableValue<? extends Toggle> ov, Toggle toggle,
                                 Toggle new_toggle) -> {
 
                             if (new_toggle == null) {
-                                System.out
-                                .print("nothing is selected, select is pressed");
-                                // model.setState(State.SELECT);
+                                   //nothing
                             } else {
                                 switch ((State) new_toggle.getUserData()) {
                                     case SELECT:
-                                        // System.out.println("select mode");
                                         model.setState(State.SELECT);
                                         break;
 
                                     case LINE:
-                                        System.out.println("Line mode");
                                         model.setState(State.LINE);
                                         break;
 
                                     case ASSOCIATION:
-                                        // System.out.println("association mode");
                                         model.setState(State.ASSOCIATION);
                                         break;
 
                                     case CLASSBOX:
-                                        // System.out.println("classbox mode");
                                         model.setState(State.CLASSBOX);
                                         break;
 
@@ -107,7 +95,7 @@ public class UmlatronController {
                             }
                         });
 
-        // filter out clicks on nodes for currently selected
+        // listens for all presses on the pane, we use this to see what nodes are being pressed on
         view.getEditPane().addEventFilter(MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>() {
 
             @Override
@@ -129,7 +117,7 @@ public class UmlatronController {
                                     .addLineType(LineType.START);
                             ((AnchorPoint) clickedNodes.get(1))
                                     .addLineType(LineType.END);
-                            view.getEditPane().getChildren().addAll(lineTest,lineTest.getLine1(),lineTest.getLine2());
+                            view.getEditPane().getChildren().addAll(lineTest,lineTest.arrowHead());
                             clickedNodes.clear();
 
                         }
@@ -142,47 +130,21 @@ public class UmlatronController {
                 Node last_selected, Node new_selected) -> {
             
                 if(new_selected instanceof SelectedPanel){
-                    ((SelectedPanel)new_selected).createAndGeneratePanel(view.getCurrentlySelectedPane());
-                   
+                    ((SelectedPanel)new_selected).createAndGeneratePanel(view.getCurrentlySelectedPane());  
                 }
-
-            /*
-                    if (new_selected instanceof Se) {
-                        
-                    } else if (new_selected instanceof ClassBox) {
-                        
-                    } else if (new_selected instanceof UMLArrowLine) {
-                        
-                    } else if (new_selected instanceof DiamondLine) {
-                        
-                    } else {
-                        //wait what?
-                    }
-            */
 
                 });
 
     }
 
+    /**
+     * return the view 
+     * @return view
+     */
     public BorderPane getView() {
         return view;
     }
 
-    // TODO: Implement this a a visitor pattern so we do not have to do all this
-    // typecasting
-    private Node whatNodeAmI(Node n) {
-        if (n instanceof Box) {
-            return ((Box) n);
-        } else if (n instanceof ClassBox) {
-            return (ClassBox) n;
-        } else if (n instanceof UMLLine) {
-            return (UMLLine) n;
-        } else if (n instanceof DiamondLine) {
-            return (DiamondLine) n;
-        } else {
-            return null;
-        }
-    }
 
     /**
      * Checks if what you clicked on is the pane
@@ -198,10 +160,16 @@ public class UmlatronController {
         }
     }
 
+    /**
+     * sets the panes clicked state to null
+     */
     private void setLineState() {
         view.getEditPane().setOnMouseClicked(null);
     }
 
+    /**
+     * Sets the panes clicks to create class boxes
+     */
     private void setClassBoxState() {
         EventHandler<MouseEvent> createClassBox = (event) -> {
             double x = event.getX();
@@ -213,6 +181,9 @@ public class UmlatronController {
         view.getEditPane().setOnMouseClicked(createClassBox);
     }
 
+    /**
+     * sets the panes clicks to null
+     */
     private void setSelectState() {
         view.getEditPane().setOnMouseClicked(null);
     }

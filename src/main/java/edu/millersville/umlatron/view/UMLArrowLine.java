@@ -3,6 +3,7 @@ package edu.millersville.umlatron.view;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
+import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -11,6 +12,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Line;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
+import javafx.scene.transform.Rotate;
 
 /**
  *
@@ -22,6 +24,9 @@ public class UMLArrowLine extends UMLLine implements SelectedPanel {
     private Line minSpreadLine;
     private Line maxSpreadLine;
     private boolean dashed = false;
+    final Group group = new Group();
+    Rotate rotate = new Rotate();
+
 
     /**
      *
@@ -32,81 +37,29 @@ public class UMLArrowLine extends UMLLine implements SelectedPanel {
      */
     public UMLArrowLine(AnchorPoint a1, AnchorPoint a2) {
         super(a1, a2);
+  
+        //slope of the line
+        double deltaX = this.getStartY() - this.getEndY();
+        double deltaY = this.getEndX() - this.getStartX();
+        //gets you the degress of the x axis(on the left) of the second clicked node
+        double slopeInDegrees = Math.toDegrees(Math.atan2(deltaX,deltaY));
 
-        double slopeInDegrees = 0;
+        minSpreadLine = new Line(0,
+                0, -10,
+                -10);
+        maxSpreadLine = new Line(0,
+                0, -10,
+                10);
+        
+        group.getChildren().addAll(minSpreadLine,maxSpreadLine);
+              //  group.setRotate(-slopeInDegrees);
+        group.getTransforms().add(rotate);
+        rotate.setAngle(-slopeInDegrees);
 
-        Point2D minSpreadLineStart = null;
-        Point2D minSpreadLineEnd = null;
-        Point2D maxSpreadLineStart = null;
-        Point2D maxSpreadLineEnd = null;
-        double minSlopeInDegrees = (slopeInDegrees - 135);
-        double maxSlopeInDegrees = (slopeInDegrees + 135);
-        if (minSlopeInDegrees < 0) {
-            minSlopeInDegrees += 360;
-        }
-        if (maxSlopeInDegrees >= 360) {
-            maxSlopeInDegrees -= 360;
-        }
-        double minShotSlope = Math.tan(Math.toRadians(minSlopeInDegrees));
-        double maxShotSlope = Math.tan(Math.toRadians(maxSlopeInDegrees));
-        double k1, k2;
-        double lineLength = 20;
+        group.setTranslateX(this.getEndX());
+        group.setTranslateY(this.getEndY());
 
-        System.out.println(minSlopeInDegrees);
-        System.out.println(maxSlopeInDegrees);
-
-        // up
-        if (minSlopeInDegrees == 90) {
-            k1 = (lineLength / (Math.sqrt(1 + minShotSlope * minShotSlope)))
-                    * -1;
-        } // up-left
-        else if (minSlopeInDegrees > 90 && minSlopeInDegrees < 180) {
-            k1 = (lineLength / (Math.sqrt(1 + minShotSlope * minShotSlope)))
-                    * -1;
-        } // left
-        else if (minSlopeInDegrees == 180) {
-            k1 = (lineLength / (Math.sqrt(1 + minShotSlope * minShotSlope)))
-                    * -1;
-        } // down-left
-        else if (minSlopeInDegrees > 180 && minSlopeInDegrees < 270) {
-            k1 = (lineLength / (Math.sqrt(1 + minShotSlope * minShotSlope)))
-                    * -1;
-        } else {
-            k1 = lineLength / (Math.sqrt(1 + minShotSlope * minShotSlope));
-        }
-
-        if (maxSlopeInDegrees == 90) {
-            k2 = (lineLength / (Math.sqrt(1 + maxShotSlope * maxShotSlope)))
-                    * -1;
-        } // up-left
-        else if (maxSlopeInDegrees > 90 && maxSlopeInDegrees < 180) {
-            k2 = (lineLength / (Math.sqrt(1 + maxShotSlope * maxShotSlope)))
-                    * -1;
-        } // left
-        else if (maxSlopeInDegrees == 180) {
-            k2 = (lineLength / (Math.sqrt(1 + maxShotSlope * maxShotSlope)))
-                    * -1;
-        } // down-left
-        else if (maxSlopeInDegrees > 180 && maxSlopeInDegrees < 270) {
-            k2 = (lineLength / (Math.sqrt(1 + maxShotSlope * maxShotSlope)))
-                    * -1;
-        } else {
-            k2 = lineLength / (Math.sqrt(1 + maxShotSlope * maxShotSlope));
-        }
-
-        minSpreadLineStart = new Point2D(this.getEndX(), this.getEndY());
-        minSpreadLineEnd = new Point2D((int) (this.getEndX() + k1),
-                (int) (this.getEndY() + k1 * minShotSlope));
-        maxSpreadLineStart = new Point2D(this.getEndX(), this.getEndY());
-        maxSpreadLineEnd = new Point2D((int) (this.getEndX() + k2),
-                (int) (this.getEndY() + k2 * maxShotSlope));
-
-        minSpreadLine = new Line(minSpreadLineStart.getX(),
-                minSpreadLineStart.getY(), minSpreadLineEnd.getX(),
-                minSpreadLineEnd.getY());
-        maxSpreadLine = new Line(maxSpreadLineStart.getX(),
-                maxSpreadLineStart.getY(), maxSpreadLineEnd.getX(),
-                maxSpreadLineEnd.getY());
+       
     }
 
     /**
@@ -124,6 +77,10 @@ public class UMLArrowLine extends UMLLine implements SelectedPanel {
     public Node getLine2() {
         return maxSpreadLine;
     }
+    public Group arrowHead(){
+        return group;
+        
+    }
 
     private void setDashed() {
         if(dashed == false){
@@ -138,7 +95,52 @@ public class UMLArrowLine extends UMLLine implements SelectedPanel {
         dashed = false;
 
     }
+    
+    @Override
+    public void updateAnchorPoints() {
+        double min = 999999999;
+        point1Int = 0;
+        point2Int = 0;
+        for (int i = 0; i < anchorPoint1.getAnchorCount(); ++i) {
+            startingAnchor = new Point2D(anchorPoint1.getAnchorPoint(i).getX(),
+                    anchorPoint1.getAnchorPoint(i).getY());
+            for (int j = 0; j < anchorPoint2.getAnchorCount(); ++j) {
+                endingAnchor = new Point2D(anchorPoint2.getAnchorPoint(j)
+                        .getX(), anchorPoint2.getAnchorPoint(j).getY());
+                if (startingAnchor.distance(endingAnchor) < min) {
+                    min = startingAnchor.distance(endingAnchor);
+                    point1Int = i;
+                    point2Int = j;
+                }
+            }
+        }
+        this.setStartX(anchorPoint1.getAnchorPoint(point1Int).getX());
+        this.setStartY(anchorPoint1.getAnchorPoint(point1Int).getY());
+        this.setEndX(anchorPoint2.getAnchorPoint(point2Int).getX());
+        this.setEndY(anchorPoint2.getAnchorPoint(point2Int).getY());
+        
+        double deltaX = this.getStartY() - this.getEndY();
+        double deltaY = this.getEndX() - this.getStartX();
+        //gets you the degress of the x axis(on the left) of the second clicked node
+        double slopeInDegrees = Math.toDegrees(Math.atan2(deltaX,deltaY));
+        
+        if (group != null){
+            group.setTranslateX(this.getEndX());
+            group.setTranslateY(this.getEndY());
+            rotate.setAngle(-slopeInDegrees);
 
+            
+        }else{
+            System.out.println("what");
+        }
+        
+        
+    }
+
+    /**
+     * creates the currently selected panel for this Node
+     * @param h the views HBox
+     */
     @Override
     public void createAndGeneratePanel(HBox h) {
 

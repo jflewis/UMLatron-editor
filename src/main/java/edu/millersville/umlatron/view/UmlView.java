@@ -11,8 +11,6 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import edu.millersville.umlatron.model.State;
 import javafx.geometry.Insets;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.Background;
@@ -24,6 +22,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Polyline;
 
 /**
  * This class creates and supplies the view for the program.
@@ -44,9 +43,7 @@ public class UmlView extends BorderPane {
         toggleButtons = createToggleButtons();
         currentlySelectedPanel = createCurrentlySelectedPanel();
         editPane.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
-        //editPane.setStyle("-fx-background: #FFFFFF;");
         this.setCenter(editPane);
-       
         this.setTop(createTopPanel(mainApp, toggleButtons,currentlySelectedPanel));
   
     }
@@ -58,7 +55,6 @@ public class UmlView extends BorderPane {
         menuBar.getStylesheets().add("/styles/MenuBar.css");
         
         Menu menuFile = new Menu("File");
-        //Menu menuTemp1 = new Menu("TempField1");
         //Menu menuTemp2 = new Menu("TempField2");
         
         MenuItem newThing = new MenuItem("New");
@@ -123,17 +119,6 @@ public class UmlView extends BorderPane {
         hbox.setPadding(new Insets(4, 12, 4, 12));
         hbox.setSpacing(10);
 
-        Label label = new Label("Currently selected node : filler space ");
-               
-        Button bt1 = new Button("place holder");
-        bt1.setMaxWidth(Double.MAX_VALUE);
-        HBox.setHgrow(bt1, Priority.ALWAYS);
-        
-        Button bt2= new Button("place holder");
-        bt2.setMaxWidth(Double.MAX_VALUE);
-        HBox.setHgrow(bt2, Priority.ALWAYS);
-
-        hbox.getChildren().addAll(label,bt1,bt2);
         return hbox;
     }
     

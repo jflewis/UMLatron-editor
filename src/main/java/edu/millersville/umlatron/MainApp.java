@@ -1,7 +1,6 @@
 package edu.millersville.umlatron;
 
-import edu.millersville.umlatron.view.UMLArrowLine;
-import edu.millersville.umlatron.view.UMLLine;
+
 import edu.millersville.umlatron.controller.UmlatronController;
 
 import javafx.application.Application;
@@ -18,7 +17,7 @@ public class MainApp extends Application {
         
         UmlatronController controller = new UmlatronController(primaryStage);
         Scene scene = new Scene(controller.getView(), 950, 750);
-        primaryStage.setTitle("proof of concept uml editor");
+        primaryStage.setTitle("UML'atron");
         primaryStage.setScene(scene);
         primaryStage.show();
         
@@ -27,6 +26,7 @@ public class MainApp extends Application {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+        
         launch(args);
     }
 

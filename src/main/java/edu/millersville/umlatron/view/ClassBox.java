@@ -226,6 +226,7 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel {
         Pane pane = (Pane) this.getParent();
             for (int i = 0; i < lines.size(); ++i) {
                 lines.get(i).deleteSelf();
+                pointTypes.clear();
             }
             pane.getChildren().remove(this);
     }
@@ -294,6 +295,10 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel {
      * *********************************************************************************************
      */
     
+    /**
+     * creates the currently selected panel for this Node
+     * @param h the views HBox
+     */
     @Override
     public void createAndGeneratePanel(HBox h) {
 
