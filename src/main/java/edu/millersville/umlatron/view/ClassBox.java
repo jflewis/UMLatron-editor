@@ -74,7 +74,7 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel {
         classTextName.setWrapText(true);
         classTextName.setMouseTransparent(true);
         classTextName.setEditable(false);
-        classTextName.isResizable();
+        //classTextName.isResizable();
        
     
         
@@ -85,8 +85,8 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel {
         classMethods.setWrapText(true);
         classMethods.setMouseTransparent(true);
         classMethods.setEditable(false);
-        classMethods.isResizable();
-        setVgrow(classMethods, Priority.ALWAYS);
+        //classMethods.isResizable();
+        //setVgrow(classMethods, Priority.ALWAYS);
 
         classFunctions = new TextArea();
         classFunctions.setPromptText(functions);
@@ -95,8 +95,8 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel {
         classFunctions.setWrapText(true);
         classFunctions.setMouseTransparent(true);
         classFunctions.setEditable(false);
-        classFunctions.isResizable();
-        setVgrow(classFunctions, Priority.ALWAYS);
+       // classFunctions.isResizable();
+       // setVgrow(classFunctions, Priority.ALWAYS);
 
         getChildren().addAll(classTextName, classMethods, classFunctions);
 
