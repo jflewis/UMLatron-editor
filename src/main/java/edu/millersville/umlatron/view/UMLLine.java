@@ -2,10 +2,10 @@ package edu.millersville.umlatron.view;
 
 import javafx.scene.Cursor;
 import javafx.geometry.Point2D;
+import javafx.scene.Group;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.input.MouseButton;
-import javafx.scene.layout.Pane;
 import javafx.scene.shape.Line;
 
 /**
@@ -13,7 +13,7 @@ import javafx.scene.shape.Line;
  * @author Matthew Hipszer
  *
  */
-public class UMLLine extends Line {
+public class UMLLine extends Group {
 
     private double initX;
     private double initY;
@@ -28,6 +28,8 @@ public class UMLLine extends Line {
     private static int lineCount;
     protected int id;
     protected boolean dashed = false;
+    
+    protected Line line;
 
 
     /**
@@ -38,8 +40,11 @@ public class UMLLine extends Line {
      * to.
      */
     public UMLLine(AnchorPoint a1, AnchorPoint a2) {
-        super(a1.getAnchorPoint(0).getX(), a1.getAnchorPoint(0).getY(), a2
+        super();
+        
+        line = new Line(a1.getAnchorPoint(0).getX(), a1.getAnchorPoint(0).getY(), a2
                 .getAnchorPoint(0).getX(), a2.getAnchorPoint(0).getY());
+        
         id = lineCount;
         ++lineCount;
 
@@ -49,8 +54,8 @@ public class UMLLine extends Line {
         // sets the anchorPoints
         updateAnchorPoints();
 
-        setCursor(Cursor.OPEN_HAND);
-        setStrokeWidth(2.0);
+        line.setCursor(Cursor.OPEN_HAND);
+        line.setStrokeWidth(2.0);
 
       
         MenuItem delete = new MenuItem("delete");
@@ -69,6 +74,8 @@ public class UMLLine extends Line {
                 contextMenu.hide();
             }
         });
+        
+        this.getChildren().add(line);
     }
 
     /**
@@ -91,23 +98,23 @@ public class UMLLine extends Line {
                 }
             }
         }
-        this.setStartX(anchorPoint1.getAnchorPoint(point1Int).getX());
-        this.setStartY(anchorPoint1.getAnchorPoint(point1Int).getY());
-        this.setEndX(anchorPoint2.getAnchorPoint(point2Int).getX());
-        this.setEndY(anchorPoint2.getAnchorPoint(point2Int).getY());
+        line.setStartX(anchorPoint1.getAnchorPoint(point1Int).getX());
+        line.setStartY(anchorPoint1.getAnchorPoint(point1Int).getY());
+        line.setEndX(anchorPoint2.getAnchorPoint(point2Int).getX());
+        line.setEndY(anchorPoint2.getAnchorPoint(point2Int).getY());
 
     }
     
       protected void setDashed() {
         if(dashed == false){
-            this.getStrokeDashArray().addAll(9d, 9d, 9d, 9d);
+            line.getStrokeDashArray().addAll(9d, 9d, 9d, 9d);
             dashed = true;
         }
 
     }
 
     protected void setSolid() {
-        this.getStrokeDashArray().clear();
+        line.getStrokeDashArray().clear();
         dashed = false;
 
     }
@@ -139,15 +146,28 @@ public class UMLLine extends Line {
     public int getIntId() {
         return id;
     }
+    
+    public void setStartX(double d){
+        line.setStartX(d);
+    }
+    public void setStartY(double d){
+        line.setStartY(d);   
+    }
+    public void setEndX(double d){
+        line.setEndX(d);
+    }
+    public void setEndY(double d){
+        line.setEndY(d);
+    }
 
     /**
      *
      */
     public void toggleDashed() {
-        if (this.getStrokeDashArray().isEmpty()) {
-            this.getStrokeDashArray().addAll(5d, 5d, 5d, 5d);
+        if (line.getStrokeDashArray().isEmpty()) {
+            line.getStrokeDashArray().addAll(5d, 5d, 5d, 5d);
         } else {
-            this.getStrokeDashArray().clear();
+            line.getStrokeDashArray().clear();
         }
     }
 

@@ -39,8 +39,8 @@ public class UMLArrowLine extends UMLLine implements SelectedPanel {
         super(a1, a2);
   
         //slope of the line
-        double deltaX = this.getStartY() - this.getEndY();
-        double deltaY = this.getEndX() - this.getStartX();
+        double deltaX = line.getStartY() - line.getEndY();
+        double deltaY = line.getEndX() - line.getStartX();
         //gets you the degress of the x axis(on the left) of the second clicked node
         double slopeInDegrees = Math.toDegrees(Math.atan2(deltaX,deltaY));
 
@@ -51,13 +51,14 @@ public class UMLArrowLine extends UMLLine implements SelectedPanel {
                 0, -10,
                 10);
         
+        //add the arrow to a group
         group.getChildren().addAll(minSpreadLine,maxSpreadLine);
-              //  group.setRotate(-slopeInDegrees);
         group.getTransforms().add(rotate);
         rotate.setAngle(-slopeInDegrees);
-
-        group.setTranslateX(this.getEndX());
-        group.setTranslateY(this.getEndY());
+        group.setTranslateX(line.getEndX());
+        group.setTranslateY(line.getEndY());
+        
+        this.getChildren().add(group);
 
        
     }
@@ -77,11 +78,6 @@ public class UMLArrowLine extends UMLLine implements SelectedPanel {
     public Node getLine2() {
         return maxSpreadLine;
     }
-    public Group arrowHead(){
-        return group;
-        
-    }
-
   
     
     @Override
@@ -110,19 +106,19 @@ public class UMLArrowLine extends UMLLine implements SelectedPanel {
                 }
             }
         }
-        this.setStartX(anchorPoint1.getAnchorPoint(point1Int).getX());
-        this.setStartY(anchorPoint1.getAnchorPoint(point1Int).getY());
-        this.setEndX(anchorPoint2.getAnchorPoint(point2Int).getX());
-        this.setEndY(anchorPoint2.getAnchorPoint(point2Int).getY());
+        line.setStartX(anchorPoint1.getAnchorPoint(point1Int).getX());
+        line.setStartY(anchorPoint1.getAnchorPoint(point1Int).getY());
+        line.setEndX(anchorPoint2.getAnchorPoint(point2Int).getX());
+        line.setEndY(anchorPoint2.getAnchorPoint(point2Int).getY());
         
-        double deltaX = this.getStartY() - this.getEndY();
-        double deltaY = this.getEndX() - this.getStartX();
+        double deltaX = line.getStartY() - line.getEndY();
+        double deltaY = line.getEndX() - line.getStartX();
         //gets you the degress of the x axis(on the left) of the second clicked node
         double slopeInDegrees = Math.toDegrees(Math.atan2(deltaX,deltaY));
         
         if (group != null){
-            group.setTranslateX(this.getEndX());
-            group.setTranslateY(this.getEndY());
+            group.setTranslateX(line.getEndX());
+            group.setTranslateY(line.getEndY());
             rotate.setAngle(-slopeInDegrees);
 
         }

@@ -14,7 +14,6 @@ import javafx.scene.Node;
 import javafx.scene.control.Toggle;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
@@ -129,7 +128,7 @@ public class UmlatronController {
                                             .addLineType(LineType.START);
                                     ((AnchorPoint) clickedNodes.get(1))
                                             .addLineType(LineType.END);
-                                    view.getEditPane().getChildren().addAll(lineTest, lineTest.diamond());
+                                    view.getEditPane().getChildren().addAll(lineTest);
                                     clickedNodes.clear();
 
                                     break;
@@ -144,7 +143,7 @@ public class UmlatronController {
                                             .addLineType(LineType.START);
                                     ((AnchorPoint) clickedNodes.get(1))
                                             .addLineType(LineType.END);
-                                    view.getEditPane().getChildren().addAll(lineTest1, lineTest1.arrowHead());
+                                    view.getEditPane().getChildren().addAll(lineTest1);
                                     clickedNodes.clear();
                                     break;
 
@@ -158,7 +157,7 @@ public class UmlatronController {
                                             .addLineType(LineType.START);
                                     ((AnchorPoint) clickedNodes.get(1))
                                             .addLineType(LineType.END);
-                                    view.getEditPane().getChildren().addAll(lineTest2, lineTest2.filledArrow());
+                                    view.getEditPane().getChildren().addAll(lineTest2);
                                     clickedNodes.clear();
 
                             }

@@ -40,15 +40,17 @@ public class Generalization extends UMLLine implements SelectedPanel {
         polygon.setStrokeWidth(1);
         polygon.setStroke(Color.BLACK);
 
-        double deltaX = this.getStartY() - this.getEndY();
-        double deltaY = this.getEndX() - this.getStartX();
+        double deltaX = line.getStartY() - line.getEndY();
+        double deltaY = line.getEndX() - line.getStartX();
         double slopeInDegrees = Math.toDegrees(Math.atan2(deltaX, deltaY));
 
         polygon.getTransforms().add(rotate);
         rotate.setAngle(-slopeInDegrees);
 
-        polygon.setTranslateX(this.getEndX());
-        polygon.setTranslateY(this.getEndY());
+        polygon.setTranslateX(line.getEndX());
+        polygon.setTranslateY(line.getEndY());
+        
+        this.getChildren().add(polygon);
     }
     
       @Override
@@ -74,14 +76,14 @@ public class Generalization extends UMLLine implements SelectedPanel {
         this.setEndX(anchorPoint2.getAnchorPoint(point2Int).getX());
         this.setEndY(anchorPoint2.getAnchorPoint(point2Int).getY());
         
-        double deltaX = this.getStartY() - this.getEndY();
-        double deltaY = this.getEndX() - this.getStartX();
+        double deltaX = line.getStartY() - line.getEndY();
+        double deltaY = line.getEndX() - line.getStartX();
         //gets you the degress of the x axis(on the left) of the second clicked node
         double slopeInDegrees = Math.toDegrees(Math.atan2(deltaX,deltaY));
         
         if (polygon != null){
-            polygon.setTranslateX(this.getEndX());
-            polygon.setTranslateY(this.getEndY());
+            polygon.setTranslateX(line.getEndX());
+            polygon.setTranslateY(line.getEndY());
             rotate.setAngle(-slopeInDegrees);
 
         }
@@ -89,9 +91,6 @@ public class Generalization extends UMLLine implements SelectedPanel {
         
     }
     
-      public Polygon filledArrow(){
-        return polygon;
-    }
       
       @Override
     public void deleteSelf(){
