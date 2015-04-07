@@ -38,7 +38,7 @@ public class UmlatronController {
                 (ObservableValue<? extends State> ov, State old_state,
                         State new_state) -> {
 
-                    if (new_state != State.LINE ) {
+                    if (new_state != State.LINE) {
                         clickedNodes.clear();
                     }
 
@@ -52,6 +52,11 @@ public class UmlatronController {
                             break;
 
                         case ASSOCIATION:
+                            setLineState();
+                            break;
+
+                        case GENERALIZATION:
+                            setLineState();
                             break;
 
                         case CLASSBOX:
@@ -63,41 +68,41 @@ public class UmlatronController {
 
         // Monitors the change of the toggle buttons
         view.getStateToggle().selectedToggleProperty().addListener(
-                        (ObservableValue<? extends Toggle> ov, Toggle toggle,
-                                Toggle new_toggle) -> {
+                (ObservableValue<? extends Toggle> ov, Toggle toggle,
+                        Toggle new_toggle) -> {
 
-                            if (new_toggle == null) {
-                                   //nothing
-                            } else {
-                                switch ((State) new_toggle.getUserData()) {
-                                    case SELECT:
-                                        model.setState(State.SELECT);
-                                        break;
+                    if (new_toggle == null) {
+                        //nothing
+                    } else {
+                        switch ((State) new_toggle.getUserData()) {
+                            case SELECT:
+                                model.setState(State.SELECT);
+                                break;
 
-                                    case LINE:
-                                        model.setState(State.LINE);
-                                        break;
+                            case LINE:
+                                model.setState(State.LINE);
+                                break;
 
-                                    case ASSOCIATION:
-                                        model.setState(State.ASSOCIATION);
-                                        break;
+                            case ASSOCIATION:
+                                model.setState(State.ASSOCIATION);
+                                break;
 
-                                    case CLASSBOX:
-                                        model.setState(State.CLASSBOX);
-                                        break;
-                                        
-                                    case GENERALIZATION:
-                                        model.setState(State.GENERALIZATION);
-                                        break;
+                            case CLASSBOX:
+                                model.setState(State.CLASSBOX);
+                                break;
 
-                                    default:
-                                        // something went wrong
-                                        break;
+                            case GENERALIZATION:
+                                model.setState(State.GENERALIZATION);
+                                break;
 
-                                }
+                            default:
+                                // something went wrong
+                                break;
 
-                            }
-                        });
+                        }
+
+                    }
+                });
 
         // listens for all presses on the pane, we use this to see what nodes are being pressed on
         view.getEditPane().addEventFilter(MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>() {
@@ -109,58 +114,54 @@ public class UmlatronController {
                 if (filteredNode != null) {
                     model.getCurrentlySelectedNodeProperty().setValue(filteredNode);
                     //if we are in the line state and the node clicked on is able to have a line attached to it continue
-                    if (model.getStateProperty().get() == State.LINE || model.getStateProperty().get() == State.ASSOCIATION 
+                    if (model.getStateProperty().get() == State.LINE || model.getStateProperty().get() == State.ASSOCIATION
                             || model.getStateProperty().get() == State.GENERALIZATION && filteredNode instanceof AnchorPoint) {
                         clickedNodes.add(filteredNode);
                         if (clickedNodes.size() == 2) {
-                            switch(model.getStateProperty().get()){
-                                 case ASSOCIATION:
-                                     Association lineTest = new Association(
-                                    (AnchorPoint) clickedNodes.get(0),
-                                    (AnchorPoint) clickedNodes.get(1));
-                            ((AnchorPoint) clickedNodes.get(0)).addLine(lineTest);
-                            ((AnchorPoint) clickedNodes.get(1)).addLine(lineTest);
-                            ((AnchorPoint) clickedNodes.get(0))
-                                    .addLineType(LineType.START);
-                            ((AnchorPoint) clickedNodes.get(1))
-                                    .addLineType(LineType.END);
-                            view.getEditPane().getChildren().addAll(lineTest,lineTest.diamond());
-                            clickedNodes.clear();
-                                     
-                                        break;
+                            switch (model.getStateProperty().get()) {
+                                case ASSOCIATION:
+                                    Association lineTest = new Association(
+                                            (AnchorPoint) clickedNodes.get(0),
+                                            (AnchorPoint) clickedNodes.get(1));
+                                    ((AnchorPoint) clickedNodes.get(0)).addLine(lineTest);
+                                    ((AnchorPoint) clickedNodes.get(1)).addLine(lineTest);
+                                    ((AnchorPoint) clickedNodes.get(0))
+                                            .addLineType(LineType.START);
+                                    ((AnchorPoint) clickedNodes.get(1))
+                                            .addLineType(LineType.END);
+                                    view.getEditPane().getChildren().addAll(lineTest, lineTest.diamond());
+                                    clickedNodes.clear();
 
-                                    case LINE:
-                                        UMLArrowLine lineTest1 = new UMLArrowLine(
-                                    (AnchorPoint) clickedNodes.get(0),
-                                    (AnchorPoint) clickedNodes.get(1));
-                            ((AnchorPoint) clickedNodes.get(0)).addLine(lineTest1);
-                            ((AnchorPoint) clickedNodes.get(1)).addLine(lineTest1);
-                            ((AnchorPoint) clickedNodes.get(0))
-                                    .addLineType(LineType.START);
-                            ((AnchorPoint) clickedNodes.get(1))
-                                    .addLineType(LineType.END);
-                            view.getEditPane().getChildren().addAll(lineTest1,lineTest1.arrowHead());
-                            clickedNodes.clear();
-                                        break;
-                                        
-                                        
-                                    case GENERALIZATION:
-                                         Generalization lineTest2 = new Generalization(
-                                    (AnchorPoint) clickedNodes.get(0),
-                                    (AnchorPoint) clickedNodes.get(1));
-                            ((AnchorPoint) clickedNodes.get(0)).addLine(lineTest2);
-                            ((AnchorPoint) clickedNodes.get(1)).addLine(lineTest2);
-                            ((AnchorPoint) clickedNodes.get(0))
-                                    .addLineType(LineType.START);
-                            ((AnchorPoint) clickedNodes.get(1))
-                                    .addLineType(LineType.END);
-                            view.getEditPane().getChildren().addAll(lineTest2,lineTest2.filledArrow());
-                            clickedNodes.clear();
-                                        
+                                    break;
+
+                                case LINE:
+                                    UMLArrowLine lineTest1 = new UMLArrowLine(
+                                            (AnchorPoint) clickedNodes.get(0),
+                                            (AnchorPoint) clickedNodes.get(1));
+                                    ((AnchorPoint) clickedNodes.get(0)).addLine(lineTest1);
+                                    ((AnchorPoint) clickedNodes.get(1)).addLine(lineTest1);
+                                    ((AnchorPoint) clickedNodes.get(0))
+                                            .addLineType(LineType.START);
+                                    ((AnchorPoint) clickedNodes.get(1))
+                                            .addLineType(LineType.END);
+                                    view.getEditPane().getChildren().addAll(lineTest1, lineTest1.arrowHead());
+                                    clickedNodes.clear();
+                                    break;
+
+                                case GENERALIZATION:
+                                    Generalization lineTest2 = new Generalization(
+                                            (AnchorPoint) clickedNodes.get(0),
+                                            (AnchorPoint) clickedNodes.get(1));
+                                    ((AnchorPoint) clickedNodes.get(0)).addLine(lineTest2);
+                                    ((AnchorPoint) clickedNodes.get(1)).addLine(lineTest2);
+                                    ((AnchorPoint) clickedNodes.get(0))
+                                            .addLineType(LineType.START);
+                                    ((AnchorPoint) clickedNodes.get(1))
+                                            .addLineType(LineType.END);
+                                    view.getEditPane().getChildren().addAll(lineTest2, lineTest2.filledArrow());
+                                    clickedNodes.clear();
+
                             }
-                            
-                            
-                            
 
                         }
                     }
@@ -170,49 +171,53 @@ public class UmlatronController {
 
         model.getCurrentlySelectedNodeProperty().addListener((ObservableValue<? extends Node> ov,
                 Node last_selected, Node new_selected) -> {
-                	
-                	if(last_selected instanceof ClassBox){
-                		((ClassBox)last_selected).removeActions();
-                	}
-            
-                if(new_selected instanceof SelectedPanel){
-                    ((SelectedPanel)new_selected).createAndGeneratePanel(view.getCurrentlySelectedPane());  
-                }
+
+                    if (last_selected instanceof ClassBox) {
+                        ((ClassBox) last_selected).removeActions();
+                    }
+
+                    if (new_selected instanceof SelectedPanel) {
+                        ((SelectedPanel) new_selected).createAndGeneratePanel(view.getCurrentlySelectedPane());
+                    }
 
                 });
-        
-        
+
         /**
          * almost scrolling because why not
          */
-         view.getEditPane().setOnScroll(new EventHandler<ScrollEvent>() {
-            @Override public void handle(ScrollEvent event) {
+        view.getEditPane().setOnScroll(new EventHandler<ScrollEvent>() {
+            @Override
+            public void handle(ScrollEvent event) {
                 double scaleFactor = (event.getDeltaY() > 0) ? 1.5 : 1 / 1.5;
-                
-                if(view.getEditPane().getScaleX() * scaleFactor >= 1.0){
+
+                if (view.getEditPane().getScaleX() * scaleFactor >= 1.0) {
                     view.getEditPane().setScaleX(view.getEditPane().getScaleX() * scaleFactor);
                     view.getEditPane().setScaleY(view.getEditPane().getScaleY() * scaleFactor);
                 }
-                
+
             }
         });
 
     }
 
     /**
-     * return the view 
+     * return the view
+     *
      * @return view
      */
     public UmlView getView() {
         return view;
     }
-    
+
+    /**
+     * returns the model
+     * @return UmlModel
+     */
     public UmlModel getModel() {
         return model;
     }
 
-        
-     /**
+    /**
      * Checks if what you clicked on is the pane
      *
      * @param n what you clicked on

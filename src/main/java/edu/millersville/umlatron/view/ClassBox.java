@@ -369,17 +369,14 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel {
 
         h.getChildren().clear();
         DropShadow shadow = new DropShadow();
-
+        
         Button editName = new Button("Edit Name");
         editName.setMaxWidth(Double.MAX_VALUE);
         HBox.setHgrow(editName, Priority.ALWAYS);
         editName.setOnAction((ActionEvent e) -> {
-            //do the action here
         	TextArea text = classTextName;
         	applyActions(text);
         	revertActions(text);
-        	
-        	
         });
         editName.addEventHandler(MouseEvent.MOUSE_ENTERED,
                 new EventHandler<MouseEvent>() {
@@ -400,7 +397,6 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel {
         editAttr.setMaxWidth(Double.MAX_VALUE);
         HBox.setHgrow(editAttr, Priority.ALWAYS);
         editAttr.setOnAction((ActionEvent e) -> {
-            //do the action here
         	TextArea text = classMethods;
         	applyActions(text);
         	revertActions(text);
@@ -424,7 +420,6 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel {
         editOps.setMaxWidth(Double.MAX_VALUE);
         HBox.setHgrow(editOps, Priority.ALWAYS);
         editOps.setOnAction((ActionEvent e) -> {
-            //do the action here
         	TextArea text = classFunctions;
         	applyActions(text);
         	revertActions(text);
@@ -467,7 +462,6 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel {
                 });
 
         Label label = new Label("Currently selected node : Class Box ");
-
         h.getChildren().addAll(label, editName, editAttr, editOps, deleteB);
     }
 

@@ -9,10 +9,9 @@ import javafx.scene.control.SeparatorMenuItem;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
-import javafx.scene.control.TextArea;
 import edu.millersville.umlatron.model.State;
-import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
+import javafx.scene.control.Label;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.Background;
@@ -127,7 +126,7 @@ public class UmlView extends BorderPane {
         HBox hbox = new HBox();
         hbox.setPadding(new Insets(4, 12, 4, 12));
         hbox.setSpacing(10);
-
+        hbox.setPrefHeight(40);
         return hbox;
     }
 
