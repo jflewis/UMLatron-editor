@@ -110,55 +110,34 @@ public class UmlatronController {
             public void handle(MouseEvent e) {
                 Node selectedNode = e.getPickResult().getIntersectedNode();
                 Node filteredNode = checkIfPane(selectedNode);
+               // System.out.println(filteredNode.toString());
                 if (filteredNode != null) {
+                    System.out.println(filteredNode.toString());
                     model.getCurrentlySelectedNodeProperty().setValue(filteredNode);
                     //if we are in the line state and the node clicked on is able to have a line attached to it continue
                     if (model.getStateProperty().get() == State.LINE || model.getStateProperty().get() == State.ASSOCIATION
                             || model.getStateProperty().get() == State.GENERALIZATION && filteredNode instanceof AnchorPoint) {
                         clickedNodes.add(filteredNode);
                         if (clickedNodes.size() == 2) {
+                            UMLLine line;
                             switch (model.getStateProperty().get()) {
                                 case ASSOCIATION:
-                                    Association lineTest = new Association(
-                                            (AnchorPoint) clickedNodes.get(0),
-                                            (AnchorPoint) clickedNodes.get(1));
-                                    ((AnchorPoint) clickedNodes.get(0)).addLine(lineTest);
-                                    ((AnchorPoint) clickedNodes.get(1)).addLine(lineTest);
-                                    ((AnchorPoint) clickedNodes.get(0))
-                                            .addLineType(LineType.START);
-                                    ((AnchorPoint) clickedNodes.get(1))
-                                            .addLineType(LineType.END);
-                                    view.getEditPane().getChildren().addAll(lineTest);
-                                    clickedNodes.clear();
-
+                                   line = new Association((ClassBox)(clickedNodes.get(0)),(ClassBox)(clickedNodes.get(1)));
+                                   view.getEditPane().getChildren().add(line);
+                                   clickedNodes.clear();
                                     break;
 
                                 case LINE:
-                                    UMLArrowLine lineTest1 = new UMLArrowLine(
-                                            (AnchorPoint) clickedNodes.get(0),
-                                            (AnchorPoint) clickedNodes.get(1));
-                                    ((AnchorPoint) clickedNodes.get(0)).addLine(lineTest1);
-                                    ((AnchorPoint) clickedNodes.get(1)).addLine(lineTest1);
-                                    ((AnchorPoint) clickedNodes.get(0))
-                                            .addLineType(LineType.START);
-                                    ((AnchorPoint) clickedNodes.get(1))
-                                            .addLineType(LineType.END);
-                                    view.getEditPane().getChildren().addAll(lineTest1);
+                                    line = new UMLArrowLine((ClassBox)(clickedNodes.get(0)),(ClassBox)(clickedNodes.get(1)));
+                                    view.getEditPane().getChildren().add(line);
                                     clickedNodes.clear();
                                     break;
 
                                 case GENERALIZATION:
-                                    Generalization lineTest2 = new Generalization(
-                                            (AnchorPoint) clickedNodes.get(0),
-                                            (AnchorPoint) clickedNodes.get(1));
-                                    ((AnchorPoint) clickedNodes.get(0)).addLine(lineTest2);
-                                    ((AnchorPoint) clickedNodes.get(1)).addLine(lineTest2);
-                                    ((AnchorPoint) clickedNodes.get(0))
-                                            .addLineType(LineType.START);
-                                    ((AnchorPoint) clickedNodes.get(1))
-                                            .addLineType(LineType.END);
-                                    view.getEditPane().getChildren().addAll(lineTest2);
-                                    clickedNodes.clear();
+                                    line = new Generalization((ClassBox)(clickedNodes.get(0)),(ClassBox)(clickedNodes.get(1)));
+                                    view.getEditPane().getChildren().add(line);
+                                    clickedNodes.clear();   
+                                     break;
 
                             }
 
@@ -174,8 +153,14 @@ public class UmlatronController {
                     if (last_selected instanceof ClassBox) {
                         ((ClassBox) last_selected).removeActions();
                     }
-
+                        System.out.println(new_selected.toString() + " well well");
+                  
+                    if (new_selected.getParent() instanceof UMLLine){
+                        new_selected = (UMLLine)new_selected.getParent();
+                    }
+                    
                     if (new_selected instanceof SelectedPanel) {
+                        System.out.println(new_selected.toString() + " well wtf");
                         ((SelectedPanel) new_selected).createAndGeneratePanel(view.getCurrentlySelectedPane());
                     }
 

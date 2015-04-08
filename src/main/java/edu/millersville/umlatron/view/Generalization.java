@@ -5,15 +5,14 @@
  */
 package edu.millersville.umlatron.view;
 
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.geometry.Point2D;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
@@ -28,8 +27,13 @@ public class Generalization extends UMLLine implements SelectedPanel {
     Rotate rotate = new Rotate();
     Polygon polygon = new Polygon();
 
-    public Generalization(AnchorPoint a1, AnchorPoint a2) {
+    public Generalization(ClassBox a1, ClassBox a2) {
         super(a1, a2);
+        createLine();
+    }
+    
+    private void createLine(){
+        
         polygon.getPoints().addAll(new Double[]{
             0.0, 0.0,
             -12.0, -7.0,
@@ -40,65 +44,41 @@ public class Generalization extends UMLLine implements SelectedPanel {
         polygon.setStrokeWidth(1);
         polygon.setStroke(Color.BLACK);
 
-        double deltaX = line.getStartY() - line.getEndY();
-        double deltaY = line.getEndX() - line.getStartX();
-        double slopeInDegrees = Math.toDegrees(Math.atan2(deltaX, deltaY));
+     
 
         polygon.getTransforms().add(rotate);
-        rotate.setAngle(-slopeInDegrees);
-
-        polygon.setTranslateX(line.getEndX());
-        polygon.setTranslateY(line.getEndY());
+        
         
         this.getChildren().add(polygon);
+     
+        updateHead();
+        
+     
+        distance.removeListener(listener);
+        distance.addListener(
+                (ObservableValue<? extends Number> ov, Number old_state,
+                        Number new_state) -> {
+
+                    calculateAnchorPoints();
+                    updateHead();
+
+
+                });
+
     }
     
-      @Override
-    public void updateAnchorPoints() {
-        double min = 999999999;
-        point1Int = 0;
-        point2Int = 0;
-        for (int i = 0; i < anchorPoint1.getAnchorCount(); ++i) {
-            startingAnchor = new Point2D(anchorPoint1.getAnchorPoint(i).getX(),
-                    anchorPoint1.getAnchorPoint(i).getY());
-            for (int j = 0; j < anchorPoint2.getAnchorCount(); ++j) {
-                endingAnchor = new Point2D(anchorPoint2.getAnchorPoint(j)
-                        .getX(), anchorPoint2.getAnchorPoint(j).getY());
-                if (startingAnchor.distance(endingAnchor) < min) {
-                    min = startingAnchor.distance(endingAnchor);
-                    point1Int = i;
-                    point2Int = j;
-                }
-            }
-        }
-        this.setStartX(anchorPoint1.getAnchorPoint(point1Int).getX());
-        this.setStartY(anchorPoint1.getAnchorPoint(point1Int).getY());
-        this.setEndX(anchorPoint2.getAnchorPoint(point2Int).getX());
-        this.setEndY(anchorPoint2.getAnchorPoint(point2Int).getY());
-        
-        double deltaX = line.getStartY() - line.getEndY();
-        double deltaY = line.getEndX() - line.getStartX();
-        //gets you the degress of the x axis(on the left) of the second clicked node
-        double slopeInDegrees = Math.toDegrees(Math.atan2(deltaX,deltaY));
-        
-        if (polygon != null){
-            polygon.setTranslateX(line.getEndX());
-            polygon.setTranslateY(line.getEndY());
-            rotate.setAngle(-slopeInDegrees);
-
-        }
-        
-        
+    @Override
+    public void updateHead(){
+        double slopeInDegrees = (Math.toDegrees(Math.atan2(line.getStartY() - line.getEndY(), line.getEndX() - line.getStartX())));
+        rotate.setAngle(-slopeInDegrees);
+        polygon.setTranslateX(line.endXProperty().get());
+        polygon.setTranslateY(line.endYProperty().get());
     }
+    
+    
     
       
-      @Override
-    public void deleteSelf(){
-        Pane pane = (Pane)this.getParent();
-        pane.getChildren().remove(polygon);
-        anchorPoint1.deleteLine(id);
-        anchorPoint2.deleteLine(id);  
-    }
+
     
       
       /**
@@ -158,7 +138,7 @@ public class Generalization extends UMLLine implements SelectedPanel {
         deleteB.setMaxWidth(Double.MAX_VALUE);
         HBox.setHgrow(deleteB, Priority.ALWAYS);
         deleteB.setOnAction((ActionEvent e) -> {
-           deleteSelf();
+           destroy();
            h.getChildren().clear();
         });
         deleteB.addEventHandler(MouseEvent.MOUSE_ENTERED,
