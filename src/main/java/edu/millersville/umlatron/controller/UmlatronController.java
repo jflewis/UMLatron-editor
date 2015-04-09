@@ -173,7 +173,7 @@ public class UmlatronController {
                 Node last_selected, Node new_selected) -> {
 
                     if (last_selected instanceof ClassBox) {
-                        ((ClassBox) last_selected).removeActions();
+                       ((ClassBox) last_selected).removeActions();
                     }
 
                     if (new_selected instanceof SelectedPanel) {
