@@ -57,8 +57,12 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel {
     private TextArea classFunctions;
     private DropShadow borderGlow;
     private DropShadow noGlow;
-    private Text textHolder = new Text();
-    private double oldHeight = 0;
+    private Text nameHolder = new Text();
+    private Text functionsHolder = new Text();
+    private Text methodsHolder = new Text();
+    private double textNameHeight = 0;
+    private double methodsHeight = 0;
+    private double functionsHeight = 0;
 
 
     public ClassBox(double x, double y) {
@@ -110,25 +114,20 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel {
         classTextName.isResizable();
         ClassBox.setVgrow(classTextName, Priority.ALWAYS); 
         
-     
-        
-        textHolder.textProperty().bind(classTextName.textProperty());
-        textHolder.boundsInLocalProperty().addListener(new ChangeListener<Bounds>() {
+        nameHolder.textProperty().bind(classTextName.textProperty());
+        nameHolder.boundsInLocalProperty().addListener(new ChangeListener<Bounds>() {
             @Override
             public void changed(ObservableValue<? extends Bounds> observable, Bounds oldValue, Bounds newValue) {
-            	textHolder.setWrappingWidth(classTextName.getWidth() - 25);
-                if (oldHeight != newValue.getHeight() ) {
+            	nameHolder.setWrappingWidth(classTextName.getWidth() - 25);
+                if (textNameHeight != newValue.getHeight() ) {
                     System.out.println("newValue = " + newValue.getHeight());
-                    oldHeight = newValue.getHeight();
-                    classTextName.setPrefHeight(textHolder.getLayoutBounds().getHeight() + 20); // +20 is for paddings
+                    textNameHeight = newValue.getHeight();
+                    classTextName.setPrefHeight(nameHolder.getLayoutBounds().getHeight() + 20); // +20 is for paddings
                 }
                 
             }
         });
  
-        
-        classTextName.isResizable();
-
         classMethods = new TextArea();
         classMethods.setPromptText(methods);
         classMethods.setPrefRowCount(2);
@@ -137,8 +136,21 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel {
         classMethods.setMouseTransparent(true);
         classMethods.setEditable(false);
         classMethods.isResizable();
-        
         ClassBox.setVgrow(classMethods, Priority.ALWAYS); 
+        
+        methodsHolder.textProperty().bind(classMethods.textProperty());
+        methodsHolder.boundsInLocalProperty().addListener(new ChangeListener<Bounds>() {
+            @Override
+            public void changed(ObservableValue<? extends Bounds> observable, Bounds oldValue, Bounds newValue) {
+            	methodsHolder.setWrappingWidth(classMethods.getWidth() - 25);
+                if (methodsHeight != newValue.getHeight() ) {
+                    System.out.println("newValue = " + newValue.getHeight());
+                    methodsHeight = newValue.getHeight();
+                    classMethods.setPrefHeight(methodsHolder.getLayoutBounds().getHeight() + 20); // +20 is for paddings
+                }
+                
+            }
+        });
 
         classFunctions = new TextArea();
         classFunctions.setPromptText(functions);
@@ -149,6 +161,20 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel {
         classFunctions.setEditable(false);
         classFunctions.isResizable();
         ClassBox.setVgrow(classFunctions, Priority.ALWAYS); 
+        
+        functionsHolder.textProperty().bind(classFunctions.textProperty());
+        functionsHolder.boundsInLocalProperty().addListener(new ChangeListener<Bounds>() {
+            @Override
+            public void changed(ObservableValue<? extends Bounds> observable, Bounds oldValue, Bounds newValue) {
+            	functionsHolder.setWrappingWidth(classFunctions.getWidth() - 25);
+                if (functionsHeight != newValue.getHeight() ) {
+                    System.out.println("newValue = " + newValue.getHeight());
+                    functionsHeight = newValue.getHeight();
+                    classFunctions.setPrefHeight(functionsHolder.getLayoutBounds().getHeight() + 20); // +20 is for paddings
+                }
+                
+            }
+        });
         
         getChildren().addAll(classTextName, classMethods, classFunctions);
 
