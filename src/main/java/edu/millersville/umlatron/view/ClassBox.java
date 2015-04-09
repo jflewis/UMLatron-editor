@@ -1,10 +1,9 @@
 package edu.millersville.umlatron.view;
+
 import javafx.scene.control.ScrollPane;
-
+import edu.millersville.umlatron.Util.AnchorInfo;
 import java.util.ArrayList;
-import java.util.Observable;
-
-import edu.millersville.umlatron.model.LineType;
+import javafx.beans.binding.DoubleBinding;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.ContextMenu;
@@ -36,18 +35,18 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.scene.control.ScrollBar;
 
+
 /**
  *
- * @author Greg Polhemus
+ * @authors Greg Polhemus , John L., Matt H.
  */
 public class ClassBox extends VBox implements AnchorPoint, SelectedPanel {
 
     private double initX;
     private double initY;
-    private double height, width;
+    double height, width;
     private int anchorCount;
     private Point2D[] anchorPoints;
-    private ArrayList<LineType> pointTypes;
     private ArrayList<UMLLine> lines;
     private Point2D dragAnchor;
     private String name = "Enter A Class Name Here";
@@ -61,6 +60,7 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel {
     private Text textHolder = new Text();
     private double oldHeight = 0;
 
+
     public ClassBox(double x, double y) {
 
         super();
@@ -68,8 +68,6 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel {
         width = 167.0;
         anchorCount = 4;
         anchorPoints = new Point2D[anchorCount];
-        setAnchorPoints(x, y);
-        pointTypes = new ArrayList<LineType>();
         lines = new ArrayList<UMLLine>();
         setCursor(Cursor.OPEN_HAND);
         setTranslateX(x);
@@ -127,8 +125,10 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel {
                 
             }
         });
-    
+ 
         
+        classTextName.isResizable();
+
         classMethods = new TextArea();
         classMethods.setPromptText(methods);
         classMethods.setPrefRowCount(2);
@@ -164,7 +164,7 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel {
             dragAnchor = new Point2D(event.getSceneX(), event.getSceneY());
             event.consume();
         });
-        
+
         // Dragging Movement of ClassBox
         // *********************************************************************************/
         setOnMouseDragged((event) -> {
@@ -174,63 +174,36 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel {
             double newYPosition = initY + dragY;
             width = widthProperty().getValue();
             height = heightProperty().getValue();
+
             if ((newXPosition >= this.sceneProperty().get().getX())
                     && (newXPosition <= this.sceneProperty().get().getWidth()
                     - (this.sceneProperty().get().getX() + widthProperty()
                     .getValue()))) {
+
                 setTranslateX(newXPosition);
-                updateXAnchorPoints(newXPosition);
             } else if (newXPosition >= this.sceneProperty().get().getX()) {
                 setTranslateX(this.sceneProperty().get().getWidth()
                         - widthProperty().getValue());
-                updateXAnchorPoints(this.sceneProperty().get().getWidth()
-                        - widthProperty().getValue());
+
             } else {
                 setTranslateX(0);
-                updateXAnchorPoints(0);
             }
-            for (int i = 0; i < lines.size(); ++i) {
-                lines.get(i).updateAnchorPoints();
-                if (pointTypes.get(i).equals(LineType.START)) {
-                    lines.get(i).setStartX(
-                            anchorPoints[lines.get(i).getAnchorPoint1Int()]
-                            .getX());
-                }
-                if (pointTypes.get(i).equals(LineType.END)) {
-                    lines.get(i).setEndX(
-                            anchorPoints[lines.get(i).getAnchorPoint2Int()]
-                            .getX());
-                }
-            }
+
             if ((newYPosition >= this.sceneProperty().get().getY())
                     && (newYPosition <= this.sceneProperty().get().getHeight()
                     - (this.sceneProperty().get().getY() + heightProperty()
                     .getValue()))) {
+
                 setTranslateY(newYPosition);
-                updateYAnchorPoints(newYPosition);
 
             } else if (newYPosition >= this.sceneProperty().get().getY()) {
                 setTranslateY(this.sceneProperty().get().getHeight()
                         - heightProperty().getValue());
-                updateYAnchorPoints(this.sceneProperty().get().getHeight()
-                        - heightProperty().getValue());
+
             } else {
                 setTranslateY(0);
-                updateYAnchorPoints(0);
             }
-            for (int i = 0; i < lines.size(); ++i) {
-                lines.get(i).updateAnchorPoints();
-                if (pointTypes.get(i).equals(LineType.START)) {
-                    lines.get(i).setStartY(
-                            anchorPoints[lines.get(i).getAnchorPoint1Int()]
-                            .getY());
-                }
-                if (pointTypes.get(i).equals(LineType.END)) {
-                    lines.get(i).setEndY(
-                            anchorPoints[lines.get(i).getAnchorPoint2Int()]
-                            .getY());
-                }
-            }
+
             event.consume();
         });
 
@@ -245,7 +218,7 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel {
          */
         MenuItem delete = new MenuItem("delete");
         delete.setOnAction(event -> {
-            deleteSelf();
+            // deleteSelf();
         });
 
         ContextMenu contextMenu = new ContextMenu(delete);
@@ -291,57 +264,44 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel {
 
     }
 
-    private void deleteSelf() {
-        Pane pane = (Pane) this.getParent();
-        int t = lines.size();
-        for (int i = t; i > 0; --i) {
-            lines.get(i-1).deleteSelf();
-        }
-        pane.getChildren().remove(this);
-    }
+    // ********************************************************************************************************
+    @Override
+    public AnchorInfo getNorthPoint() {
 
-    /**
-     * ********************************************************************************************************
-     */
-    // Anchor Points Set/Updates
-    public void setAnchorPoints(double x, double y) {
-        anchorPoints[0] = new Point2D(x + (width / 2), y); // top
-        anchorPoints[1] = new Point2D(x, y + (height / 2)); // left
-        anchorPoints[2] = new Point2D(x + width, y + (height / 2)); // right
-        anchorPoints[3] = new Point2D(x + (width / 2), y + height); // bottom
-    }
+        DoubleBinding x = this.translateXProperty().add(this.width / 2);
+        DoubleBinding y = this.translateYProperty().add(0);
 
-    public void updateXAnchorPoints(double x) {
-        anchorPoints[0] = new Point2D(x + (width / 2), anchorPoints[0].getY());
-        anchorPoints[1] = new Point2D(x, anchorPoints[1].getY());
-        anchorPoints[2] = new Point2D(x + width, anchorPoints[2].getY());
-        anchorPoints[3] = new Point2D(x + (width / 2), anchorPoints[3].getY());
-    }
-
-    public void updateYAnchorPoints(double y) {
-        anchorPoints[0] = new Point2D(anchorPoints[0].getX(), y);
-        anchorPoints[1] = new Point2D(anchorPoints[1].getX(), y + (height / 2));
-        anchorPoints[2] = new Point2D(anchorPoints[2].getX(), y + (height / 2));
-        anchorPoints[3] = new Point2D(anchorPoints[3].getX(), y + height);
-    }
-
-    public Point2D getAnchorPoint(int i) {
-        if (i < anchorPoints.length) {
-            return anchorPoints[i];
-        } else {
-            return null;
-        }
+        AnchorInfo northPoint = new AnchorInfo(x, y);
+        return northPoint;
     }
 
     @Override
-    public int getAnchorCount() {
-        return anchorCount;
+    public AnchorInfo getSouthPoint() {
+        DoubleBinding x = this.translateXProperty().add(this.width / 2);
+        DoubleBinding y = this.translateYProperty().add(this.height);
+
+        AnchorInfo southPoint = new AnchorInfo(x, y);
+        return southPoint;
+
     }
 
     @Override
-    public void addLineType(LineType str) {
-        pointTypes.add(str);
-        
+    public AnchorInfo getEastPoint() {
+        DoubleBinding x = this.translateXProperty().add(this.width);
+        DoubleBinding y = this.translateYProperty().add(this.height / 2);
+
+        AnchorInfo eastPoint = new AnchorInfo(x, y);
+        return eastPoint;
+
+    }
+
+    @Override
+    public AnchorInfo getWestPoint() {
+        DoubleBinding x = this.translateXProperty().add(0);
+        DoubleBinding y = this.translateYProperty().add(this.height / 2);
+
+        AnchorInfo westPoint = new AnchorInfo(x, y);
+        return westPoint;
     }
 
     @Override
@@ -350,26 +310,11 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel {
     }
 
     @Override
-    public void deleteLine(int id) {
-        Pane pane = (Pane) this.getParent();
-        int t = lines.size();
-        for (int i = 0; i < lines.size(); ++i) {
-            if (lines.get(i).getIntId() == id) {
-                if (pane != null) {
-                    if(pointTypes.get(i).equals(LineType.END)){
-                        pane.getChildren().remove(lines.get(i));
-                    }
-                    pointTypes.remove(pointTypes.get(i));
-                    lines.remove(lines.get(i));
-                    break;
-                    
-                }
-                
-            }
-            
+    public void removeLine(UMLLine line) {
+        lines.remove(line);
 
-        }
     }
+
 
     /**
      * *********************************************************************************************
@@ -381,33 +326,35 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel {
     	text.setMouseTransparent(false);
     	text.setStyle("-fx-background-color: green");
     	text.getParent().setEffect(borderGlow);
+    }
     	
+  //*********************************************************************************************
+ 
+    public void revertActions(TextArea text) {
+        if (text == classTextName) {
+            classMethods.setEditable(false);
+            classMethods.setMouseTransparent(true);
+            classMethods.setStyle("-fx-background-color: white");
+            classFunctions.setEditable(false);
+            classFunctions.setMouseTransparent(true);
+            classFunctions.setStyle("-fx-background-color: white");
+        } else if (text == classMethods) {
+            classTextName.setEditable(false);
+            classTextName.setMouseTransparent(true);
+            classTextName.setStyle("-fx-background-color: white");
+            classFunctions.setEditable(false);
+            classFunctions.setMouseTransparent(true);
+            classFunctions.setStyle("-fx-background-color: white");
+        } else {
+            classTextName.setEditable(false);
+            classTextName.setMouseTransparent(true);
+            classTextName.setStyle("-fx-background-color: white");
+            classMethods.setEditable(false);
+            classMethods.setMouseTransparent(true);
+            classMethods.setStyle("-fx-background-color: white");
+        }
     }
-    
-    public void revertActions(TextArea text){
-    	if(text == classTextName){
-    		classMethods.setEditable(false);
-    		classMethods.setMouseTransparent(true);
-    		classMethods.setStyle("-fx-background-color: white");
-    		classFunctions.setEditable(false);
-    		classFunctions.setMouseTransparent(true);
-    		classFunctions.setStyle("-fx-background-color: white");
-    	} else if(text == classMethods){
-    		classTextName.setEditable(false);
-    		classTextName.setMouseTransparent(true);
-    		classTextName.setStyle("-fx-background-color: white");
-    		classFunctions.setEditable(false);
-    		classFunctions.setMouseTransparent(true);
-    		classFunctions.setStyle("-fx-background-color: white");
-    	} else {
-    		classTextName.setEditable(false);
-    		classTextName.setMouseTransparent(true);
-    		classTextName.setStyle("-fx-background-color: white");
-    		classMethods.setEditable(false);
-    		classMethods.setMouseTransparent(true);
-    		classMethods.setStyle("-fx-background-color: white");
-    	}
-    }
+
     public void removeActions(){
     	revertActions(classTextName);
     	revertActions(classMethods);
@@ -435,6 +382,17 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel {
     	
     }
     */
+
+    public void destroy() {
+        Pane pane = (Pane) this.getParent();
+        int size = lines.size() - 1;
+        for (int i = size; i >= 0; i--) {
+            lines.get(i).destroy();
+        }
+        lines.clear();
+        pane.getChildren().remove(this);
+    }
+
     /**
      * creates the currently selected panel for this Node
      *
@@ -445,7 +403,7 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel {
 
         h.getChildren().clear();
         DropShadow shadow = new DropShadow();
-        
+
         Button editName = new Button("Edit Name");
         editName.setMaxWidth(Double.MAX_VALUE);
         HBox.setHgrow(editName, Priority.ALWAYS);
@@ -453,7 +411,8 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel {
         	TextArea text = classTextName;
         	applyActions(text);
         	revertActions(text);
-        	
+
+          
         });
         editName.addEventHandler(MouseEvent.MOUSE_ENTERED,
                 new EventHandler<MouseEvent>() {
@@ -474,9 +433,9 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel {
         editAttr.setMaxWidth(Double.MAX_VALUE);
         HBox.setHgrow(editAttr, Priority.ALWAYS);
         editAttr.setOnAction((ActionEvent e) -> {
-        	TextArea text = classMethods;
-        	applyActions(text);
-        	revertActions(text);
+            TextArea text = classMethods;
+            applyActions(text);
+            revertActions(text);
         });
         editAttr.addEventHandler(MouseEvent.MOUSE_ENTERED,
                 new EventHandler<MouseEvent>() {
@@ -497,9 +456,9 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel {
         editOps.setMaxWidth(Double.MAX_VALUE);
         HBox.setHgrow(editOps, Priority.ALWAYS);
         editOps.setOnAction((ActionEvent e) -> {
-        	TextArea text = classFunctions;
-        	applyActions(text);
-        	revertActions(text);
+            TextArea text = classFunctions;
+            applyActions(text);
+            revertActions(text);
         });
         editOps.addEventHandler(MouseEvent.MOUSE_ENTERED,
                 new EventHandler<MouseEvent>() {
@@ -521,7 +480,8 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel {
         HBox.setHgrow(deleteB, Priority.ALWAYS);
         deleteB.setOnAction((ActionEvent e) -> {
         	removeActions();
-            deleteSelf();
+            destroy();
+
             h.getChildren().clear();
             
         });

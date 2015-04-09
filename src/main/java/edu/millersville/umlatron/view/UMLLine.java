@@ -1,139 +1,97 @@
 package edu.millersville.umlatron.view;
 
+import edu.millersville.umlatron.Util.AnchorInfo;
+import java.util.ArrayList;
+import javafx.beans.binding.DoubleBinding;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.scene.Cursor;
-import javafx.geometry.Point2D;
-import javafx.scene.control.ContextMenu;
-import javafx.scene.control.MenuItem;
-import javafx.scene.input.MouseButton;
+import javafx.scene.Group;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Line;
 
 /**
  *
- * @author Matthew Hipszer
+ * @authors Matthew Hipszer , John Lewis
  *
  */
-public class UMLLine extends Line {
+public class UMLLine extends Group {
 
-    private double initX;
-    private double initY;
-    protected Point2D startingAnchor;
-    protected Point2D endingAnchor;
-    protected int point1Int;
-    protected int point2Int;
-    private Point2D dragAnchor1;
-    private Point2D dragAnchor2;
-    protected AnchorPoint anchorPoint1;
-    protected AnchorPoint anchorPoint2;
     private static int lineCount;
     protected int id;
     protected boolean dashed = false;
 
+    ChangeListener<Number> listener = (ObservableValue<? extends Number> ov, Number old_state, Number new_state) -> {
+
+        calculateAnchorPoints();
+
+    };
+
+    protected Line line = new Line();
+    ClassBox startNode, endNode;
+    DoubleBinding deltaX, deltaY, distance;
+
+    ArrayList<AnchorInfo> startPoints = new ArrayList<>();
+    ArrayList<AnchorInfo> endPoints = new ArrayList<>();
 
     /**
      *
-     * @param a1 The AnchorPoint that the starting point of the line is attached
-     * to.
-     * @param a2 The AnchorPoint that the ending point of the line is attached
-     * to.
+     * @param startNode The AnchorPoint that the starting point of the line is
+     * attached to.
+     * @param endNode The AnchorPoint that the ending point of the line is
+     * attached to.
      */
-    public UMLLine(AnchorPoint a1, AnchorPoint a2) {
-        super(a1.getAnchorPoint(0).getX(), a1.getAnchorPoint(0).getY(), a2
-                .getAnchorPoint(0).getX(), a2.getAnchorPoint(0).getY());
-        id = lineCount;
-        ++lineCount;
+    public UMLLine(ClassBox startNode, ClassBox endNode) {
+        super();
 
-        anchorPoint1 = a1;
-        anchorPoint2 = a2;
+        //
+        this.id = lineCount;
+        lineCount++;
+        //
+        
+        this.startNode = startNode;
+        this.endNode = endNode;
+        startNode.addLine(this);
+        endNode.addLine(this);
 
-        // sets the anchorPoints
-        updateAnchorPoints();
+        startPoints.add(startNode.getNorthPoint());
+        startPoints.add(startNode.getSouthPoint());
+        startPoints.add(startNode.getWestPoint());
+        startPoints.add(startNode.getEastPoint());
 
-        setCursor(Cursor.OPEN_HAND);
-        setStrokeWidth(2.0);
+        endPoints.add(endNode.getNorthPoint());
+        endPoints.add(endNode.getSouthPoint());
+        endPoints.add(endNode.getWestPoint());
+        endPoints.add(endNode.getEastPoint());
 
-      
-        MenuItem delete = new MenuItem("delete");
+        deltaX = line.endXProperty().subtract(line.startXProperty());
+        deltaY = line.startYProperty().subtract(line.endYProperty());
+        distance = deltaX.add(deltaY);
 
-        delete.setOnAction((event) -> {
-            deleteSelf();
-        });
+        distance.addListener(listener);
 
-        ContextMenu contextMenu = new ContextMenu(delete);
+        line.setCursor(Cursor.OPEN_HAND);
+        line.setStrokeWidth(2.0);
+        calculateAnchorPoints();
+        this.getChildren().add(line);
 
-        setOnMouseClicked((event) -> {
-            if (event.getButton() == MouseButton.SECONDARY) {
-                System.out.println("hello");
-                contextMenu.show(this, event.getScreenX(), event.getScreenY());
-            } else {
-                contextMenu.hide();
-            }
-        });
     }
 
     /**
      *
      */
-    public void updateAnchorPoints() {
-        double min = 999999999;
-        point1Int = 0;
-        point2Int = 0;
-        for (int i = 0; i < anchorPoint1.getAnchorCount(); ++i) {
-            startingAnchor = new Point2D(anchorPoint1.getAnchorPoint(i).getX(),
-                    anchorPoint1.getAnchorPoint(i).getY());
-            for (int j = 0; j < anchorPoint2.getAnchorCount(); ++j) {
-                endingAnchor = new Point2D(anchorPoint2.getAnchorPoint(j)
-                        .getX(), anchorPoint2.getAnchorPoint(j).getY());
-                if (startingAnchor.distance(endingAnchor) < min) {
-                    min = startingAnchor.distance(endingAnchor);
-                    point1Int = i;
-                    point2Int = j;
-                }
-            }
-        }
-        this.setStartX(anchorPoint1.getAnchorPoint(point1Int).getX());
-        this.setStartY(anchorPoint1.getAnchorPoint(point1Int).getY());
-        this.setEndX(anchorPoint2.getAnchorPoint(point2Int).getX());
-        this.setEndY(anchorPoint2.getAnchorPoint(point2Int).getY());
-
-    }
-    
-      protected void setDashed() {
-        if(dashed == false){
-            this.getStrokeDashArray().addAll(9d, 9d, 9d, 9d);
+    protected void setDashed() {
+        if (dashed == false) {
+            line.getStrokeDashArray().addAll(9d, 9d, 9d, 9d);
             dashed = true;
         }
 
     }
 
     protected void setSolid() {
-        this.getStrokeDashArray().clear();
+        line.getStrokeDashArray().clear();
         dashed = false;
 
-    }
-
-    /**
-     *
-     * @return returns which anchor point the starting point of the line is
-     * connected to.
-     */
-    public int getAnchorPoint1Int() {
-        return point1Int;
-    }
-
-    /**
-     *
-     * @return returns which anchor point the ending point of the line is
-     * connected to.
-     */
-    public int getAnchorPoint2Int() {
-        return point2Int;
-    }
-
- 
-    public void deleteSelf() {
-        anchorPoint1.deleteLine(id);
-        anchorPoint2.deleteLine(id);
     }
 
     public int getIntId() {
@@ -141,14 +99,66 @@ public class UMLLine extends Line {
     }
 
     /**
+     * Computes the slope (in both direction for each end point), will adjust
+     * the anchor point with respect to that angle
+     */
+    final void calculateAnchorPoints() {
+        
+        double min = 999999999;
+        AnchorInfo startAnchor = startPoints.get(0);
+        AnchorInfo endAnchor = endPoints.get(0);
+        double distance = 0;
+
+        for (AnchorInfo start : startPoints) {
+            for (AnchorInfo end : endPoints) {
+                distance = Math.hypot(start.getX().get() - end.getX().get(), start.getY().get() - end.getY().get());
+                if (distance < min) {
+                    min = distance;
+                    startAnchor = start;
+                    endAnchor = end;
+                }
+            }
+
+        }
+        line.startXProperty().unbind();
+        line.startYProperty().unbind();
+        line.endXProperty().unbind();
+        line.endYProperty().unbind();
+
+        line.startXProperty().bind(startAnchor.getX());
+        line.startYProperty().bind(startAnchor.getY());
+
+        line.endXProperty().bind(endAnchor.getX());
+        line.endYProperty().bind(endAnchor.getY());
+
+    }
+
+    /**
+     *
+     */
+    public void updateHead() {
+
+    }
+
+    public void destroy() {
+        startNode.removeLine(this);
+        endNode.removeLine(this);
+        Pane pane = (Pane) this.getParent();
+        pane.getChildren().remove(this);
+    }
+ 
+
+    /**
      *
      */
     public void toggleDashed() {
-        if (this.getStrokeDashArray().isEmpty()) {
-            this.getStrokeDashArray().addAll(5d, 5d, 5d, 5d);
+        if (line.getStrokeDashArray().isEmpty()) {
+            line.getStrokeDashArray().addAll(5d, 5d, 5d, 5d);
         } else {
-            this.getStrokeDashArray().clear();
+            line.getStrokeDashArray().clear();
         }
     }
+    
+   
 
 }
