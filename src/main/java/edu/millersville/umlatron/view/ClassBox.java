@@ -1,5 +1,6 @@
 package edu.millersville.umlatron.view;
 import javafx.scene.control.ScrollPane;
+
 import java.util.ArrayList;
 import java.util.Observable;
 
@@ -9,10 +10,13 @@ import javafx.event.EventHandler;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.VBox;
+import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
 import javafx.scene.Cursor;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.effect.DropShadow;
@@ -20,7 +24,17 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontPosture;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 import javafx.geometry.HPos;
+import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.ObservableList;
+import javafx.scene.control.ScrollBar;
 
 /**
  *
@@ -42,6 +56,10 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel {
     private TextArea classTextName;
     private TextArea classMethods;
     private TextArea classFunctions;
+    private DropShadow borderGlow;
+    private DropShadow noGlow;
+    private Text textHolder = new Text();
+    private double oldHeight = 0;
 
     public ClassBox(double x, double y) {
 
@@ -60,13 +78,30 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel {
         System.out.println(computePrefHeight(height));
         setStyle("-fx-border-style: solid;" + "-fx-border-width: 2;"
                 + "-fx-border-color: black;");
+        
+        //highlight for currently selected classbox
+        borderGlow = new DropShadow();
+    	borderGlow.setColor(Color.GREEN);
+    	borderGlow.setOffsetX(0f);
+    	borderGlow.setOffsetY(0f);
+    	borderGlow.setWidth(70);
+    	borderGlow.setHeight(70);
+    	//remove highlighting
+    	noGlow = new DropShadow();
+    	noGlow.setColor(Color.GREEN);
+    	noGlow.setOffsetX(0f);
+    	noGlow.setOffsetY(0f);
+    	noGlow.setWidth(0);
+    	noGlow.setHeight(0);
 
         /*
          * Children of ClassBox Consists of 3 TextAreas with default column and
          * row sizes VBox grows to meet these upon creation They are set to wrap
          * text, given a prompt text, and are set to transparent until
          * corresponding button says otherwise
-         */
+         */    
+    	
+        
         classTextName = new TextArea();
         classTextName.setPromptText(name);
         classTextName.setPrefRowCount(1);
@@ -74,8 +109,24 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel {
         classTextName.setWrapText(true);
         classTextName.setMouseTransparent(true);
         classTextName.setEditable(false);
-        //classTextName.isResizable();
-       
+        classTextName.isResizable();
+        ClassBox.setVgrow(classTextName, Priority.ALWAYS); 
+        
+     
+        
+        textHolder.textProperty().bind(classTextName.textProperty());
+        textHolder.boundsInLocalProperty().addListener(new ChangeListener<Bounds>() {
+            @Override
+            public void changed(ObservableValue<? extends Bounds> observable, Bounds oldValue, Bounds newValue) {
+            	textHolder.setWrappingWidth(classTextName.getWidth() - 25);
+                if (oldHeight != newValue.getHeight() ) {
+                    System.out.println("newValue = " + newValue.getHeight());
+                    oldHeight = newValue.getHeight();
+                    classTextName.setPrefHeight(textHolder.getLayoutBounds().getHeight() + 20); // +20 is for paddings
+                }
+                
+            }
+        });
     
         
         classMethods = new TextArea();
@@ -85,8 +136,9 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel {
         classMethods.setWrapText(true);
         classMethods.setMouseTransparent(true);
         classMethods.setEditable(false);
-        //classMethods.isResizable();
-        //setVgrow(classMethods, Priority.ALWAYS);
+        classMethods.isResizable();
+        
+        ClassBox.setVgrow(classMethods, Priority.ALWAYS); 
 
         classFunctions = new TextArea();
         classFunctions.setPromptText(functions);
@@ -95,9 +147,9 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel {
         classFunctions.setWrapText(true);
         classFunctions.setMouseTransparent(true);
         classFunctions.setEditable(false);
-       // classFunctions.isResizable();
-       // setVgrow(classFunctions, Priority.ALWAYS);
-
+        classFunctions.isResizable();
+        ClassBox.setVgrow(classFunctions, Priority.ALWAYS); 
+        
         getChildren().addAll(classTextName, classMethods, classFunctions);
 
         /*
@@ -321,12 +373,15 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel {
 
     /**
      * *********************************************************************************************
+     * TextArea functionality
      */
     public void applyActions(TextArea text) {
     	text.requestFocus();
     	text.setEditable(true);
     	text.setMouseTransparent(false);
     	text.setStyle("-fx-background-color: green");
+    	text.getParent().setEffect(borderGlow);
+    	
     }
     
     public void revertActions(TextArea text){
@@ -357,8 +412,29 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel {
     	revertActions(classTextName);
     	revertActions(classMethods);
     	revertActions(classFunctions);
+    	classTextName.getParent().setEffect(noGlow);
     	
     }
+    /*
+     * Set up for textArea editing
+     * 
+    public void createTextAreaMenu(VBox vbox){
+    	VBox menuOptions = new VBox(); 	
+    
+    	menuOptions.getChildren().clear();
+    	Button bold = new Button("Bold");
+    	bold.setMaxWidth(Double.MAX_VALUE);
+    	VBox.setVgrow(bold, Priority.ALWAYS);
+    	bold.setOnAction((ActionEvent e) -> {
+    		classTextName.getSelectedText();
+    		classTextName.setStyle("-fx-font-weight:bold");
+    	});
+    	menuOptions.getChildren().addAll(bold);
+    	
+    	
+    	
+    }
+    */
     /**
      * creates the currently selected panel for this Node
      *
@@ -377,6 +453,7 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel {
         	TextArea text = classTextName;
         	applyActions(text);
         	revertActions(text);
+        	
         });
         editName.addEventHandler(MouseEvent.MOUSE_ENTERED,
                 new EventHandler<MouseEvent>() {
@@ -443,8 +520,10 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel {
         deleteB.setMaxWidth(Double.MAX_VALUE);
         HBox.setHgrow(deleteB, Priority.ALWAYS);
         deleteB.setOnAction((ActionEvent e) -> {
+        	removeActions();
             deleteSelf();
             h.getChildren().clear();
+            
         });
         deleteB.addEventHandler(MouseEvent.MOUSE_ENTERED,
                 new EventHandler<MouseEvent>() {
