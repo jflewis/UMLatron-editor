@@ -6,7 +6,7 @@
 package edu.millersville.umlatron;
 
 import edu.millersville.umlatron.controller.UmlatronController;
-import edu.millersville.umlatron.model.State;
+import edu.millersville.umlatron.model.SelectState;
 import edu.millersville.umlatron.model.UmlModel;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.HBox;
@@ -29,7 +29,7 @@ public class CheckCorrectToggledTest {
 public void checkInitialStateIsSelect(){
     UmlatronController controller = new UmlatronController(new Stage());
     UmlModel model = controller.getModel();
-    assertEquals(model.getStateProperty().get(), State.SELECT);
+    assertEquals(model.getSelectStateProperty().get(), SelectState.SELECT);
 }
 
 @Test
@@ -40,7 +40,7 @@ public void checkIfSelectIsToggled(){
     ToggleButton tb = (ToggleButton)toggleButtons.getChildren().get(0);
     tb.fire();
     tb.setSelected(true);
-    assertEquals(model.getStateProperty().get(), State.SELECT);
+    assertEquals(model.getSelectStateProperty().get(), SelectState.SELECT);
 }
 
 @Test
@@ -51,7 +51,7 @@ public void checkIfClassboxIsToggled(){
     ToggleButton tb = (ToggleButton)toggleButtons.getChildren().get(1);
     tb.fire();
     tb.setSelected(true);
-    assertEquals(model.getStateProperty().get(), State.CLASSBOX);
+    assertEquals(model.getSelectStateProperty().get(), SelectState.CLASSBOX);
     
 }
 
@@ -63,7 +63,7 @@ public void checkIfLineIsToggled(){
     ToggleButton tb = (ToggleButton)toggleButtons.getChildren().get(2);
     tb.fire();
     tb.setSelected(true);
-    assertEquals(model.getStateProperty().get(), State.LINE);
+    assertEquals(model.getSelectStateProperty().get(), SelectState.LINE);
 }
 @Test
 public void checkIfAssociationIsToggled(){
@@ -73,7 +73,7 @@ public void checkIfAssociationIsToggled(){
     ToggleButton tb = (ToggleButton)toggleButtons.getChildren().get(3);
     tb.fire();
     tb.setSelected(true);
-    assertEquals(model.getStateProperty().get(), State.ASSOCIATION);    
+    assertEquals(model.getSelectStateProperty().get(), SelectState.ASSOCIATION);    
 }
 
 @Test
@@ -84,7 +84,7 @@ public void checkIfGeneralizationIsToggled(){
     ToggleButton tb = (ToggleButton)toggleButtons.getChildren().get(4);
     tb.fire();
     tb.setSelected(true);
-    assertEquals(model.getStateProperty().get(), State.GENERALIZATION);    
+    assertEquals(model.getSelectStateProperty().get(), SelectState.GENERALIZATION);    
 }
 
 

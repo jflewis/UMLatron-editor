@@ -120,6 +120,7 @@ public class UMLLine extends Group {
             }
 
         }
+        
         line.startXProperty().unbind();
         line.startYProperty().unbind();
         line.endXProperty().unbind();
@@ -130,7 +131,6 @@ public class UMLLine extends Group {
 
         line.endXProperty().bind(endAnchor.getX());
         line.endYProperty().bind(endAnchor.getY());
-
     }
 
     /**

@@ -164,7 +164,7 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel {
          */
         MenuItem delete = new MenuItem("delete");
         delete.setOnAction(event -> {
-            // deleteSelf();
+            destroy();
         });
 
         ContextMenu contextMenu = new ContextMenu(delete);
