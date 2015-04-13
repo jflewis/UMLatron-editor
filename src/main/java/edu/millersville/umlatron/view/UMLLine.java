@@ -15,7 +15,7 @@ import javafx.scene.shape.Line;
  * @authors Matthew Hipszer , John Lewis
  *
  */
-public class UMLLine extends Group {
+public class UMLLine extends Group implements java.io.Serializable {
 
     private static int lineCount;
     protected int id;
