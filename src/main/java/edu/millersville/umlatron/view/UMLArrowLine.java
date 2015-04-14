@@ -1,5 +1,8 @@
 package edu.millersville.umlatron.view;
 
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -30,6 +33,7 @@ public class UMLArrowLine extends UMLLine implements SelectedPanel {
     Rotate rotate = new Rotate();
 
 
+    public UMLArrowLine(){}
     /**
      *
      * @param a1 The AnchorPoint that the starting point of the line is attached
@@ -41,6 +45,14 @@ public class UMLArrowLine extends UMLLine implements SelectedPanel {
         super(a1, a2);
         createLine();
                     
+    }
+    
+    @Override
+    public UMLArrowLine createLineFromLoad(){
+        super.createLineFromLoad();
+        createLine();
+        return this;
+        
     }
     
     private void createLine(){
@@ -154,4 +166,23 @@ public class UMLArrowLine extends UMLLine implements SelectedPanel {
         h.getChildren().addAll(label,setDashed, setSolid,deleteB);
 
     }
+    
+    /*
+    @Override
+    public void writeExternal(ObjectOutput out) throws IOException {
+        out.writeObject(startNode);
+        out.writeObject(endNode);
+        
+    }
+
+ 
+
+    @Override
+    public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
+        startNode  = (ClassBox)in.readObject();
+        endNode = (ClassBox)in.readObject();
+
+    }
+    */
+    
 }

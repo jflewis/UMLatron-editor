@@ -14,7 +14,6 @@ import javafx.scene.Node;
 import javafx.scene.control.Toggle;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
-import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 /**
@@ -112,7 +111,6 @@ public class UmlatronController {
                 Node filteredNode = checkIfPane(selectedNode);
                 // System.out.println(filteredNode.toString());
                 if (filteredNode != null) {
-                    System.out.println(filteredNode.toString());
                     model.getCurrentlySelectedNodeProperty().setValue(filteredNode);
                     //if we are in the line state and the node clicked on is able to have a line attached to it continue
                     if (model.getSelectStateProperty().get() == SelectState.LINE || model.getSelectStateProperty().get() == SelectState.ASSOCIATION
@@ -229,7 +227,7 @@ public class UmlatronController {
      * @return the node or null if the pane
      */
     private Node checkIfPane(Node n) {
-        if (n.getClass().equals(Pane.class)) {
+        if (n.getClass().equals(EditPane.class)) {
             return null;
         } else {
             return n;
@@ -250,7 +248,7 @@ public class UmlatronController {
         EventHandler<MouseEvent> createClassBox = (event) -> {
             double x = event.getX();
             double y = event.getY();
-            System.out.println("You created a ClassBox at " + x + " , " + y);
+            //System.out.println("You created a ClassBox at " + x + " , " + y);
             view.getEditPane().getChildren().add(new ClassBox(x, y));
         };
 

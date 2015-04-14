@@ -1,6 +1,9 @@
 package edu.millersville.umlatron.view;
 
 import edu.millersville.umlatron.Util.AnchorInfo;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 import java.util.ArrayList;
 import javafx.beans.binding.DoubleBinding;
 import javafx.beans.value.ChangeListener;
@@ -15,24 +18,26 @@ import javafx.scene.shape.Line;
  * @authors Matthew Hipszer , John Lewis
  *
  */
-public class UMLLine extends Group implements java.io.Serializable {
+public class UMLLine extends Group implements java.io.Externalizable {
 
     private static int lineCount;
     protected int id;
     protected boolean dashed = false;
-
     ChangeListener<Number> listener = (ObservableValue<? extends Number> ov, Number old_state, Number new_state) -> {
 
         calculateAnchorPoints();
 
     };
-
     protected Line line = new Line();
     ClassBox startNode, endNode;
     DoubleBinding deltaX, deltaY, distance;
-
     ArrayList<AnchorInfo> startPoints = new ArrayList<>();
     ArrayList<AnchorInfo> endPoints = new ArrayList<>();
+    
+    
+    public UMLLine(){
+        
+    }
 
     /**
      *
@@ -76,6 +81,33 @@ public class UMLLine extends Group implements java.io.Serializable {
         this.getChildren().add(line);
 
     }
+    public UMLLine createLineFromLoad(){
+        startNode.addLine(this);
+        endNode.addLine(this);
+
+        startPoints.add(startNode.getNorthPoint());
+        startPoints.add(startNode.getSouthPoint());
+        startPoints.add(startNode.getWestPoint());
+        startPoints.add(startNode.getEastPoint());
+
+        endPoints.add(endNode.getNorthPoint());
+        endPoints.add(endNode.getSouthPoint());
+        endPoints.add(endNode.getWestPoint());
+        endPoints.add(endNode.getEastPoint());
+
+        deltaX = line.endXProperty().subtract(line.startXProperty());
+        deltaY = line.startYProperty().subtract(line.endYProperty());
+        distance = deltaX.add(deltaY);
+
+        distance.addListener(listener);
+
+        line.setCursor(Cursor.OPEN_HAND);
+        line.setStrokeWidth(2.0);
+        calculateAnchorPoints();
+        this.getChildren().add(line);
+        return this;
+    }
+   
 
     /**
      *
@@ -157,6 +189,24 @@ public class UMLLine extends Group implements java.io.Serializable {
         } else {
             line.getStrokeDashArray().clear();
         }
+    }
+    
+    @Override
+    public void writeExternal(ObjectOutput out) throws IOException {
+        out.writeObject(startNode);
+        out.writeObject(endNode);
+        out.writeBoolean(dashed);
+        
+    }
+
+ 
+
+    @Override
+    public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
+        startNode  = (ClassBox)in.readObject();
+        endNode = (ClassBox)in.readObject();
+        dashed = in.readBoolean();
+
     }
     
    

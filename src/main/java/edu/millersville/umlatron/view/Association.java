@@ -18,7 +18,7 @@ import javafx.scene.transform.Rotate;
  * @author Matthew Hipszer
  *
  */
-public class Association extends UMLLine implements SelectedPanel {
+public class Association extends UMLLine implements SelectedPanel,java.io.Serializable {
 
     Rotate rotate = new Rotate();
     Polygon polygon = new Polygon();
@@ -34,14 +34,20 @@ public class Association extends UMLLine implements SelectedPanel {
     public Association(ClassBox a1, ClassBox a2) {
         super(a1, a2);
         createLine();
-        
-        
-      
-
-        
+         
     }
     
-    void createLine(){
+    public Association(){}
+    
+    @Override
+    public Association createLineFromLoad(){
+        super.createLineFromLoad();
+        createLine();
+        return this;
+    }
+
+    
+    final void createLine(){
         polygon.getPoints().addAll(new Double[]{
             0.0, 0.0,
             -12.0, -7.0,

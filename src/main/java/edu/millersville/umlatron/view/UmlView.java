@@ -5,6 +5,8 @@
  */
 package edu.millersville.umlatron.view;
 
+import edu.millersville.umlatron.Util.Load;
+import edu.millersville.umlatron.Util.Save;
 import edu.millersville.umlatron.controller.UmlatronController;
 import javafx.scene.control.SeparatorMenuItem;
 import javafx.scene.control.Menu;
@@ -37,7 +39,7 @@ public class UmlView extends BorderPane {
     private MenuBar mainApp;
     private HBox toggleButtons = new HBox();
     private HBox currentlySelectedPanel;
-    private Pane editPane = new Pane();
+    private EditPane editPane = new EditPane();
     private UmlatronController controller;
 
     public UmlView(UmlatronController controller) {
@@ -60,11 +62,20 @@ public class UmlView extends BorderPane {
         
         Menu fileOperations = new Menu("File");
         MenuItem newThing = new MenuItem("New");
+        MenuItem saveButton = new MenuItem("Save");
+        saveButton.setOnAction((event) ->{
+            Save save = new Save(editPane);
+        });
         MenuItem exit = new MenuItem("Exit");
         exit.setOnAction((event) -> {
             System.exit(0);
         });
-        fileOperations.getItems().addAll(newThing, new SeparatorMenuItem(), exit);
+        MenuItem load = new MenuItem("Load");
+        load.setOnAction((event) -> {
+            editPane.getChildren().clear();
+            new Load().load(editPane);
+        });
+        fileOperations.getItems().addAll(newThing, new SeparatorMenuItem(),saveButton,load,new SeparatorMenuItem(), exit);
         
         Menu views = new Menu("Views");  
         MenuItem umlClass = new MenuItem("Class diagrahm");

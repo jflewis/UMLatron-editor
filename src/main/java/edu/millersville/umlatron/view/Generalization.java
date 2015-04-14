@@ -22,7 +22,7 @@ import javafx.scene.transform.Rotate;
  *
  * @author John
  */
-public class Generalization extends UMLLine implements SelectedPanel {
+public class Generalization extends UMLLine implements SelectedPanel,java.io.Serializable {
 
     Rotate rotate = new Rotate();
     Polygon polygon = new Polygon();
@@ -31,6 +31,17 @@ public class Generalization extends UMLLine implements SelectedPanel {
         super(a1, a2);
         createLine();
     }
+    
+    public Generalization(){}
+    
+    @Override
+    public Generalization createLineFromLoad(){
+        super.createLineFromLoad();
+        createLine();
+        return this;
+    }
+    
+    
     
     private void createLine(){
         

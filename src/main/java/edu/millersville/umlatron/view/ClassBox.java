@@ -1,7 +1,9 @@
 package edu.millersville.umlatron.view;
 
-import javafx.scene.control.ScrollPane;
 import edu.millersville.umlatron.Util.AnchorInfo;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 import java.util.ArrayList;
 import javafx.beans.binding.DoubleBinding;
 import javafx.event.ActionEvent;
@@ -9,13 +11,11 @@ import javafx.event.EventHandler;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.VBox;
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
 import javafx.scene.Cursor;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.effect.DropShadow;
@@ -24,30 +24,25 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontPosture;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextFlow;
-import javafx.geometry.HPos;
-import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.collections.ObservableList;
-import javafx.scene.control.ScrollBar;
+
 
 
 /**
  *
  * @authors Greg Polhemus , John L., Matt H.
  */
-public class ClassBox extends VBox implements AnchorPoint, SelectedPanel {
+public class ClassBox extends VBox implements AnchorPoint, SelectedPanel,java.io.Externalizable {
 
     private double initX;
     private double initY;
-    double height, width;
+    double height = 178.0;
+    double width = 167.0;
     private int anchorCount;
     private Point2D[] anchorPoints;
-    private ArrayList<UMLLine> lines;
+    private ArrayList<UMLLine> lines = new ArrayList<UMLLine>();
     private Point2D dragAnchor;
     private String name = "Enter A Class Name Here";
     private String methods = "Enter Methods Here";
@@ -63,16 +58,13 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel {
     private double textNameHeight = 0;
     private double methodsHeight = 0;
     private double functionsHeight = 0;
+    
+    public ClassBox(){this(0,0);}
 
 
     public ClassBox(double x, double y) {
 
-        super();
-        height = 178.0;
-        width = 167.0;
-        anchorCount = 4;
-        anchorPoints = new Point2D[anchorCount];
-        lines = new ArrayList<UMLLine>();
+        super(); 
         setCursor(Cursor.OPEN_HAND);
         setTranslateX(x);
         setTranslateY(y);
@@ -147,8 +139,7 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel {
                     System.out.println("newValue = " + newValue.getHeight());
                     methodsHeight = newValue.getHeight();
                     classMethods.setPrefHeight(methodsHolder.getLayoutBounds().getHeight() + 20); // +20 is for paddings
-                }
-                
+                }  
             }
         });
 
@@ -529,5 +520,28 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel {
         Label label = new Label("Currently selected node : Class Box ");
         h.getChildren().addAll(label, editName, editAttr, editOps, deleteB);
     }
+    
+    @Override
+    public void writeExternal(ObjectOutput out) throws IOException {
+        out.writeDouble(this.getTranslateX());
+        out.writeDouble(this.getTranslateY());
+        out.writeUTF(classTextName.getText());
+        out.writeUTF(classMethods.getText());
+        out.writeUTF(classFunctions.getText());
+        
+    }
+
+ 
+
+    @Override
+    public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
+        this.setTranslateX(in.readDouble());
+        this.setTranslateY(in.readDouble());
+        classTextName.setText( in.readUTF());
+        classMethods.setText(in.readUTF());
+        classFunctions.setText(in.readUTF());
+
+    }
+
 
 }
