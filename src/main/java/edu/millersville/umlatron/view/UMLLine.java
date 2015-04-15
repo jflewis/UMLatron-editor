@@ -34,7 +34,9 @@ public class UMLLine extends Group implements java.io.Externalizable {
     ArrayList<AnchorInfo> startPoints = new ArrayList<>();
     ArrayList<AnchorInfo> endPoints = new ArrayList<>();
     
-    
+    /**
+	 * A default constructor used for loading
+	 */
     public UMLLine(){
         
     }
@@ -81,6 +83,11 @@ public class UMLLine extends Group implements java.io.Externalizable {
         this.getChildren().add(line);
 
     }
+    
+    /**
+	 * 
+	 * @return Returns the UMLLine created by the method.
+	 */
     public UMLLine createLineFromLoad(){
         startNode.addLine(this);
         endNode.addLine(this);
@@ -110,8 +117,8 @@ public class UMLLine extends Group implements java.io.Externalizable {
    
 
     /**
-     *
-     */
+	 * Turns the line to a dashed line.
+	 */
     protected void setDashed() {
         if (dashed == false) {
             line.getStrokeDashArray().addAll(9d, 9d, 9d, 9d);
@@ -120,12 +127,19 @@ public class UMLLine extends Group implements java.io.Externalizable {
 
     }
 
+    /**
+	 * Turns the line to a solid line.
+	 */
     protected void setSolid() {
         line.getStrokeDashArray().clear();
         dashed = false;
 
     }
 
+    /**
+     * 
+     * @return Returns the unique id of the line.
+     */
     public int getIntId() {
         return id;
     }
@@ -178,18 +192,6 @@ public class UMLLine extends Group implements java.io.Externalizable {
         Pane pane = (Pane) this.getParent();
         pane.getChildren().remove(this);
     }
- 
-
-    /**
-     *
-     */
-    public void toggleDashed() {
-        if (line.getStrokeDashArray().isEmpty()) {
-            line.getStrokeDashArray().addAll(5d, 5d, 5d, 5d);
-        } else {
-            line.getStrokeDashArray().clear();
-        }
-    }
     
     @Override
     public void writeExternal(ObjectOutput out) throws IOException {
@@ -199,16 +201,10 @@ public class UMLLine extends Group implements java.io.Externalizable {
         
     }
 
- 
-
     @Override
     public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
         startNode  = (ClassBox)in.readObject();
         endNode = (ClassBox)in.readObject();
         dashed = in.readBoolean();
-
     }
-    
-   
-
 }

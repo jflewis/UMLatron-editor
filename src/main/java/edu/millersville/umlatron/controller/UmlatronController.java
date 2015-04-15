@@ -120,21 +120,45 @@ public class UmlatronController {
                             UMLLine line;
                             switch (model.getSelectStateProperty().get()) {
                                 case ASSOCIATION:
-                                    line = new Association((ClassBox) (clickedNodes.get(0)), (ClassBox) (clickedNodes.get(1)));
-                                    view.getEditPane().getChildren().add(line);
-                                    clickedNodes.clear();
+                                	if (clickedNodes.get(0) != clickedNodes.get(1))
+                                	{
+                                		line = new Association((ClassBox) (clickedNodes.get(0)), (ClassBox) (clickedNodes.get(1)));
+                                    	view.getEditPane().getChildren().add(line);
+                                    	clickedNodes.clear();
+                                	}
+                                	else
+                                	{
+                                		view.getEditPane().getChildren().add(new RecursiveAssociation((ClassBox) clickedNodes.get(0)));
+                                		clickedNodes.clear();
+                                	}
                                     break;
 
                                 case LINE:
-                                    line = new UMLArrowLine((ClassBox) (clickedNodes.get(0)), (ClassBox) (clickedNodes.get(1)));
-                                    view.getEditPane().getChildren().add(line);
-                                    clickedNodes.clear();
+                                	if (clickedNodes.get(0) != clickedNodes.get(1))
+                                	{
+                                		line = new UMLArrowLine((ClassBox) (clickedNodes.get(0)), (ClassBox) (clickedNodes.get(1)));
+                                    	view.getEditPane().getChildren().add(line);
+                                    	clickedNodes.clear();
+                                	}
+                                	else
+                                	{
+                                		view.getEditPane().getChildren().add(new UMLRecursiveArrowLine((ClassBox) clickedNodes.get(0)));
+                                		clickedNodes.clear();
+                                	}
                                     break;
 
                                 case GENERALIZATION:
+                                	if (clickedNodes.get(0) != clickedNodes.get(1))
+                                	{
                                     line = new Generalization((ClassBox) (clickedNodes.get(0)), (ClassBox) (clickedNodes.get(1)));
                                     view.getEditPane().getChildren().add(line);
                                     clickedNodes.clear();
+                                	}
+                                	else
+                                	{
+                                		view.getEditPane().getChildren().add(new RecursiveGeneralization((ClassBox) clickedNodes.get(0)));
+                                		clickedNodes.clear();
+                                	}
                                     break;
 
                             }
@@ -154,6 +178,10 @@ public class UmlatronController {
 
                     if (new_selected.getParent() instanceof UMLLine) {
                         new_selected = (UMLLine) new_selected.getParent();
+                    }
+                    
+                    if (new_selected.getParent() instanceof UMLRecursiveLine) {
+                        new_selected = (UMLRecursiveLine) new_selected.getParent();
                     }
 
                     if (new_selected instanceof SelectedPanel) {
