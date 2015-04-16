@@ -42,8 +42,8 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel,java.io
     double width = 167.0;
     private int anchorCount;
     private Point2D[] anchorPoints;
-    private ArrayList<UMLLine> lines = new ArrayList<UMLLine>();
-    private ArrayList<UMLRecursiveLine> recursiveLines = new ArrayList<UMLRecursiveLine>();
+    private ArrayList<UMLLine> lines = new ArrayList<>();
+    private ArrayList<UMLRecursiveLine> recursiveLines = new ArrayList<>();
     private Point2D dragAnchor;
     private String name = "Enter A Class Name Here";
     private String methods = "Enter Methods Here";
@@ -66,11 +66,13 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel,java.io
     public ClassBox(double x, double y) {
 
         super(); 
+        this.setHeight(178.0);
+        this.setWidth(167.0);
         setCursor(Cursor.OPEN_HAND);
         setTranslateX(x);
         setTranslateY(y);
         isResizable();
-        System.out.println(computePrefHeight(height));
+        //System.out.println(computePrefHeight(height));
         setStyle("-fx-border-style: solid;" + "-fx-border-width: 2;"
                 + "-fx-border-color: black;");
         
@@ -116,8 +118,8 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel,java.io
                     System.out.println("newValue = " + newValue.getHeight());
                     textNameHeight = newValue.getHeight();
                     classTextName.setPrefHeight(nameHolder.getLayoutBounds().getHeight() + 20); // +20 is for paddings
-                    width = widthProperty().getValue();
-                    height = heightProperty().getValue();
+                  //  width = widthProperty().getValue();
+                    //height = heightProperty().getValue();
                     getNorthPoint();
                     getSouthPoint();
                     getWestPoint();
@@ -147,8 +149,8 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel,java.io
                     System.out.println("newValue = " + newValue.getHeight());
                     methodsHeight = newValue.getHeight();
                     classMethods.setPrefHeight(methodsHolder.getLayoutBounds().getHeight() + 20); // +20 is for paddings
-                    width = widthProperty().getValue();
-                    height = heightProperty().getValue();
+                   // width = widthProperty().getValue();
+                    //height = heightProperty().getValue();
                     getNorthPoint();
                     getSouthPoint();
                     getWestPoint();
@@ -177,8 +179,8 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel,java.io
                     System.out.println("newValue = " + newValue.getHeight());
                     functionsHeight = newValue.getHeight();
                     classFunctions.setPrefHeight(functionsHolder.getLayoutBounds().getHeight() + 20); // +20 is for paddings
-                    width = widthProperty().getValue();
-                    height = heightProperty().getValue();
+                 //   width = widthProperty().getValue();
+                 //   height = heightProperty().getValue();
                     getNorthPoint();
                     getSouthPoint();
                     getWestPoint();
@@ -211,8 +213,8 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel,java.io
             double dragY = event.getSceneY() - dragAnchor.getY();
             double newXPosition = initX + dragX;
             double newYPosition = initY + dragY;
-            width = widthProperty().getValue();
-            height = heightProperty().getValue();
+          //  width = widthProperty().getValue();
+          //  height = heightProperty().getValue();
 
             if ((newXPosition >= this.sceneProperty().get().getX())
                     && (newXPosition <= this.sceneProperty().get().getWidth()
@@ -356,12 +358,11 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel,java.io
 
     public void addRecursiveLine(UMLRecursiveLine line) {
     	recursiveLines.add(line);
-	}
+    }
     
     @Override
     public void removeLine(UMLLine line) {
         lines.remove(line);
-
     }
 
     public void updateAnchorPoints() {
@@ -583,6 +584,8 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel,java.io
         out.writeUTF(classTextName.getText());
         out.writeUTF(classMethods.getText());
         out.writeUTF(classFunctions.getText());
+        out.writeDouble(this.getHeight());
+        out.writeDouble(this.getWidth());
         
     }
 
@@ -593,6 +596,8 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel,java.io
         classTextName.setText( in.readUTF());
         classMethods.setText(in.readUTF());
         classFunctions.setText(in.readUTF());
+        this.setHeight(in.readDouble());
+        this.setWidth(in.readDouble());
 
     }
 
