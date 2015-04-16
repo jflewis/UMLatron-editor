@@ -12,6 +12,8 @@ public interface AnchorPoint  {
     
     public AnchorInfo getWestPoint();
     
+    public void updateAnchorPoints();
+    
     public void removeLine(UMLLine line);
     
     public void addLine(UMLLine line);

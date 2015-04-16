@@ -75,14 +75,14 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel,java.io
         
         //highlight for currently selected classbox
         borderGlow = new DropShadow();
-    	borderGlow.setColor(Color.GREEN);
+    	borderGlow.setColor(Color.BLUE);
     	borderGlow.setOffsetX(0f);
     	borderGlow.setOffsetY(0f);
-    	borderGlow.setWidth(70);
-    	borderGlow.setHeight(70);
+    	borderGlow.setWidth(20);
+    	borderGlow.setHeight(20);
     	//remove highlighting
     	noGlow = new DropShadow();
-    	noGlow.setColor(Color.GREEN);
+    	noGlow.setColor(Color.BLUE);
     	noGlow.setOffsetX(0f);
     	noGlow.setOffsetY(0f);
     	noGlow.setWidth(0);
@@ -115,6 +115,13 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel,java.io
                     System.out.println("newValue = " + newValue.getHeight());
                     textNameHeight = newValue.getHeight();
                     classTextName.setPrefHeight(nameHolder.getLayoutBounds().getHeight() + 20); // +20 is for paddings
+                    width = widthProperty().getValue();
+                    height = heightProperty().getValue();
+                    getNorthPoint();
+                    getSouthPoint();
+                    getWestPoint();
+                    getEastPoint();
+                    updateAnchorPoints();
                 }
                 
             }
@@ -139,6 +146,13 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel,java.io
                     System.out.println("newValue = " + newValue.getHeight());
                     methodsHeight = newValue.getHeight();
                     classMethods.setPrefHeight(methodsHolder.getLayoutBounds().getHeight() + 20); // +20 is for paddings
+                    width = widthProperty().getValue();
+                    height = heightProperty().getValue();
+                    getNorthPoint();
+                    getSouthPoint();
+                    getWestPoint();
+                    getEastPoint();
+                    updateAnchorPoints();
                 }  
             }
         });
@@ -162,6 +176,13 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel,java.io
                     System.out.println("newValue = " + newValue.getHeight());
                     functionsHeight = newValue.getHeight();
                     classFunctions.setPrefHeight(functionsHolder.getLayoutBounds().getHeight() + 20); // +20 is for paddings
+                    width = widthProperty().getValue();
+                    height = heightProperty().getValue();
+                    getNorthPoint();
+                    getSouthPoint();
+                    getWestPoint();
+                    getEastPoint();
+                    updateAnchorPoints();
                 }
                 
             }
@@ -196,13 +217,15 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel,java.io
                     && (newXPosition <= this.sceneProperty().get().getWidth()
                     - (this.sceneProperty().get().getX() + widthProperty()
                     .getValue()))) {
+            	System.out.println("Width: " + width);
 
                 setTranslateX(newXPosition);
             } else if (newXPosition >= this.sceneProperty().get().getX()) {
                 setTranslateX(this.sceneProperty().get().getWidth()
                         - widthProperty().getValue());
-
+                System.out.println("Width: " + width);
             } else {
+            	System.out.println("Width: " + width);
                 setTranslateX(0);
             }
 
@@ -212,13 +235,16 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel,java.io
                     .getValue()))) {
 
                 setTranslateY(newYPosition);
+                System.out.println("Height: " + height);
 
             } else if (newYPosition >= this.sceneProperty().get().getY()) {
                 setTranslateY(this.sceneProperty().get().getHeight()
                         - heightProperty().getValue());
+                System.out.println("Height: " + height);
 
             } else {
                 setTranslateY(0);
+                System.out.println("Height: " + height);
             }
 
             event.consume();
@@ -282,6 +308,7 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel,java.io
     }
 
     // ********************************************************************************************************
+   
     @Override
     public AnchorInfo getNorthPoint() {
 
@@ -295,7 +322,7 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel,java.io
     @Override
     public AnchorInfo getSouthPoint() {
         DoubleBinding x = this.translateXProperty().add(this.width / 2);
-        DoubleBinding y = this.translateYProperty().add(this.height);
+        DoubleBinding y = this.translateYProperty().add(this.getHeight());
 
         AnchorInfo southPoint = new AnchorInfo(x, y);
         return southPoint;
@@ -305,7 +332,7 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel,java.io
     @Override
     public AnchorInfo getEastPoint() {
         DoubleBinding x = this.translateXProperty().add(this.width);
-        DoubleBinding y = this.translateYProperty().add(this.height / 2);
+        DoubleBinding y = this.translateYProperty().add(this.getHeight() / 2);
 
         AnchorInfo eastPoint = new AnchorInfo(x, y);
         return eastPoint;
@@ -315,7 +342,7 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel,java.io
     @Override
     public AnchorInfo getWestPoint() {
         DoubleBinding x = this.translateXProperty().add(0);
-        DoubleBinding y = this.translateYProperty().add(this.height / 2);
+        DoubleBinding y = this.translateYProperty().add(this.getHeight() / 2);
 
         AnchorInfo westPoint = new AnchorInfo(x, y);
         return westPoint;
@@ -331,6 +358,11 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel,java.io
         lines.remove(line);
 
     }
+    public void updateAnchorPoints() {
+    	for(UMLLine line: lines){
+    		line.calculateAnchorPoints();
+    	}
+    }
 
 
     /**
@@ -341,7 +373,7 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel,java.io
     	text.requestFocus();
     	text.setEditable(true);
     	text.setMouseTransparent(false);
-    	text.setStyle("-fx-background-color: green");
+    	text.setEffect(borderGlow);
     	text.getParent().setEffect(borderGlow);
     }
     	
@@ -351,24 +383,24 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel,java.io
         if (text == classTextName) {
             classMethods.setEditable(false);
             classMethods.setMouseTransparent(true);
-            classMethods.setStyle("-fx-background-color: white");
+            classMethods.setEffect(noGlow);
             classFunctions.setEditable(false);
             classFunctions.setMouseTransparent(true);
-            classFunctions.setStyle("-fx-background-color: white");
+            classFunctions.setEffect(noGlow);
         } else if (text == classMethods) {
             classTextName.setEditable(false);
             classTextName.setMouseTransparent(true);
-            classTextName.setStyle("-fx-background-color: white");
+            classTextName.setEffect(noGlow);
             classFunctions.setEditable(false);
             classFunctions.setMouseTransparent(true);
-            classFunctions.setStyle("-fx-background-color: white");
+            classFunctions.setEffect(noGlow);
         } else {
             classTextName.setEditable(false);
             classTextName.setMouseTransparent(true);
-            classTextName.setStyle("-fx-background-color: white");
+            classTextName.setEffect(noGlow);
             classMethods.setEditable(false);
             classMethods.setMouseTransparent(true);
-            classMethods.setStyle("-fx-background-color: white");
+            classMethods.setEffect(noGlow);
         }
     }
 

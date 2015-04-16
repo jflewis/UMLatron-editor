@@ -208,6 +208,7 @@ public class UMLLine extends Group implements java.io.Externalizable {
         dashed = in.readBoolean();
 
     }
+
     
    
 
