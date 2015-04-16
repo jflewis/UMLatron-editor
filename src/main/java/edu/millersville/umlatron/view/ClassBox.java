@@ -196,14 +196,14 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel,java.io
          * Mouse Drag determined by getting the current value of the classBox
          * after creation (it is initialized to 0.0 by default)
          */
-        setOnMousePressed((event) -> {
+       setOnMousePressed((event) -> {
             // when mouse is pressed, store initial position
             initX = getTranslateX();
             initY = getTranslateY();
             dragAnchor = new Point2D(event.getSceneX(), event.getSceneY());
             event.consume();
         });
-
+  
         // Dragging Movement of ClassBox
         // *********************************************************************************/
         setOnMouseDragged((event) -> {
@@ -387,6 +387,12 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel,java.io
     	text.setMouseTransparent(false);
     	text.setEffect(borderGlow);
     	text.getParent().setEffect(borderGlow);
+    }
+    public void applySelection(){
+    	this.setEffect(borderGlow);
+    }
+    public void removeSelection(){
+    	this.setEffect(noGlow);
     }
     	
   //*********************************************************************************************
