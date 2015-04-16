@@ -42,13 +42,11 @@ public class UmlView extends BorderPane {
     private EditPane editPane = new EditPane();
     private UmlatronController controller;
     private FileOperations fileOps;
-    Stage mainStage;
 
-    public UmlView(UmlatronController controller, Stage mainStage) {
+    public UmlView(UmlatronController controller) {
         super();
         this.controller = controller;
-        this.mainStage = mainStage;
-        this.fileOps =new FileOperations(editPane,mainStage);
+        this.fileOps =new FileOperations(editPane,controller.stage);
         mainApp = applicationBar();
         createUmlClassToggleButtons();
         currentlySelectedPanel = createCurrentlySelectedPanel();
@@ -68,8 +66,8 @@ public class UmlView extends BorderPane {
         MenuItem newThing = new MenuItem("New");
         MenuItem saveButton = new MenuItem("Save");
         saveButton.setOnAction((event) ->{
-           // Save save = new Save(editPane,mainStage);
             fileOps.save();
+            controller.getModel().projectSaved = true;
         });
         MenuItem exit = new MenuItem("Exit");
         exit.setOnAction((event) -> {

@@ -23,14 +23,14 @@ import javafx.stage.Stage;
 public class UmlatronController {
 
     UmlModel model = new UmlModel();
-    Stage stage;
+    public Stage stage;
     UmlView view;
     ArrayList<Node> clickedNodes = new ArrayList<>();
 
     public UmlatronController(Stage stage) {
 
         this.stage = stage;
-        this.view = new UmlView(this,stage);
+        this.view = new UmlView(this);
 
 
         // set initial select state
