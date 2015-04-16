@@ -175,9 +175,17 @@ public class UmlatronController {
                     if (last_selected instanceof ClassBox) {
                        ((ClassBox) last_selected).removeActions();
                     }
+                    if (last_selected.getParent() instanceof UMLLine) {
+                    	 last_selected = (UMLLine) last_selected.getParent();
+                         ((UMLLine) last_selected).removeSelection();
+                     }
+                    if (new_selected instanceof ClassBox) {
+                    	((ClassBox) new_selected).applySelection();
+                    }
 
                     if (new_selected.getParent() instanceof UMLLine) {
                         new_selected = (UMLLine) new_selected.getParent();
+                        ((UMLLine) new_selected).applySelection();
                     }
                     
                     if (new_selected.getParent() instanceof UMLRecursiveLine) {
@@ -278,6 +286,7 @@ public class UmlatronController {
             double y = event.getY();
             //System.out.println("You created a ClassBox at " + x + " , " + y);
             view.getEditPane().getChildren().add(new ClassBox(x, y));
+            
         };
 
         view.getEditPane().setOnMouseClicked(createClassBox);
