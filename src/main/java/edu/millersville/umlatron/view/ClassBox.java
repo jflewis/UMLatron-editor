@@ -43,6 +43,7 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel,java.io
     private int anchorCount;
     private Point2D[] anchorPoints;
     private ArrayList<UMLLine> lines = new ArrayList<UMLLine>();
+    private ArrayList<UMLRecursiveLine> recursiveLines = new ArrayList<UMLRecursiveLine>();
     private Point2D dragAnchor;
     private String name = "Enter A Class Name Here";
     private String methods = "Enter Methods Here";
@@ -353,16 +354,27 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel,java.io
         lines.add(line);
     }
 
+    public void addRecursiveLine(UMLRecursiveLine line) {
+    	recursiveLines.add(line);
+	}
+    
     @Override
     public void removeLine(UMLLine line) {
         lines.remove(line);
 
     }
+
     public void updateAnchorPoints() {
     	for(UMLLine line: lines){
     		line.calculateAnchorPoints();
     	}
     }
+
+    
+    public void removeRecursiveLine(UMLRecursiveLine line) {
+    	recursiveLines.remove(line);
+	}
+
 
 
     /**
@@ -439,6 +451,11 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel,java.io
             lines.get(i).destroy();
         }
         lines.clear();
+        size = recursiveLines.size() - 1;
+        for (int i = size; i >= 0; i--) {
+            recursiveLines.get(i).destroy();
+        }
+        recursiveLines.clear();
         pane.getChildren().remove(this);
     }
 
@@ -562,8 +579,6 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel,java.io
         out.writeUTF(classFunctions.getText());
         
     }
-
- 
 
     @Override
     public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {

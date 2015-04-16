@@ -18,5 +18,5 @@ public interface SelectedPanel {
      * @return a selected panel
      */
      void createAndGeneratePanel(HBox h);
-    
+         
 }

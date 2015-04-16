@@ -7,6 +7,7 @@ package edu.millersville.umlatron.Util;
 
 import edu.millersville.umlatron.view.EditPane;
 import edu.millersville.umlatron.view.UMLLine;
+import edu.millersville.umlatron.view.UMLRecursiveLine;
 import java.io.EOFException;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -33,16 +34,15 @@ public class Load {
                     Node n = (Node) in.readObject();
                     if (n instanceof UMLLine) {
                         pane.getChildren().add(((UMLLine) n).createLineFromLoad());
-                    } else {
+                    } else if(n instanceof UMLRecursiveLine){
+                        pane.getChildren().add(((UMLRecursiveLine) n).createLineFromLoad());   
+                    }else {
                         pane.getChildren().add(n);
                     }
                 } catch (EOFException exc) {
                     in.close();
                     break;
                 }
-            }
-            for (Node n : pane.getChildren()) {
-                System.out.println(n.toString());
             }
             in.close();
             fileIn.close();
