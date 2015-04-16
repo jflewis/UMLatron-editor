@@ -22,13 +22,19 @@ import javafx.stage.Stage;
 
 /**
  *
- * @author John
+ * @author John Lewis
+ * This class wraps all file operation logic in a single place
  */
 public class FileOperations {
     
     EditPane pane;
     Stage mainStage;
     
+    /**
+     * The constructor for this object
+     * @param pane The EditPane were objects are located at
+     * @param mainStage The JavaFx stage used for presenting the file chooser
+     */
     public FileOperations(EditPane pane, Stage mainStage){
         this.pane = pane;
         this.mainStage = mainStage;
@@ -36,6 +42,10 @@ public class FileOperations {
     
     
     
+    /**
+     * The open operation.
+     * Prompts a user with a file chooser to open a saved  project
+     */
     public void open(){
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open UML File");
@@ -74,6 +84,10 @@ public class FileOperations {
         
     }
     
+    /**
+     * The save operation.
+     * Prompts a user with a file chooser to save a current project
+     */
     public void save(){
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Save UML File");
