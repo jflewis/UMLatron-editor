@@ -41,9 +41,6 @@ public class Load {
                     break;
                 }
             }
-            for (Node n : pane.getChildren()) {
-                System.out.println(n.toString());
-            }
             in.close();
             fileIn.close();
         } catch (IOException i) {
