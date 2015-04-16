@@ -32,8 +32,11 @@ public class UMLArrowLine extends UMLLine implements SelectedPanel {
     final Group group = new Group();
     Rotate rotate = new Rotate();
 
-
+    /**
+	 * A default constructor used for loading
+	 */
     public UMLArrowLine(){}
+    
     /**
      *
      * @param a1 The AnchorPoint that the starting point of the line is attached
@@ -43,19 +46,22 @@ public class UMLArrowLine extends UMLLine implements SelectedPanel {
      */
     public UMLArrowLine(ClassBox a1, ClassBox a2) {
         super(a1, a2);
-        createLine();
+        createArrow();
                     
     }
     
     @Override
     public UMLArrowLine createLineFromLoad(){
         super.createLineFromLoad();
-        createLine();
+        createArrow();
         return this;
         
     }
     
-    private void createLine(){
+    /**
+     * Creates the Arrow at the end of the line.
+     */
+    private void createArrow(){
    
         group.getChildren().addAll(minSpreadLine,maxSpreadLine);
         group.getTransforms().add(rotate);
@@ -88,7 +94,6 @@ public class UMLArrowLine extends UMLLine implements SelectedPanel {
      * creates the currently selected panel for this Node
      * @param h the views HBox
      */
-     
     @Override
     public void createAndGeneratePanel(HBox h) {
 
