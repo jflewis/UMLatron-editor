@@ -8,6 +8,7 @@ package edu.millersville.umlatron.Util;
 import edu.millersville.umlatron.view.ClassBox;
 import edu.millersville.umlatron.view.EditPane;
 import edu.millersville.umlatron.view.UMLLine;
+import edu.millersville.umlatron.view.UMLRecursiveLine;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
@@ -35,6 +36,8 @@ public class Save {
             }
             for (Node n : pane.getChildren()) {
                 if (n instanceof UMLLine) {
+                    out.writeObject(n);
+                }else if (n instanceof UMLRecursiveLine ){
                     out.writeObject(n);
                 }
             }
