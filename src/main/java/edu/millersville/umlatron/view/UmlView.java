@@ -5,8 +5,7 @@
  */
 package edu.millersville.umlatron.view;
 
-import edu.millersville.umlatron.Util.Load;
-import edu.millersville.umlatron.Util.Save;
+import edu.millersville.umlatron.Util.FileOperations;
 import edu.millersville.umlatron.controller.UmlatronController;
 import javafx.scene.control.SeparatorMenuItem;
 import javafx.scene.control.Menu;
@@ -28,6 +27,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.stage.Stage;
 
 /**
  * This class creates and supplies the view for the program.
@@ -43,10 +43,14 @@ public class UmlView extends BorderPane {
     private HBox currentlySelectedPanel;
     private EditPane editPane = new EditPane();
     private UmlatronController controller;
+    private FileOperations fileOps;
+    Stage mainStage;
 
-    public UmlView(UmlatronController controller) {
+    public UmlView(UmlatronController controller, Stage mainStage) {
         super();
         this.controller = controller;
+        this.mainStage = mainStage;
+        this.fileOps =new FileOperations(editPane,mainStage);
         mainApp = applicationBar();
         createUmlClassToggleButtons();
         currentlySelectedPanel = createCurrentlySelectedPanel();
@@ -66,16 +70,17 @@ public class UmlView extends BorderPane {
         MenuItem newThing = new MenuItem("New");
         MenuItem saveButton = new MenuItem("Save");
         saveButton.setOnAction((event) ->{
-            Save save = new Save(editPane);
+           // Save save = new Save(editPane,mainStage);
+            fileOps.save();
         });
         MenuItem exit = new MenuItem("Exit");
         exit.setOnAction((event) -> {
             System.exit(0);
         });
-        MenuItem load = new MenuItem("Load");
+        MenuItem load = new MenuItem("Open");
         load.setOnAction((event) -> {
             editPane.getChildren().clear();
-            new Load().load(editPane);
+            fileOps.open();
         });
         fileOperations.getItems().addAll(newThing, new SeparatorMenuItem(),saveButton,load,new SeparatorMenuItem(), exit);
         
