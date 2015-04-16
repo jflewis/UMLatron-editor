@@ -13,7 +13,11 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import edu.millersville.umlatron.model.SelectState;
 import edu.millersville.umlatron.model.ViewState;
+import java.util.Optional;
 import javafx.geometry.Insets;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.Background;
@@ -25,7 +29,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.stage.Stage;
 
 /**
  * This class creates and supplies the view for the program.
@@ -46,7 +49,7 @@ public class UmlView extends BorderPane {
     public UmlView(UmlatronController controller) {
         super();
         this.controller = controller;
-        this.fileOps =new FileOperations(editPane,controller.stage);
+        this.fileOps = new FileOperations(editPane, controller.stage);
         mainApp = applicationBar();
         createUmlClassToggleButtons();
         currentlySelectedPanel = createCurrentlySelectedPanel();
@@ -61,11 +64,11 @@ public class UmlView extends BorderPane {
         MenuBar menuBar = new MenuBar();
         menuBar.useSystemMenuBarProperty().set(true); //if it's mac put's it up top
         menuBar.getStylesheets().add("/styles/MenuBar.css");
-        
+
         Menu fileOperations = new Menu("File");
         MenuItem newThing = new MenuItem("New");
         MenuItem saveButton = new MenuItem("Save");
-        saveButton.setOnAction((event) ->{
+        saveButton.setOnAction((event) -> {
             fileOps.save();
             controller.getModel().projectSaved = true;
         });
@@ -75,33 +78,48 @@ public class UmlView extends BorderPane {
         });
         MenuItem load = new MenuItem("Open");
         load.setOnAction((event) -> {
-            editPane.getChildren().clear();
-            fileOps.open();
-        });
-        fileOperations.getItems().addAll(newThing, new SeparatorMenuItem(),saveButton,load,new SeparatorMenuItem(), exit);
-        
-        Menu views = new Menu("Views");  
-        MenuItem umlClass = new MenuItem("Class diagrahm");
-        umlClass.setOnAction((event) -> {
-            if(controller.getModel().getViewStateProperty().get() == ViewState.CLASS_UML){
-                //do nothing
+            if (controller.getModel().projectSaved == false){
+                Alert alert = new Alert(AlertType.CONFIRMATION);
+                alert.setTitle("Unsaved work");
+                alert.setHeaderText("Whoa hold up bud, seems like you have some unsaved work");
+                alert.setContentText("Do you want to save it");
+                Optional<ButtonType> result = alert.showAndWait();
+                if (result.get() == ButtonType.OK) {
+                    fileOps.save();
+                } else {
+                    editPane.getChildren().clear();
+                    fileOps.open();
+                }
             }else{
                 editPane.getChildren().clear();
-                controller.getModel().setViewState(ViewState.CLASS_UML);                
+                fileOps.open();
+            }
+            
+        });
+        fileOperations.getItems().addAll(newThing, new SeparatorMenuItem(), saveButton, load, new SeparatorMenuItem(), exit);
+
+        Menu views = new Menu("Views");
+        MenuItem umlClass = new MenuItem("Class diagrahm");
+        umlClass.setOnAction((event) -> {
+            if (controller.getModel().getViewStateProperty().get() == ViewState.CLASS_UML) {
+                //do nothing
+            } else {
+                editPane.getChildren().clear();
+                controller.getModel().setViewState(ViewState.CLASS_UML);
             }
         });
-        MenuItem useCase  = new MenuItem("Use case diagrahm");
+        MenuItem useCase = new MenuItem("Use case diagrahm");
         useCase.setOnAction((event) -> {
-            if(controller.getModel().getViewStateProperty().get() == ViewState.USE_CASE_UML){
+            if (controller.getModel().getViewStateProperty().get() == ViewState.USE_CASE_UML) {
                 //do nothing
-            }else{
+            } else {
                 editPane.getChildren().clear();
                 controller.getModel().setViewState(ViewState.USE_CASE_UML);
             }
         });
-        views.getItems().addAll(umlClass,new SeparatorMenuItem(),useCase);
-        
-        menuBar.getMenus().addAll(fileOperations,views);
+        views.getItems().addAll(umlClass, new SeparatorMenuItem(), useCase);
+
+        menuBar.getMenus().addAll(fileOperations, views);
         menuBar.prefWidthProperty().bind(editPane.widthProperty());
         menuBar.setStyle("-fx-padding: 2 2 2 5;");
 
@@ -112,7 +130,7 @@ public class UmlView extends BorderPane {
     final public void createUmlClassToggleButtons() {
         stateToggle.getToggles().clear();
         toggleButtons.getChildren().clear();
-        
+
         ToggleButton tb1 = new ToggleButton("Select");
         tb1.setUserData(SelectState.SELECT);
         tb1.setToggleGroup(stateToggle);
@@ -123,7 +141,6 @@ public class UmlView extends BorderPane {
         tb2.setUserData(SelectState.CLASSBOX);
         tb2.setToggleGroup(stateToggle);
         tb2.setMaxWidth(Double.MAX_VALUE);
-       
 
         ToggleButton tb3 = new ToggleButton("Line");
         tb3.setUserData(SelectState.LINE);
@@ -152,10 +169,11 @@ public class UmlView extends BorderPane {
         HBox.setHgrow(tb5, Priority.ALWAYS);
 
     }
+
     final public void createUmlUseCaseButtons() {
         stateToggle.getToggles().clear();
         toggleButtons.getChildren().clear();
-        
+
         ToggleButton tb1 = new ToggleButton("Select");
         tb1.setUserData(SelectState.SELECT);
         tb1.setToggleGroup(stateToggle);
@@ -172,12 +190,12 @@ public class UmlView extends BorderPane {
         tb3.setUserData(SelectState.CIRCLE);
         tb3.setToggleGroup(stateToggle);
         tb3.setMaxWidth(Double.MAX_VALUE);
-       
+
         ToggleButton tb4 = new ToggleButton("Line");
         tb4.setUserData(SelectState.LINE);
         tb4.setToggleGroup(stateToggle);
         tb4.setMaxWidth(Double.MAX_VALUE);
-        
+
         toggleButtons.getChildren().add(tb1);
         toggleButtons.getChildren().add(tb2);
         toggleButtons.getChildren().add(tb3);
@@ -185,7 +203,7 @@ public class UmlView extends BorderPane {
         HBox.setHgrow(tb1, Priority.ALWAYS);
         HBox.setHgrow(tb2, Priority.ALWAYS);
         HBox.setHgrow(tb3, Priority.ALWAYS);
-        HBox.setHgrow(tb4, Priority.ALWAYS);   
+        HBox.setHgrow(tb4, Priority.ALWAYS);
     }
 
     private HBox createCurrentlySelectedPanel() {
@@ -195,8 +213,8 @@ public class UmlView extends BorderPane {
         hbox.setPrefHeight(40);
         return hbox;
     }
-    
-    public void clearPane(){
+
+    public void clearPane() {
         editPane.getChildren().clear();
     }
 
@@ -217,8 +235,8 @@ public class UmlView extends BorderPane {
     public Pane getEditPane() {
         return editPane;
     }
-    
-    public HBox getToggleButtons(){
+
+    public HBox getToggleButtons() {
         return toggleButtons;
     }
 }
