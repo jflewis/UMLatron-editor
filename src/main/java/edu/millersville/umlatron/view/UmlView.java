@@ -86,6 +86,8 @@ public class UmlView extends BorderPane {
                 Optional<ButtonType> result = alert.showAndWait();
                 if (result.get() == ButtonType.OK) {
                     fileOps.save();
+                    editPane.getChildren().clear();
+                    fileOps.open();
                 } else {
                     editPane.getChildren().clear();
                     fileOps.open();
