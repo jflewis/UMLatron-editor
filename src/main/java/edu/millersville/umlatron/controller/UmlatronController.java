@@ -5,6 +5,10 @@
  */
 package edu.millersville.umlatron.controller;
 
+import edu.millersville.umlatron.view.umlRecursiveLines.RecursiveAssociation;
+import edu.millersville.umlatron.view.umlRecursiveLines.RecursiveGeneralization;
+import edu.millersville.umlatron.view.umlRecursiveLines.UMLRecursiveArrowLine;
+import edu.millersville.umlatron.view.umlRecursiveLines.UMLRecursiveLine;
 import edu.millersville.umlatron.view.umlLines.Association;
 import edu.millersville.umlatron.view.umlLines.Generalization;
 import edu.millersville.umlatron.view.umlLines.UMLArrowLine;
