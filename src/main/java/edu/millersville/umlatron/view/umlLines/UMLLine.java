@@ -1,6 +1,7 @@
-package edu.millersville.umlatron.view;
+package edu.millersville.umlatron.view.umlLines;
 
 import edu.millersville.umlatron.Util.AnchorInfo;
+import edu.millersville.umlatron.view.ClassBox;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
@@ -148,7 +149,7 @@ public class UMLLine extends Group implements java.io.Externalizable {
      * Computes the slope (in both direction for each end point), will adjust
      * the anchor point with respect to that angle
      */
-    final void calculateAnchorPoints() {
+    public final void calculateAnchorPoints() {
         
         double min = 999999999;
         AnchorInfo startAnchor = startPoints.get(0);

@@ -3,8 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package edu.millersville.umlatron.view;
+package edu.millersville.umlatron.view.umlLines;
 
+import edu.millersville.umlatron.view.ClassBox;
+import edu.millersville.umlatron.view.SelectedPanel;
+import edu.millersville.umlatron.view.umlLines.UMLLine;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;

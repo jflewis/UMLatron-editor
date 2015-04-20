@@ -5,6 +5,10 @@
  */
 package edu.millersville.umlatron.controller;
 
+import edu.millersville.umlatron.view.umlLines.Association;
+import edu.millersville.umlatron.view.umlLines.Generalization;
+import edu.millersville.umlatron.view.umlLines.UMLArrowLine;
+import edu.millersville.umlatron.view.umlLines.UMLLine;
 import edu.millersville.umlatron.model.*;
 import edu.millersville.umlatron.view.*;
 import javafx.beans.value.ObservableValue;

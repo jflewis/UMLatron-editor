@@ -174,7 +174,7 @@ public class RecursiveGeneralization extends UMLRecursiveLine implements
 					}
 				});
 
-		Label label = new Label("Currently selected node : Association ");
+		Label label = new Label("Currently selected node : Generalization ");
 
 		h.getChildren().addAll(label, aggregation, comp, deleteB);
 
