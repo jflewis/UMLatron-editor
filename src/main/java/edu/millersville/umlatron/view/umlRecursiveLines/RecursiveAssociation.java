@@ -24,6 +24,8 @@ public class RecursiveAssociation extends UMLRecursiveLine implements
 		SelectedPanel, java.io.Serializable {
 
 	Polygon polygon = new Polygon();
+        Boolean filled = false;
+
 
 	/**
 	 * 
@@ -73,6 +75,28 @@ public class RecursiveAssociation extends UMLRecursiveLine implements
 		});
 
 	}
+        
+        /**
+	 * Fills the polygon with the color white.
+	 */
+	private void setFillWhite() {
+		if (polygon != null) {
+			filled = false;
+			polygon.setFill(Color.WHITE);
+
+		}
+	}
+
+	/**
+	 * Fills the polygon with the color black.
+	 */
+	private void setFillBlack() {
+		if (polygon != null) {
+			filled = true;
+			polygon.setFill(Color.BLACK);
+
+		}
+	}
 
 	/**
 	 * Updates the location of the polygon at the head of the line.
@@ -90,46 +114,46 @@ public class RecursiveAssociation extends UMLRecursiveLine implements
 		h.getChildren().clear();
 		DropShadow shadow = new DropShadow();
 
-		Button setDashed = new Button("Dashed");
-		setDashed.setMaxWidth(Double.MAX_VALUE);
-		HBox.setHgrow(setDashed, Priority.ALWAYS);
-		setDashed.setOnAction((ActionEvent e) -> {
-			setDashed();
+		Button aggregation = new Button("Aggregation");
+		aggregation.setMaxWidth(Double.MAX_VALUE);
+		HBox.setHgrow(aggregation, Priority.ALWAYS);
+		aggregation.setOnAction((ActionEvent e) -> {
+			setFillWhite();
 
 		});
-		setDashed.addEventHandler(MouseEvent.MOUSE_ENTERED,
+		aggregation.addEventHandler(MouseEvent.MOUSE_ENTERED,
 				new EventHandler<MouseEvent>() {
 					@Override
 					public void handle(MouseEvent e) {
-						setDashed.setEffect(shadow);
+						aggregation.setEffect(shadow);
 					}
 				});
-		setDashed.addEventHandler(MouseEvent.MOUSE_EXITED,
+		aggregation.addEventHandler(MouseEvent.MOUSE_EXITED,
 				new EventHandler<MouseEvent>() {
 					@Override
 					public void handle(MouseEvent e) {
-						setDashed.setEffect(null);
+						aggregation.setEffect(null);
 					}
 				});
 
-		Button setSolid = new Button("Solid");
-		setSolid.setMaxWidth(Double.MAX_VALUE);
-		HBox.setHgrow(setSolid, Priority.ALWAYS);
-		setSolid.setOnAction((ActionEvent e) -> {
-			setSolid();
+		Button comp = new Button("Composition");
+		comp.setMaxWidth(Double.MAX_VALUE);
+		HBox.setHgrow(comp, Priority.ALWAYS);
+		comp.setOnAction((ActionEvent e) -> {
+			setFillBlack();
 		});
-		setSolid.addEventHandler(MouseEvent.MOUSE_ENTERED,
+		comp.addEventHandler(MouseEvent.MOUSE_ENTERED,
 				new EventHandler<MouseEvent>() {
 					@Override
 					public void handle(MouseEvent e) {
-						setSolid.setEffect(shadow);
+						comp.setEffect(shadow);
 					}
 				});
-		setSolid.addEventHandler(MouseEvent.MOUSE_EXITED,
+		comp.addEventHandler(MouseEvent.MOUSE_EXITED,
 				new EventHandler<MouseEvent>() {
 					@Override
 					public void handle(MouseEvent e) {
-						setSolid.setEffect(null);
+						comp.setEffect(null);
 					}
 				});
 
@@ -155,9 +179,9 @@ public class RecursiveAssociation extends UMLRecursiveLine implements
 					}
 				});
 
-		Label label = new Label("Currently selected node : Generalization ");
+		Label label = new Label("Currently selected node : Assocatiation ");
 
-		h.getChildren().addAll(label, setDashed, setSolid, deleteB);
+		h.getChildren().addAll(label, aggregation, comp, deleteB);
 
 	}
 

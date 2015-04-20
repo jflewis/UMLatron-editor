@@ -29,6 +29,7 @@ public class FileOperations {
     
     EditPane pane;
     Stage mainStage;
+    File currentFile;
     
     /**
      * The constructor for this object

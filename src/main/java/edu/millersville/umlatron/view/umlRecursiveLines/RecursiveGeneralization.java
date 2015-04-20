@@ -85,73 +85,54 @@ public class RecursiveGeneralization extends UMLRecursiveLine implements
 		polygon.setTranslateY(lines.get(3).getEndY());
 	}
 
-	/**
-	 * Fills the polygon with the color white.
-	 */
-	private void setFillWhite() {
-		if (polygon != null) {
-			filled = false;
-			polygon.setFill(Color.WHITE);
 
-		}
-	}
-
-	/**
-	 * Fills the polygon with the color black.
-	 */
-	private void setFillBlack() {
-		if (polygon != null) {
-			filled = true;
-			polygon.setFill(Color.BLACK);
-
-		}
-	}
-
-	@Override
+	
+         
+        @Override
 	public void createAndGeneratePanel(HBox h) {
 		h.getChildren().clear();
 		DropShadow shadow = new DropShadow();
 
-		Button aggregation = new Button("Aggregation");
-		aggregation.setMaxWidth(Double.MAX_VALUE);
-		HBox.setHgrow(aggregation, Priority.ALWAYS);
-		aggregation.setOnAction((ActionEvent e) -> {
-			setFillWhite();
+		Button setDashed = new Button("Dashed");
+		setDashed.setMaxWidth(Double.MAX_VALUE);
+		HBox.setHgrow(setDashed, Priority.ALWAYS);
+		setDashed.setOnAction((ActionEvent e) -> {
+			setDashed();
 
 		});
-		aggregation.addEventHandler(MouseEvent.MOUSE_ENTERED,
+		setDashed.addEventHandler(MouseEvent.MOUSE_ENTERED,
 				new EventHandler<MouseEvent>() {
 					@Override
 					public void handle(MouseEvent e) {
-						aggregation.setEffect(shadow);
+						setDashed.setEffect(shadow);
 					}
 				});
-		aggregation.addEventHandler(MouseEvent.MOUSE_EXITED,
+		setDashed.addEventHandler(MouseEvent.MOUSE_EXITED,
 				new EventHandler<MouseEvent>() {
 					@Override
 					public void handle(MouseEvent e) {
-						aggregation.setEffect(null);
+						setDashed.setEffect(null);
 					}
 				});
 
-		Button comp = new Button("Composition");
-		comp.setMaxWidth(Double.MAX_VALUE);
-		HBox.setHgrow(comp, Priority.ALWAYS);
-		comp.setOnAction((ActionEvent e) -> {
-			setFillBlack();
+		Button setSolid = new Button("Solid");
+		setSolid.setMaxWidth(Double.MAX_VALUE);
+		HBox.setHgrow(setSolid, Priority.ALWAYS);
+		setSolid.setOnAction((ActionEvent e) -> {
+			setSolid();
 		});
-		comp.addEventHandler(MouseEvent.MOUSE_ENTERED,
+		setSolid.addEventHandler(MouseEvent.MOUSE_ENTERED,
 				new EventHandler<MouseEvent>() {
 					@Override
 					public void handle(MouseEvent e) {
-						comp.setEffect(shadow);
+						setSolid.setEffect(shadow);
 					}
 				});
-		comp.addEventHandler(MouseEvent.MOUSE_EXITED,
+		setSolid.addEventHandler(MouseEvent.MOUSE_EXITED,
 				new EventHandler<MouseEvent>() {
 					@Override
 					public void handle(MouseEvent e) {
-						comp.setEffect(null);
+						setSolid.setEffect(null);
 					}
 				});
 
@@ -179,7 +160,7 @@ public class RecursiveGeneralization extends UMLRecursiveLine implements
 
 		Label label = new Label("Currently selected node : Generalization ");
 
-		h.getChildren().addAll(label, aggregation, comp, deleteB);
+		h.getChildren().addAll(label, setDashed, setSolid, deleteB);
 
 	}
 
