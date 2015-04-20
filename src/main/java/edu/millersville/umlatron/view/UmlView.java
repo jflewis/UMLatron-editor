@@ -98,7 +98,26 @@ public class UmlView extends BorderPane {
             }
 
         });
-        fileOperations.getItems().addAll(newThing, new SeparatorMenuItem(), saveButton, load, new SeparatorMenuItem(), exit);
+        MenuItem newItem = new MenuItem("New");
+        newItem.setOnAction((event) -> {
+            if (controller.getModel().projectSaved == false) {
+                Alert alert = new Alert(AlertType.CONFIRMATION);
+                alert.setTitle("Unsaved work");
+                alert.setHeaderText("Whoa hold up bud, seems like you have some unsaved work");
+                alert.setContentText("Do you want to save it");
+                Optional<ButtonType> result = alert.showAndWait();
+                if (result.get() == ButtonType.OK) {
+                    fileOps.save();
+                    editPane.getChildren().clear();
+                } else {
+                    editPane.getChildren().clear();
+                }
+            } else {
+                editPane.getChildren().clear();
+            }
+
+        });
+        fileOperations.getItems().addAll(newThing, new SeparatorMenuItem(),newItem, saveButton, load, new SeparatorMenuItem(), exit);
 
         Menu views = new Menu("Views");
         MenuItem umlClass = new MenuItem("Class diagrahm");
