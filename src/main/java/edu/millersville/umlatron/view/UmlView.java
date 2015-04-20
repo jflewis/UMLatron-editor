@@ -106,17 +106,50 @@ public class UmlView extends BorderPane {
             if (controller.getModel().getViewStateProperty().get() == ViewState.CLASS_UML) {
                 //do nothing
             } else {
+                 if (controller.getModel().projectSaved == false){
+                    Alert alert = new Alert(AlertType.CONFIRMATION);
+                    alert.setTitle("Unsaved work");
+                    alert.setHeaderText("Whoa hold up bud, seems like you have some unsaved work");
+                    alert.setContentText("Do you want to save it");
+                    Optional<ButtonType> result = alert.showAndWait();
+                    if (result.get() == ButtonType.OK) {
+                       fileOps.save();
+                       editPane.getChildren().clear();
+                        controller.getModel().setViewState(ViewState.CLASS_UML);
+                    } else {
+                        editPane.getChildren().clear();
+                        controller.getModel().setViewState(ViewState.CLASS_UML);
+                    }
+            }else{
                 editPane.getChildren().clear();
                 controller.getModel().setViewState(ViewState.CLASS_UML);
-            }
+            
+            }}
         });
         MenuItem useCase = new MenuItem("Use case diagrahm");
         useCase.setOnAction((event) -> {
             if (controller.getModel().getViewStateProperty().get() == ViewState.USE_CASE_UML) {
                 //do nothing
             } else {
-                editPane.getChildren().clear();
-                controller.getModel().setViewState(ViewState.USE_CASE_UML);
+                 if (controller.getModel().projectSaved == false){
+                    Alert alert = new Alert(AlertType.CONFIRMATION);
+                    alert.setTitle("Unsaved work");
+                    alert.setHeaderText("Whoa hold up bud, seems like you have some unsaved work");
+                    alert.setContentText("Do you want to save it");
+                    Optional<ButtonType> result = alert.showAndWait();
+                    if (result.get() == ButtonType.OK) {
+                       fileOps.save();
+                       editPane.getChildren().clear();
+                        controller.getModel().setViewState(ViewState.USE_CASE_UML);
+                    } else {
+                        editPane.getChildren().clear();
+                        controller.getModel().setViewState(ViewState.USE_CASE_UML);
+                    }
+                }else{
+                    editPane.getChildren().clear();
+                    controller.getModel().setViewState(ViewState.USE_CASE_UML);
+                }
+                //controller.getModel().setViewState(ViewState.USE_CASE_UML);
             }
         });
         views.getItems().addAll(umlClass, new SeparatorMenuItem(), useCase);
