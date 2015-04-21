@@ -17,6 +17,7 @@ public class UmlModel {
     private SimpleObjectProperty<ViewState> viewState;
     public boolean projectSaved = false;
     
+    
     public UmlModel(){
         this.selectState = new SimpleObjectProperty();
         selectState.setValue(SelectState.SELECT);

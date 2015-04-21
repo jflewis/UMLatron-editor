@@ -1,5 +1,7 @@
 package edu.millersville.umlatron.view;
 
+import edu.millersville.umlatron.view.umlRecursiveLines.UMLRecursiveLine;
+import edu.millersville.umlatron.view.umlLines.UMLLine;
 import edu.millersville.umlatron.Util.AnchorInfo;
 import java.io.IOException;
 import java.io.ObjectInput;

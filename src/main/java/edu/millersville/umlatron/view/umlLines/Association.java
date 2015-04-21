@@ -1,5 +1,8 @@
-package edu.millersville.umlatron.view;
+package edu.millersville.umlatron.view.umlLines;
 
+import edu.millersville.umlatron.view.ClassBox;
+import edu.millersville.umlatron.view.SelectedPanel;
+import edu.millersville.umlatron.view.umlLines.UMLLine;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -11,35 +14,43 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
+import javafx.scene.transform.Rotate;
 
 /**
  *
  * @author Matthew Hipszer
  *
  */
-public class RecursiveGeneralization extends UMLRecursiveLine implements
-		SelectedPanel, java.io.Serializable {
+public class Association extends UMLLine implements SelectedPanel,
+		java.io.Serializable {
 
+	Rotate rotate = new Rotate();
 	Polygon polygon = new Polygon();
 	Boolean filled = false;
 
 	/**
-	 * 
-	 * @param node
-	 *            The node that this association is recursively pointing to.
+	 *
+	 * @param a1
+	 *            The AnchorPoint that the starting point of the line is
+	 *            attached to.
+	 * @param a2
+	 *            The AnchorPoint that the ending point of the line is attached
+	 *            to.
 	 */
-	public RecursiveGeneralization(ClassBox node) {
-		super(node);
+	public Association(ClassBox a1, ClassBox a2) {
+		super(a1, a2);
 		createPolygon();
+
 	}
 
 	/**
-	 * A default constructor used for loading
+	 * A default constructor used for loading.
 	 */
-	public RecursiveGeneralization() {}
+	public Association() {
+	}
 
 	@Override
-	public RecursiveGeneralization createLineFromLoad() {
+	public Association createLineFromLoad() {
 		super.createLineFromLoad();
 		createPolygon();
 		return this;
@@ -48,18 +59,17 @@ public class RecursiveGeneralization extends UMLRecursiveLine implements
 	/**
 	 * Creates the polygon used at the end of the line.
 	 */
-	private void createPolygon() {
-
+	final void createPolygon() {
 		polygon.getPoints().addAll(
-				new Double[] { 0.0, 0.0, -12.0, -7.0, -12.0, 7.0 });
+				new Double[] { 0.0, 0.0, -12.0, -7.0, -24.0, 0.0, -12.0, 7.0
+
+				});
+
 		polygon.setFill(Color.WHITE);
 		polygon.setStrokeWidth(1);
 		polygon.setStroke(Color.BLACK);
-
+		polygon.getTransforms().add(rotate);
 		this.getChildren().add(polygon);
-
-		updateHead();
-
 		distance.removeListener(listener);
 		distance.addListener((ObservableValue<? extends Number> ov,
 				Number old_state, Number new_state) -> {
@@ -69,17 +79,17 @@ public class RecursiveGeneralization extends UMLRecursiveLine implements
 
 		});
 
+		updateHead();
+
 	}
 
-	/**
-	 * Updates the location of the polygon at the head of the line.
-	 */
+	@Override
 	public void updateHead() {
-		// double slopeInDegrees = (Math.toDegrees(Math.atan2(line.getStartY() -
-		// line.getEndY(), line.getEndX() - line.getStartX())));
-		// rotate.setAngle(-slopeInDegrees);
-		polygon.setTranslateX(lines.get(3).getEndX());
-		polygon.setTranslateY(lines.get(3).getEndY());
+		double slopeInDegrees = (Math.toDegrees(Math.atan2(line.getStartY()
+				- line.getEndY(), line.getEndX() - line.getStartX())));
+		rotate.setAngle(-slopeInDegrees);
+		polygon.setTranslateX(line.getEndX());
+		polygon.setTranslateY(line.getEndY());
 	}
 
 	/**
@@ -104,8 +114,15 @@ public class RecursiveGeneralization extends UMLRecursiveLine implements
 		}
 	}
 
+	/**
+	 * creates the currently selected panel for this Node
+	 * 
+	 * @param h
+	 *            the views HBox
+	 */
 	@Override
 	public void createAndGeneratePanel(HBox h) {
+
 		h.getChildren().clear();
 		DropShadow shadow = new DropShadow();
 
@@ -179,5 +196,4 @@ public class RecursiveGeneralization extends UMLRecursiveLine implements
 		h.getChildren().addAll(label, aggregation, comp, deleteB);
 
 	}
-
 }

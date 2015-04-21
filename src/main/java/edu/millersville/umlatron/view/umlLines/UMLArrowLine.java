@@ -1,5 +1,8 @@
-package edu.millersville.umlatron.view;
+package edu.millersville.umlatron.view.umlLines;
 
+import edu.millersville.umlatron.view.ClassBox;
+import edu.millersville.umlatron.view.SelectedPanel;
+import edu.millersville.umlatron.view.umlLines.UMLLine;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;

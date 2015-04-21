@@ -1,4 +1,4 @@
-package edu.millersville.umlatron.view;
+package edu.millersville.umlatron.view.umlRecursiveLines;
 
 import java.io.IOException;
 import java.io.ObjectInput;
@@ -6,6 +6,7 @@ import java.io.ObjectOutput;
 import java.util.ArrayList;
 
 import edu.millersville.umlatron.Util.AnchorInfo;
+import edu.millersville.umlatron.view.ClassBox;
 import javafx.beans.binding.DoubleBinding;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;

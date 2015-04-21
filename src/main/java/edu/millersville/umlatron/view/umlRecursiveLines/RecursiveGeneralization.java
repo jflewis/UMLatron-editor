@@ -1,5 +1,8 @@
-package edu.millersville.umlatron.view;
+package edu.millersville.umlatron.view.umlRecursiveLines;
 
+import edu.millersville.umlatron.view.ClassBox;
+import edu.millersville.umlatron.view.SelectedPanel;
+import edu.millersville.umlatron.view.umlRecursiveLines.UMLRecursiveLine;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -13,21 +16,22 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
 
 /**
-*
-* @author Matthew Hipszer
-*
-*/
-public class RecursiveAssociation extends UMLRecursiveLine implements
+ *
+ * @author Matthew Hipszer
+ *
+ */
+public class RecursiveGeneralization extends UMLRecursiveLine implements
 		SelectedPanel, java.io.Serializable {
 
 	Polygon polygon = new Polygon();
+	Boolean filled = false;
 
 	/**
 	 * 
 	 * @param node
 	 *            The node that this association is recursively pointing to.
 	 */
-	public RecursiveAssociation(ClassBox node) {
+	public RecursiveGeneralization(ClassBox node) {
 		super(node);
 		createPolygon();
 	}
@@ -35,11 +39,10 @@ public class RecursiveAssociation extends UMLRecursiveLine implements
 	/**
 	 * A default constructor used for loading
 	 */
-	public RecursiveAssociation() {
-	}
+	public RecursiveGeneralization() {}
 
 	@Override
-	public RecursiveAssociation createLineFromLoad() {
+	public RecursiveGeneralization createLineFromLoad() {
 		super.createLineFromLoad();
 		createPolygon();
 		return this;
@@ -51,7 +54,7 @@ public class RecursiveAssociation extends UMLRecursiveLine implements
 	private void createPolygon() {
 
 		polygon.getPoints().addAll(
-				new Double[] { 0.0, 0.0, -12.0, -7.0, -24.0, 0.0, -12.0, 7.0 });
+				new Double[] { 0.0, 0.0, -12.0, -7.0, -12.0, 7.0 });
 		polygon.setFill(Color.WHITE);
 		polygon.setStrokeWidth(1);
 		polygon.setStroke(Color.BLACK);
@@ -82,7 +85,10 @@ public class RecursiveAssociation extends UMLRecursiveLine implements
 		polygon.setTranslateY(lines.get(3).getEndY());
 	}
 
-	@Override
+
+	
+         
+        @Override
 	public void createAndGeneratePanel(HBox h) {
 		h.getChildren().clear();
 		DropShadow shadow = new DropShadow();

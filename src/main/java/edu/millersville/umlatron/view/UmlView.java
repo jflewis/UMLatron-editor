@@ -80,7 +80,7 @@ public class UmlView extends BorderPane {
         });
         MenuItem load = new MenuItem("Open");
         load.setOnAction((event) -> {
-            if (controller.getModel().projectSaved == false){
+            if (controller.getModel().projectSaved == false) {
                 Alert alert = new Alert(AlertType.CONFIRMATION);
                 alert.setTitle("Unsaved work");
                 alert.setHeaderText("Whoa hold up bud, seems like you have some unsaved work");
@@ -88,17 +88,38 @@ public class UmlView extends BorderPane {
                 Optional<ButtonType> result = alert.showAndWait();
                 if (result.get() == ButtonType.OK) {
                     fileOps.save();
+                    editPane.getChildren().clear();
+                    fileOps.open();
                 } else {
                     editPane.getChildren().clear();
                     fileOps.open();
                 }
-            }else{
+            } else {
                 editPane.getChildren().clear();
                 fileOps.open();
             }
-            
+
         });
-        fileOperations.getItems().addAll(newThing, new SeparatorMenuItem(), saveButton, load, new SeparatorMenuItem(), exit);
+        MenuItem newItem = new MenuItem("New");
+        newItem.setOnAction((event) -> {
+            if (controller.getModel().projectSaved == false) {
+                Alert alert = new Alert(AlertType.CONFIRMATION);
+                alert.setTitle("Unsaved work");
+                alert.setHeaderText("Whoa hold up bud, seems like you have some unsaved work");
+                alert.setContentText("Do you want to save it");
+                Optional<ButtonType> result = alert.showAndWait();
+                if (result.get() == ButtonType.OK) {
+                    fileOps.save();
+                    editPane.getChildren().clear();
+                } else {
+                    editPane.getChildren().clear();
+                }
+            } else {
+                editPane.getChildren().clear();
+            }
+
+        });
+        fileOperations.getItems().addAll(newThing, new SeparatorMenuItem(),newItem, saveButton, load, new SeparatorMenuItem(), exit);
 
         Menu views = new Menu("Views");
         MenuItem umlClass = new MenuItem("Class diagrahm");
@@ -106,8 +127,25 @@ public class UmlView extends BorderPane {
             if (controller.getModel().getViewStateProperty().get() == ViewState.CLASS_UML) {
                 //do nothing
             } else {
-                editPane.getChildren().clear();
-                controller.getModel().setViewState(ViewState.CLASS_UML);
+                if (controller.getModel().projectSaved == false) {
+                    Alert alert = new Alert(AlertType.CONFIRMATION);
+                    alert.setTitle("Unsaved work");
+                    alert.setHeaderText("Whoa hold up bud, seems like you have some unsaved work");
+                    alert.setContentText("Do you want to save it");
+                    Optional<ButtonType> result = alert.showAndWait();
+                    if (result.get() == ButtonType.OK) {
+                        fileOps.save();
+                        editPane.getChildren().clear();
+                        controller.getModel().setViewState(ViewState.CLASS_UML);
+                    } else {
+                        editPane.getChildren().clear();
+                        controller.getModel().setViewState(ViewState.CLASS_UML);
+                    }
+                } else {
+                    editPane.getChildren().clear();
+                    controller.getModel().setViewState(ViewState.CLASS_UML);
+
+                }
             }
         });
         MenuItem useCase = new MenuItem("Use case diagrahm");
@@ -115,8 +153,24 @@ public class UmlView extends BorderPane {
             if (controller.getModel().getViewStateProperty().get() == ViewState.USE_CASE_UML) {
                 //do nothing
             } else {
-                editPane.getChildren().clear();
-                controller.getModel().setViewState(ViewState.USE_CASE_UML);
+                if (controller.getModel().projectSaved == false) {
+                    Alert alert = new Alert(AlertType.CONFIRMATION);
+                    alert.setTitle("Unsaved work");
+                    alert.setHeaderText("Whoa hold up bud, seems like you have some unsaved work");
+                    alert.setContentText("Do you want to save it");
+                    Optional<ButtonType> result = alert.showAndWait();
+                    if (result.get() == ButtonType.OK) {
+                        fileOps.save();
+                        editPane.getChildren().clear();
+                        controller.getModel().setViewState(ViewState.USE_CASE_UML);
+                    } else {
+                        editPane.getChildren().clear();
+                        controller.getModel().setViewState(ViewState.USE_CASE_UML);
+                    }
+                } else {
+                    editPane.getChildren().clear();
+                    controller.getModel().setViewState(ViewState.USE_CASE_UML);
+                }
             }
         });
         views.getItems().addAll(umlClass, new SeparatorMenuItem(), useCase);

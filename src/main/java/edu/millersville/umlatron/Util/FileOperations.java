@@ -7,8 +7,8 @@ package edu.millersville.umlatron.Util;
 
 import edu.millersville.umlatron.view.ClassBox;
 import edu.millersville.umlatron.view.EditPane;
-import edu.millersville.umlatron.view.UMLLine;
-import edu.millersville.umlatron.view.UMLRecursiveLine;
+import edu.millersville.umlatron.view.umlLines.UMLLine;
+import edu.millersville.umlatron.view.umlRecursiveLines.UMLRecursiveLine;
 import java.io.EOFException;
 import java.io.File;
 import java.io.FileInputStream;
@@ -29,6 +29,7 @@ public class FileOperations {
     
     EditPane pane;
     Stage mainStage;
+    File currentFile;
     
     /**
      * The constructor for this object

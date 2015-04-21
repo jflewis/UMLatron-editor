@@ -1,5 +1,8 @@
-package edu.millersville.umlatron.view;
+package edu.millersville.umlatron.view.umlRecursiveLines;
 
+import edu.millersville.umlatron.view.ClassBox;
+import edu.millersville.umlatron.view.SelectedPanel;
+import edu.millersville.umlatron.view.umlRecursiveLines.UMLRecursiveLine;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -11,43 +14,37 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polygon;
-import javafx.scene.transform.Rotate;
 
 /**
- *
- * @author Matthew Hipszer
- *
- */
-public class Association extends UMLLine implements SelectedPanel,
-		java.io.Serializable {
+*
+* @author Matthew Hipszer
+*
+*/
+public class RecursiveAssociation extends UMLRecursiveLine implements
+		SelectedPanel, java.io.Serializable {
 
-	Rotate rotate = new Rotate();
 	Polygon polygon = new Polygon();
-	Boolean filled = false;
+        Boolean filled = false;
+
 
 	/**
-	 *
-	 * @param a1
-	 *            The AnchorPoint that the starting point of the line is
-	 *            attached to.
-	 * @param a2
-	 *            The AnchorPoint that the ending point of the line is attached
-	 *            to.
+	 * 
+	 * @param node
+	 *            The node that this association is recursively pointing to.
 	 */
-	public Association(ClassBox a1, ClassBox a2) {
-		super(a1, a2);
+	public RecursiveAssociation(ClassBox node) {
+		super(node);
 		createPolygon();
-
 	}
 
 	/**
-	 * A default constructor used for loading.
+	 * A default constructor used for loading
 	 */
-	public Association() {
+	public RecursiveAssociation() {
 	}
 
 	@Override
-	public Association createLineFromLoad() {
+	public RecursiveAssociation createLineFromLoad() {
 		super.createLineFromLoad();
 		createPolygon();
 		return this;
@@ -56,17 +53,18 @@ public class Association extends UMLLine implements SelectedPanel,
 	/**
 	 * Creates the polygon used at the end of the line.
 	 */
-	final void createPolygon() {
+	private void createPolygon() {
+
 		polygon.getPoints().addAll(
-				new Double[] { 0.0, 0.0, -12.0, -7.0, -24.0, 0.0, -12.0, 7.0
-
-				});
-
+				new Double[] { 0.0, 0.0, -12.0, -7.0, -24.0, 0.0, -12.0, 7.0 });
 		polygon.setFill(Color.WHITE);
 		polygon.setStrokeWidth(1);
 		polygon.setStroke(Color.BLACK);
-		polygon.getTransforms().add(rotate);
+
 		this.getChildren().add(polygon);
+
+		updateHead();
+
 		distance.removeListener(listener);
 		distance.addListener((ObservableValue<? extends Number> ov,
 				Number old_state, Number new_state) -> {
@@ -76,20 +74,9 @@ public class Association extends UMLLine implements SelectedPanel,
 
 		});
 
-		updateHead();
-
 	}
-
-	@Override
-	public void updateHead() {
-		double slopeInDegrees = (Math.toDegrees(Math.atan2(line.getStartY()
-				- line.getEndY(), line.getEndX() - line.getStartX())));
-		rotate.setAngle(-slopeInDegrees);
-		polygon.setTranslateX(line.getEndX());
-		polygon.setTranslateY(line.getEndY());
-	}
-
-	/**
+        
+        /**
 	 * Fills the polygon with the color white.
 	 */
 	private void setFillWhite() {
@@ -112,14 +99,18 @@ public class Association extends UMLLine implements SelectedPanel,
 	}
 
 	/**
-	 * creates the currently selected panel for this Node
-	 * 
-	 * @param h
-	 *            the views HBox
+	 * Updates the location of the polygon at the head of the line.
 	 */
+	public void updateHead() {
+		// double slopeInDegrees = (Math.toDegrees(Math.atan2(line.getStartY() -
+		// line.getEndY(), line.getEndX() - line.getStartX())));
+		// rotate.setAngle(-slopeInDegrees);
+		polygon.setTranslateX(lines.get(3).getEndX());
+		polygon.setTranslateY(lines.get(3).getEndY());
+	}
+
 	@Override
 	public void createAndGeneratePanel(HBox h) {
-
 		h.getChildren().clear();
 		DropShadow shadow = new DropShadow();
 
@@ -188,9 +179,10 @@ public class Association extends UMLLine implements SelectedPanel,
 					}
 				});
 
-		Label label = new Label("Currently selected node : Association ");
+		Label label = new Label("Currently selected node : Assocatiation ");
 
 		h.getChildren().addAll(label, aggregation, comp, deleteB);
 
 	}
+
 }
