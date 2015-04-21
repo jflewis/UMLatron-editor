@@ -3,6 +3,7 @@
  */
 package edu.millersville.umlatron.model;
 
+import java.io.File;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.Node;
 
@@ -16,6 +17,7 @@ public class UmlModel {
     private SimpleObjectProperty<Node> currentlySelectedNode;
     private SimpleObjectProperty<ViewState> viewState;
     public boolean projectSaved = false;
+    private File currentFile;
     
     
     public UmlModel(){
