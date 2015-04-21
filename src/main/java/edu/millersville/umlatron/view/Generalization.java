@@ -11,6 +11,8 @@ import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.effect.DropShadow;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
@@ -102,7 +104,9 @@ public class Generalization extends UMLLine implements SelectedPanel,java.io.Ser
         h.getChildren().clear();
         DropShadow shadow = new DropShadow();
 
-        Button setDashed = new Button("Dashed");
+        Button setDashed = new Button();
+        Image image = new Image("/images/solidgeneralization.png"); 
+        setDashed.setGraphic(new ImageView(image));
         setDashed.setMaxWidth(Double.MAX_VALUE);
         HBox.setHgrow(setDashed, Priority.ALWAYS);
         setDashed.setOnAction((ActionEvent e) -> {
