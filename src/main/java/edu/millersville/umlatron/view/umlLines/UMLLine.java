@@ -1,6 +1,7 @@
 package edu.millersville.umlatron.view.umlLines;
 
 import edu.millersville.umlatron.Util.AnchorInfo;
+import edu.millersville.umlatron.view.AnchorPoint;
 import edu.millersville.umlatron.view.ClassBox;
 import java.io.IOException;
 import java.io.ObjectInput;
@@ -35,7 +36,7 @@ public class UMLLine extends Group implements java.io.Externalizable {
 
     };
     protected Line line = new Line();
-    ClassBox startNode, endNode;
+    AnchorPoint startNode, endNode;
     DoubleBinding deltaX, deltaY, distance;
     ArrayList<AnchorInfo> startPoints = new ArrayList<>();
     ArrayList<AnchorInfo> endPoints = new ArrayList<>();
@@ -54,7 +55,7 @@ public class UMLLine extends Group implements java.io.Externalizable {
      * @param endNode The AnchorPoint that the ending point of the line is
      * attached to.
      */
-    public UMLLine(ClassBox startNode, ClassBox endNode) {
+    public UMLLine(AnchorPoint startNode, AnchorPoint endNode) {
         super();
 
         //
