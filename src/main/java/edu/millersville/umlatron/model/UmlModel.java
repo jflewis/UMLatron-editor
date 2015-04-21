@@ -3,11 +3,7 @@
  */
 package edu.millersville.umlatron.model;
 
-import edu.millersville.umlatron.view.Box;
-import edu.millersville.umlatron.view.ClassBox;
-import edu.millersville.umlatron.view.UMLLine;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.value.ObservableValue;
 import javafx.scene.Node;
 
 /**
@@ -16,30 +12,42 @@ import javafx.scene.Node;
  */
 public class UmlModel {
     
-    private SimpleObjectProperty<State> state;
+    private SimpleObjectProperty<SelectState> selectState;
     private SimpleObjectProperty<Node> currentlySelectedNode;
+    private SimpleObjectProperty<ViewState> viewState;
+    public boolean projectSaved = false;
+    
     
     public UmlModel(){
-        this.state = new SimpleObjectProperty();
-        state.setValue(State.SELECT);
-        
-        
+        this.selectState = new SimpleObjectProperty();
+        selectState.setValue(SelectState.SELECT);
         this.currentlySelectedNode = new SimpleObjectProperty();
+        this.viewState = new SimpleObjectProperty(ViewState.CLASS_UML);
        
         
     }
     
-    public void setState(State s){
-        this.state.setValue(s);
+    public void setSelectState(SelectState s){
+        this.selectState.setValue(s);
     }
     
-    public SimpleObjectProperty<State> getStateProperty(){
-        return state;
+    public SimpleObjectProperty<SelectState> getSelectStateProperty(){
+        return selectState;
+    }
+    
+    public void setViewState(ViewState s){
+        this.viewState.set(s);
+    }
+    
+    public SimpleObjectProperty<ViewState> getViewStateProperty(){
+        return viewState;
     }
     
     public SimpleObjectProperty<Node> getCurrentlySelectedNodeProperty(){
         return currentlySelectedNode;
     }
+    
+     
     
     
     

@@ -1,70 +1,53 @@
 package edu.millersville.umlatron.view;
 
-import edu.millersville.umlatron.model.LineType;
-import javafx.geometry.Point2D;
+import edu.millersville.umlatron.view.umlLines.UMLLine;
+import edu.millersville.umlatron.Util.AnchorInfo;
 
+
+/**
+ *
+ * @author Matthew Hipszer
+ *
+ */
 public interface AnchorPoint {
-	/**
-	 * 
-	 * @param x
-	 *            The x position to be used to calculate the x position of the
-	 *            anchor points.
-	 * @param y
-	 *            The y position to be used to calculate the y position of the
-	 *            anchor points.
-	 */
-	void setAnchorPoints(double x, double y);
 
 	/**
 	 * 
-	 * @param x
-	 *            The x position that will be used to update the x position of
-	 *            the anchor points.
+	 * @return Returns the northern most anchor point.
 	 */
-	void updateXAnchorPoints(double x);
+	public AnchorInfo getNorthPoint();
 
 	/**
 	 * 
-	 * @param y
-	 *            The y position to be used to calculate the y position of the
-	 *            anchor points.
+	 * @return Returns the southern most anchor point.
 	 */
-	void updateYAnchorPoints(double y);
+	public AnchorInfo getSouthPoint();
 
 	/**
 	 * 
-	 * @param i
-	 *            The index of the anchor point
-	 * @return Returns index i of anchorPoints
+	 * @return Returns the eastern most anchor point.
 	 */
-	Point2D getAnchorPoint(int i);
+	public AnchorInfo getEastPoint();
+
 
 	/**
 	 * 
-	 * @return Returns how many anchor points this box has
+	 * @return Returns the western most anchor point.
 	 */
-	int getAnchorCount();
-
-	/**
-	 * 
-	 * @param str
-	 *            The enum that signifies whether this lineType is a startPoint
-	 *            or endPoint.
-	 */
-	public void addLineType(LineType str);
+	public AnchorInfo getWestPoint();
 
 	/**
 	 * 
 	 * @param line
-	 *            Adds a UMLLine line to Lines.
+	 *            The line to be removed.
 	 */
-	public void addLine(UMLLine line);
+	public void removeLine(UMLLine line);
 
 	/**
 	 * 
-	 * @param id
-	 *            The unique id of the line to determine which line needs to be
-	 *            deleted.
+	 * @param line
+	 *            The line to be added.
 	 */
-	public void deleteLine(int id);
+	public void addLine(UMLLine line);
+
 }

@@ -6,12 +6,10 @@
 package edu.millersville.umlatron.model;
 
 /**
- * This represents the current edit state that the user is in
  *
- * @author John Lewis
+ * @author John
  */
-public enum State {
-
-    LINE, CLASSBOX, SELECT, ASSOCIATION, GENERALIZATION
-
+public enum ViewState {
+    USE_CASE_UML,CLASS_UML
+    
 }

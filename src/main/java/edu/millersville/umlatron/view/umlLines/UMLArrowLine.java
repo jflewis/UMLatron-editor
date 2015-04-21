@@ -1,108 +1,99 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package edu.millersville.umlatron.view;
+package edu.millersville.umlatron.view.umlLines;
 
+import edu.millersville.umlatron.view.ClassBox;
+import edu.millersville.umlatron.view.SelectedPanel;
+import edu.millersville.umlatron.view.umlLines.UMLLine;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.geometry.Point2D;
+import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.shape.Line;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Polygon;
 import javafx.scene.transform.Rotate;
 
 /**
  *
- * @author John
+ * @author Matthew Hipszer
+ *
  */
-public class Generalization extends UMLLine implements SelectedPanel {
+public class UMLArrowLine extends UMLLine implements SelectedPanel {
 
+    final private Line minSpreadLine = new Line(0,
+                0, -10,
+                -10);
+    final private Line maxSpreadLine = new Line(0,
+                0, -10,
+                10);
+    final Group group = new Group();
     Rotate rotate = new Rotate();
-    Polygon polygon = new Polygon();
 
-    public Generalization(AnchorPoint a1, AnchorPoint a2) {
+    /**
+	 * A default constructor used for loading
+	 */
+    public UMLArrowLine(){}
+    
+    /**
+     *
+     * @param a1 The AnchorPoint that the starting point of the line is attached
+     * to.
+     * @param a2 The AnchorPoint that the ending point of the line is attached
+     * to.
+     */
+    public UMLArrowLine(ClassBox a1, ClassBox a2) {
         super(a1, a2);
-        polygon.getPoints().addAll(new Double[]{
-            0.0, 0.0,
-            -12.0, -7.0,
-            -12.0, 7.0
+        createArrow();
+                    
+    }
+    
+    @Override
+    public UMLArrowLine createLineFromLoad(){
+        super.createLineFromLoad();
+        createArrow();
+        return this;
+        
+    }
+    
+    /**
+     * Creates the Arrow at the end of the line.
+     */
+    private void createArrow(){
+   
+        group.getChildren().addAll(minSpreadLine,maxSpreadLine);
+        group.getTransforms().add(rotate);
+        this.getChildren().add(group); 
+        updateHead();
+        
+     
+        distance.removeListener(listener);
+        distance.addListener(
+                (ObservableValue<? extends Number> ov, Number old_state,
+                        Number new_state) -> {
 
-        });
-        polygon.setFill(Color.WHITE);
-        polygon.setStrokeWidth(1);
-        polygon.setStroke(Color.BLACK);
+                    calculateAnchorPoints();
+                    updateHead();
 
-        double deltaX = this.getStartY() - this.getEndY();
-        double deltaY = this.getEndX() - this.getStartX();
-        double slopeInDegrees = Math.toDegrees(Math.atan2(deltaX, deltaY));
 
-        polygon.getTransforms().add(rotate);
+                });
+
+    }
+    
+    @Override
+    public void updateHead(){
+        double slopeInDegrees = (Math.toDegrees(Math.atan2(line.getStartY() - line.getEndY(), line.getEndX() - line.getStartX())));
         rotate.setAngle(-slopeInDegrees);
-
-        polygon.setTranslateX(this.getEndX());
-        polygon.setTranslateY(this.getEndY());
+        group.setTranslateX(line.endXProperty().get());
+        group.setTranslateY(line.endYProperty().get());
     }
-    
-      @Override
-    public void updateAnchorPoints() {
-        double min = 999999999;
-        point1Int = 0;
-        point2Int = 0;
-        for (int i = 0; i < anchorPoint1.getAnchorCount(); ++i) {
-            startingAnchor = new Point2D(anchorPoint1.getAnchorPoint(i).getX(),
-                    anchorPoint1.getAnchorPoint(i).getY());
-            for (int j = 0; j < anchorPoint2.getAnchorCount(); ++j) {
-                endingAnchor = new Point2D(anchorPoint2.getAnchorPoint(j)
-                        .getX(), anchorPoint2.getAnchorPoint(j).getY());
-                if (startingAnchor.distance(endingAnchor) < min) {
-                    min = startingAnchor.distance(endingAnchor);
-                    point1Int = i;
-                    point2Int = j;
-                }
-            }
-        }
-        this.setStartX(anchorPoint1.getAnchorPoint(point1Int).getX());
-        this.setStartY(anchorPoint1.getAnchorPoint(point1Int).getY());
-        this.setEndX(anchorPoint2.getAnchorPoint(point2Int).getX());
-        this.setEndY(anchorPoint2.getAnchorPoint(point2Int).getY());
-        
-        double deltaX = this.getStartY() - this.getEndY();
-        double deltaY = this.getEndX() - this.getStartX();
-        //gets you the degress of the x axis(on the left) of the second clicked node
-        double slopeInDegrees = Math.toDegrees(Math.atan2(deltaX,deltaY));
-        
-        if (polygon != null){
-            polygon.setTranslateX(this.getEndX());
-            polygon.setTranslateY(this.getEndY());
-            rotate.setAngle(-slopeInDegrees);
-
-        }
-        
-        
-    }
-    
-      public Polygon filledArrow(){
-        return polygon;
-    }
-      
-      @Override
-    public void deleteSelf(){
-        Pane pane = (Pane)this.getParent();
-        pane.getChildren().remove(polygon);
-        anchorPoint1.deleteLine(id);
-        anchorPoint2.deleteLine(id);  
-    }
-    
-      
-      /**
+   
+    /**
      * creates the currently selected panel for this Node
      * @param h the views HBox
      */
@@ -138,7 +129,7 @@ public class Generalization extends UMLLine implements SelectedPanel {
         setSolid.setMaxWidth(Double.MAX_VALUE);
         HBox.setHgrow(setSolid, Priority.ALWAYS);
         setSolid.setOnAction((ActionEvent e) -> {
-           setSolid();
+            setSolid();
         });
         setSolid.addEventHandler(MouseEvent.MOUSE_ENTERED,
                 new EventHandler<MouseEvent>() {
@@ -159,7 +150,7 @@ public class Generalization extends UMLLine implements SelectedPanel {
         deleteB.setMaxWidth(Double.MAX_VALUE);
         HBox.setHgrow(deleteB, Priority.ALWAYS);
         deleteB.setOnAction((ActionEvent e) -> {
-           deleteSelf();
+           destroy();
            h.getChildren().clear();
         });
         deleteB.addEventHandler(MouseEvent.MOUSE_ENTERED,
@@ -177,11 +168,29 @@ public class Generalization extends UMLLine implements SelectedPanel {
                     }
                 });
         
-        Label label = new Label("Currently selected node : Generalization ");
+        Label label = new Label("Currently selected node : Line ");
 
 
         h.getChildren().addAll(label,setDashed, setSolid,deleteB);
 
     }
+    
+    /*
+    @Override
+    public void writeExternal(ObjectOutput out) throws IOException {
+        out.writeObject(startNode);
+        out.writeObject(endNode);
+        
+    }
 
+ 
+
+    @Override
+    public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
+        startNode  = (ClassBox)in.readObject();
+        endNode = (ClassBox)in.readObject();
+
+    }
+    */
+    
 }
