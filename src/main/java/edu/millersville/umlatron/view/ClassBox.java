@@ -352,7 +352,8 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel,java.io
     public void addLine(UMLLine line) {
         lines.add(line);
     }
-
+    
+    @Override
     public void addRecursiveLine(UMLRecursiveLine line) {
     	recursiveLines.add(line);
     }
@@ -361,7 +362,7 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel,java.io
     public void removeLine(UMLLine line) {
         lines.remove(line);
     }
-
+    
     public void updateAnchorPoints() {
     	for(UMLLine line: lines){
     		line.resetAnchorPoints();
@@ -369,11 +370,20 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel,java.io
     	}
     }
 
-    
+    @Override
     public void removeRecursiveLine(UMLRecursiveLine line) {
     	recursiveLines.remove(line);
 	}
 
+    @Override
+    public double getWidthAnchorPoint(){
+        return this.getWidth();
+    }
+    
+    @Override
+    public double getHeightAnchorPoint(){
+        return this.getHeight();
+    }
 
 
     /**

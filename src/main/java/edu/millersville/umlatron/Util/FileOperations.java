@@ -7,6 +7,7 @@ package edu.millersville.umlatron.Util;
 
 import edu.millersville.umlatron.view.ClassBox;
 import edu.millersville.umlatron.view.EditPane;
+import edu.millersville.umlatron.view.User;
 import edu.millersville.umlatron.view.umlLines.UMLLine;
 import edu.millersville.umlatron.view.umlRecursiveLines.UMLRecursiveLine;
 import java.io.EOFException;
@@ -101,7 +102,7 @@ public class FileOperations {
                         = new FileOutputStream(selectedFile);
                 ObjectOutputStream out = new ObjectOutputStream(fileOut);
                 for (Node n : pane.getChildren()) {
-                    if (n instanceof ClassBox) {
+                    if (n instanceof ClassBox || n instanceof User) {
                         out.writeObject(n);
                     }
                 }

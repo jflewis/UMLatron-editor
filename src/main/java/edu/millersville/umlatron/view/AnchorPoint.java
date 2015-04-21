@@ -2,6 +2,7 @@ package edu.millersville.umlatron.view;
 
 import edu.millersville.umlatron.view.umlLines.UMLLine;
 import edu.millersville.umlatron.Util.AnchorInfo;
+import edu.millersville.umlatron.view.umlRecursiveLines.UMLRecursiveLine;
 
 
 /**
@@ -49,5 +50,15 @@ public interface AnchorPoint {
 	 *            The line to be added.
 	 */
 	public void addLine(UMLLine line);
+        
+        
+        public void addRecursiveLine(UMLRecursiveLine l);
+        
+        public void removeRecursiveLine(UMLRecursiveLine l);
+        
+        public double getWidthAnchorPoint();
+        
+        public double getHeightAnchorPoint();
+        
 
 }

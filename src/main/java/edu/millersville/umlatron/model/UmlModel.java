@@ -16,7 +16,7 @@ public class UmlModel {
     private SimpleObjectProperty<SelectState> selectState;
     private SimpleObjectProperty<Node> currentlySelectedNode;
     private SimpleObjectProperty<ViewState> viewState;
-    public boolean projectSaved = false;
+    public boolean projectSaved = true;
     private File currentFile;
     
     

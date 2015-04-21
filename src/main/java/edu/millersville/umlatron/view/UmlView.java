@@ -68,7 +68,6 @@ public class UmlView extends BorderPane {
         menuBar.getStylesheets().add("/styles/MenuBar.css");
 
         Menu fileOperations = new Menu("File");
-        MenuItem newThing = new MenuItem("New");
         MenuItem saveButton = new MenuItem("Save");
         saveButton.setOnAction((event) -> {
             fileOps.save();
@@ -119,7 +118,7 @@ public class UmlView extends BorderPane {
             }
 
         });
-        fileOperations.getItems().addAll(newThing, new SeparatorMenuItem(),newItem, saveButton, load, new SeparatorMenuItem(), exit);
+        fileOperations.getItems().addAll(newItem, saveButton, load, new SeparatorMenuItem(), exit);
 
         Menu views = new Menu("Views");
         MenuItem umlClass = new MenuItem("Class diagrahm");

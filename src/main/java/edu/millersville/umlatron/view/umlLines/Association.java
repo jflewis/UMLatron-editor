@@ -1,5 +1,6 @@
 package edu.millersville.umlatron.view.umlLines;
 
+import edu.millersville.umlatron.view.AnchorPoint;
 import edu.millersville.umlatron.view.ClassBox;
 import edu.millersville.umlatron.view.SelectedPanel;
 import edu.millersville.umlatron.view.umlLines.UMLLine;
@@ -37,7 +38,7 @@ public class Association extends UMLLine implements SelectedPanel,
 	 *            The AnchorPoint that the ending point of the line is attached
 	 *            to.
 	 */
-	public Association(ClassBox a1, ClassBox a2) {
+	public Association(AnchorPoint a1, AnchorPoint a2) {
 		super(a1, a2);
 		createPolygon();
 
