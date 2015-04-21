@@ -71,7 +71,8 @@ public class UmlatronController {
                     }
 
                 });
-
+        
+        
         // Monitors the change of the toggle buttons
         view.getStateToggle().selectedToggleProperty().addListener(
                 (ObservableValue<? extends Toggle> ov, Toggle toggle,
@@ -121,9 +122,9 @@ public class UmlatronController {
                 if (filteredNode != null) {
                     model.getCurrentlySelectedNodeProperty().setValue(filteredNode);
                     //if we are in the line state and the node clicked on is able to have a line attached to it continue
-                    if (model.getSelectStateProperty().get() == SelectState.LINE || model.getSelectStateProperty().get() == SelectState.ASSOCIATION
-                            || model.getSelectStateProperty().get() == SelectState.GENERALIZATION && filteredNode instanceof AnchorPoint) {
-                        clickedNodes.add(filteredNode);
+                    if ((model.getSelectStateProperty().get() == SelectState.LINE || model.getSelectStateProperty().get() == SelectState.ASSOCIATION
+                            || model.getSelectStateProperty().get() == SelectState.GENERALIZATION)&& filteredNode instanceof AnchorPoint) {                    	
+                    		clickedNodes.add(filteredNode);        
                         if (clickedNodes.size() == 2) {
                             UMLLine line;
                             switch (model.getSelectStateProperty().get()) {
@@ -174,13 +175,26 @@ public class UmlatronController {
         model.getCurrentlySelectedNodeProperty().addListener((ObservableValue<? extends Node> ov,
                 Node last_selected, Node new_selected) -> {
 
-                    if (last_selected instanceof ClassBox) {
-                        ((ClassBox) last_selected).removeActions();
-                    }
+                	if (last_selected != null) {
+                		//do stuff
+                		if (last_selected instanceof ClassBox) {
+                            ((ClassBox) last_selected).removeActions();
+                        }
+                        if (last_selected.getParent() instanceof UMLLine) {
+                        	last_selected = (UMLLine) last_selected.getParent();
+                             ((UMLLine) last_selected).removeSelection();
+                         }
+                        if (new_selected instanceof ClassBox) {
+                        	((ClassBox) new_selected).applySelection();
+                        }
 
-                    if (new_selected.getParent() instanceof UMLLine) {
-                        new_selected = (UMLLine) new_selected.getParent();
-                    }
+                        if (new_selected.getParent() instanceof UMLLine) {
+                            new_selected = (UMLLine) new_selected.getParent();
+                            ((UMLLine) new_selected).applySelection();
+                        }
+                	}
+                    
+                    
 
                     if (new_selected.getParent() instanceof UMLRecursiveLine) {
                         new_selected = (UMLRecursiveLine) new_selected.getParent();
@@ -280,6 +294,7 @@ public class UmlatronController {
             //System.out.println("You created a ClassBox at " + x + " , " + y);
             view.getEditPane().getChildren().add(new ClassBox(x, y));
             model.projectSaved = false;
+
         };
 
         view.getEditPane().setOnMouseClicked(createClassBox);

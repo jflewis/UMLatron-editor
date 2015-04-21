@@ -6,12 +6,15 @@ import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
 import java.util.ArrayList;
+
 import javafx.beans.binding.DoubleBinding;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.Cursor;
 import javafx.scene.Group;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 
 /**
@@ -24,6 +27,8 @@ public class UMLLine extends Group implements java.io.Externalizable {
     private static int lineCount;
     protected int id;
     protected boolean dashed = false;
+    private DropShadow borderGlow;
+    private DropShadow noGlow;
     ChangeListener<Number> listener = (ObservableValue<? extends Number> ov, Number old_state, Number new_state) -> {
 
         calculateAnchorPoints();
@@ -82,6 +87,20 @@ public class UMLLine extends Group implements java.io.Externalizable {
         line.setStrokeWidth(2.0);
         calculateAnchorPoints();
         this.getChildren().add(line);
+        
+        borderGlow = new DropShadow();
+    	borderGlow.setColor(Color.BLUE);
+    	borderGlow.setOffsetX(0f);
+    	borderGlow.setOffsetY(0f);
+    	borderGlow.setWidth(20);
+    	borderGlow.setHeight(20);
+    	//remove highlighting
+    	noGlow = new DropShadow();
+    	noGlow.setColor(Color.BLUE);
+    	noGlow.setOffsetX(0f);
+    	noGlow.setOffsetY(0f);
+    	noGlow.setWidth(0);
+    	noGlow.setHeight(0);
 
     }
     
@@ -208,5 +227,10 @@ public class UMLLine extends Group implements java.io.Externalizable {
         endNode = (ClassBox)in.readObject();
         dashed = in.readBoolean();
     }
-
+    public void applySelection(){
+    	this.setEffect(borderGlow);
+    }
+    public void removeSelection(){
+    	this.setEffect(noGlow);
+    }
 }
