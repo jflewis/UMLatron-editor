@@ -164,7 +164,20 @@ public class UMLLine extends Group implements java.io.Externalizable {
     public int getIntId() {
         return id;
     }
-
+    public void resetAnchorPoints() {
+    	startPoints.clear();
+    	endPoints.clear();
+    	
+    	 startPoints.add(startNode.getNorthPoint());
+         startPoints.add(startNode.getSouthPoint());
+         startPoints.add(startNode.getWestPoint());
+         startPoints.add(startNode.getEastPoint());
+         endPoints.add(endNode.getNorthPoint());
+         endPoints.add(endNode.getSouthPoint());
+         endPoints.add(endNode.getWestPoint());
+         endPoints.add(endNode.getEastPoint());
+    	
+    }
     /**
      * Computes the slope (in both direction for each end point), will adjust
      * the anchor point with respect to that angle
