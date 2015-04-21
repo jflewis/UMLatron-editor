@@ -23,16 +23,14 @@ import javafx.stage.Stage;
 public class UmlatronController {
 
     UmlModel model = new UmlModel();
-    Stage stage;
+    public Stage stage;
     UmlView view;
     ArrayList<Node> clickedNodes = new ArrayList<>();
 
     public UmlatronController(Stage stage) {
 
         this.stage = stage;
-        this.view = new UmlView(this,stage);
-
-
+        this.view = new UmlView(this);
         // set initial select state
         model.getSelectStateProperty().addListener(
                 (ObservableValue<? extends SelectState> ov, SelectState old_state,
@@ -122,45 +120,39 @@ public class UmlatronController {
                             UMLLine line;
                             switch (model.getSelectStateProperty().get()) {
                                 case ASSOCIATION:
-                                	if (clickedNodes.get(0) != clickedNodes.get(1))
-                                	{
-                                		line = new Association((ClassBox) (clickedNodes.get(0)), (ClassBox) (clickedNodes.get(1)));
-                                    	view.getEditPane().getChildren().add(line);
-                                    	clickedNodes.clear();
-                                	}
-                                	else
-                                	{
-                                		view.getEditPane().getChildren().add(new RecursiveAssociation((ClassBox) clickedNodes.get(0)));
-                                		clickedNodes.clear();
-                                	}
+                                    if (clickedNodes.get(0) != clickedNodes.get(1)) {
+                                        line = new Association((ClassBox) (clickedNodes.get(0)), (ClassBox) (clickedNodes.get(1)));
+                                        view.getEditPane().getChildren().add(line);
+                                        clickedNodes.clear();
+                                    } else {
+                                        view.getEditPane().getChildren().add(new RecursiveAssociation((ClassBox) clickedNodes.get(0)));
+                                        clickedNodes.clear();
+                                    }
+                                    model.projectSaved = false;
                                     break;
 
                                 case LINE:
-                                	if (clickedNodes.get(0) != clickedNodes.get(1))
-                                	{
-                                		line = new UMLArrowLine((ClassBox) (clickedNodes.get(0)), (ClassBox) (clickedNodes.get(1)));
-                                    	view.getEditPane().getChildren().add(line);
-                                    	clickedNodes.clear();
-                                	}
-                                	else
-                                	{
-                                		view.getEditPane().getChildren().add(new UMLRecursiveArrowLine((ClassBox) clickedNodes.get(0)));
-                                		clickedNodes.clear();
-                                	}
+                                    if (clickedNodes.get(0) != clickedNodes.get(1)) {
+                                        line = new UMLArrowLine((ClassBox) (clickedNodes.get(0)), (ClassBox) (clickedNodes.get(1)));
+                                        view.getEditPane().getChildren().add(line);
+                                        clickedNodes.clear();
+                                    } else {
+                                        view.getEditPane().getChildren().add(new UMLRecursiveArrowLine((ClassBox) clickedNodes.get(0)));
+                                        clickedNodes.clear();
+                                    }
+                                    model.projectSaved = false;
                                     break;
 
                                 case GENERALIZATION:
-                                	if (clickedNodes.get(0) != clickedNodes.get(1))
-                                	{
-                                    line = new Generalization((ClassBox) (clickedNodes.get(0)), (ClassBox) (clickedNodes.get(1)));
-                                    view.getEditPane().getChildren().add(line);
-                                    clickedNodes.clear();
-                                	}
-                                	else
-                                	{
-                                		view.getEditPane().getChildren().add(new RecursiveGeneralization((ClassBox) clickedNodes.get(0)));
-                                		clickedNodes.clear();
-                                	}
+                                    if (clickedNodes.get(0) != clickedNodes.get(1)) {
+                                        line = new Generalization((ClassBox) (clickedNodes.get(0)), (ClassBox) (clickedNodes.get(1)));
+                                        view.getEditPane().getChildren().add(line);
+                                        clickedNodes.clear();
+                                    } else {
+                                        view.getEditPane().getChildren().add(new RecursiveGeneralization((ClassBox) clickedNodes.get(0)));
+                                        clickedNodes.clear();
+                                    }
+                                    model.projectSaved = false;
                                     break;
 
                             }
@@ -175,7 +167,7 @@ public class UmlatronController {
                 Node last_selected, Node new_selected) -> {
 
                     if (last_selected instanceof ClassBox) {
-                       ((ClassBox) last_selected).removeActions();
+                        ((ClassBox) last_selected).removeActions();
                     }
                     if (last_selected.getParent() instanceof UMLLine) {
                     	 last_selected = (UMLLine) last_selected.getParent();
@@ -189,7 +181,7 @@ public class UmlatronController {
                         new_selected = (UMLLine) new_selected.getParent();
                         ((UMLLine) new_selected).applySelection();
                     }
-                    
+
                     if (new_selected.getParent() instanceof UMLRecursiveLine) {
                         new_selected = (UMLRecursiveLine) new_selected.getParent();
                     }
@@ -215,26 +207,25 @@ public class UmlatronController {
 
             }
         });
-        
-        
+
         model.getViewStateProperty().addListener((ObservableValue<? extends ViewState> ov,
                 ViewState old_state, ViewState new_state) -> {
-                    
-            switch(new_state){
-                case CLASS_UML:
-                    view.createUmlClassToggleButtons();
-                    view.getCurrentlySelectedPane().getChildren().clear();
-                    break;
-                case USE_CASE_UML:
-                    view.createUmlUseCaseButtons();
-                    view.getCurrentlySelectedPane().getChildren().clear();
-                    break;
-                    
-                default:
-                    //something went wrong
-                    break;
-               
-            }
+
+                    switch (new_state) {
+                        case CLASS_UML:
+                            view.createUmlClassToggleButtons();
+                            view.getCurrentlySelectedPane().getChildren().clear();
+                            break;
+                        case USE_CASE_UML:
+                            view.createUmlUseCaseButtons();
+                            view.getCurrentlySelectedPane().getChildren().clear();
+                            break;
+
+                        default:
+                            //something went wrong
+                            break;
+
+                    }
 
                 });
 
@@ -288,7 +279,8 @@ public class UmlatronController {
             double y = event.getY();
             //System.out.println("You created a ClassBox at " + x + " , " + y);
             view.getEditPane().getChildren().add(new ClassBox(x, y));
-            
+            model.projectSaved = false;
+
         };
 
         view.getEditPane().setOnMouseClicked(createClassBox);
