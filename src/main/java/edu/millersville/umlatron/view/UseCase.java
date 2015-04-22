@@ -16,6 +16,7 @@ import javafx.beans.binding.DoubleBinding;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
+import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -27,42 +28,48 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.StackPane;
 
 /**
  *
  * @author John
  */
-public class User extends VBox implements AnchorPoint, SelectedPanel, java.io.Externalizable {
-
+public class UseCase extends StackPane implements AnchorPoint, SelectedPanel, java.io.Externalizable{
     private double initX;
     private double initY;
     private Point2D dragAnchor;
     private ArrayList<UMLLine> lines = new ArrayList<>();
     private ArrayList<UMLRecursiveLine> recursiveLines = new ArrayList<>();
     TextField textField;
-    ImageView stickFigure;
-
-    public User() {
-        this(0, 0);
-    }
-
-    public User(double x, double y) {
+    ImageView circle;
+    
+    /**
+     * A public default constructor to implement the Externalizable interface
+     */
+    public UseCase(){this(0,0);}
+    
+    /**
+     * A Circle holding a text area that is used to represent a use case in 
+     * a use case diagram
+     * @param x position
+     * @param y position
+     */
+    public UseCase(double x, double y){
         super();
         textField = new TextField();
-        textField.setMouseTransparent(true);
-        textField.setPromptText("User");
         textField.setEditable(false);
-        textField.setMaxWidth(55);
+        textField.setMouseTransparent(true);
+        textField.setPromptText("Use case");
+        textField.setAlignment(Pos.CENTER);
+        textField.setMaxHeight(20);
+        textField.setMaxWidth(225);
         textField.setStyle("-fx-border-color:transparent;-fx-background-color:transparent");
-        stickFigure = new ImageView(new Image("/images/stickFigure.png"));
-        //this.setHeight(178.0);
-        //this.setWidth(167.0);
+        circle = new ImageView(new Image("/images/ellipse.png"));
         setCursor(Cursor.OPEN_HAND);
         setTranslateX(x);
         setTranslateY(y);
-        this.getChildren().addAll(stickFigure, textField);
-
+        this.getChildren().addAll(circle, textField);
+        
         /*
          * Movement Handling/Mouse Events Creation of ClassBox on Mouse Press
          * Mouse Drag determined by getting the current value of the classBox
@@ -80,7 +87,7 @@ public class User extends VBox implements AnchorPoint, SelectedPanel, java.io.Ex
             double dragY = event.getSceneY() - dragAnchor.getY();
             double newXPosition = initX + dragX;
             double newYPosition = initY + dragY;
-            //  width = widthProperty().getValue();
+          //  width = widthProperty().getValue();
             //  height = heightProperty().getValue();
 
             if ((newXPosition >= this.sceneProperty().get().getX())
@@ -119,8 +126,8 @@ public class User extends VBox implements AnchorPoint, SelectedPanel, java.io.Ex
         });
 
     }
-
-    @Override
+    
+     @Override
     public AnchorInfo getNorthPoint() {
 
         DoubleBinding x = this.translateXProperty().add(this.widthProperty().divide(2));
@@ -164,6 +171,7 @@ public class User extends VBox implements AnchorPoint, SelectedPanel, java.io.Ex
         lines.add(line);
     }
 
+    @Override
     public void addRecursiveLine(UMLRecursiveLine line) {
         recursiveLines.add(line);
     }
@@ -196,7 +204,7 @@ public class User extends VBox implements AnchorPoint, SelectedPanel, java.io.Ex
     }
 
     ////////////////////////
-
+        
     public void applyActions(TextField text) {
         text.requestFocus();
         text.setEditable(true);
@@ -225,10 +233,8 @@ public class User extends VBox implements AnchorPoint, SelectedPanel, java.io.Ex
         recursiveLines.clear();
         pane.getChildren().remove(this);
     }
-
-
-
-//////////////////////////////////////////////////////////////
+    
+    //////////////////////////////////////////////////////////////
 /**
  * creates the currently selected panel for this Node
  *
@@ -240,7 +246,7 @@ public class User extends VBox implements AnchorPoint, SelectedPanel, java.io.Ex
         h.getChildren().clear();
         DropShadow shadow = new DropShadow();
 
-        Button editName = new Button("Edit user id");
+        Button editName = new Button("Edit Use Case");
         editName.setMaxWidth(Double.MAX_VALUE);
         HBox.setHgrow(editName, Priority.ALWAYS);
         editName.setOnAction((ActionEvent e) -> {
@@ -268,7 +274,6 @@ public class User extends VBox implements AnchorPoint, SelectedPanel, java.io.Ex
         deleteB.setOnAction((ActionEvent e) -> {
         	removeActions();
             destroy();
-
             h.getChildren().clear();
             
         });
@@ -287,7 +292,7 @@ public class User extends VBox implements AnchorPoint, SelectedPanel, java.io.Ex
                     }
                 });
 
-        Label label = new Label("Currently selected node : User ");
+        Label label = new Label("Currently selected node : Use Case ");
         h.getChildren().addAll(editName, deleteB);
     }
     
@@ -315,7 +320,9 @@ public class User extends VBox implements AnchorPoint, SelectedPanel, java.io.Ex
         this.setWidth(in.readDouble());
 
     }
-	
-        
+
+    
+    
+    
     
 }

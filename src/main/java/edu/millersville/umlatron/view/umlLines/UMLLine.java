@@ -237,8 +237,8 @@ public class UMLLine extends Group implements java.io.Externalizable {
 
     @Override
     public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
-        startNode  = (ClassBox)in.readObject();
-        endNode = (ClassBox)in.readObject();
+        startNode  = (AnchorPoint)in.readObject();
+        endNode = (AnchorPoint)in.readObject();
         dashed = in.readBoolean();
     }
     public void applySelection(){

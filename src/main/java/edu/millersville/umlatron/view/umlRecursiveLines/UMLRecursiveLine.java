@@ -168,7 +168,7 @@ public class UMLRecursiveLine extends Group implements java.io.Externalizable {
 	@Override
 	public void readExternal(ObjectInput in) throws IOException,
 			ClassNotFoundException {
-		node = (ClassBox) in.readObject();
+		node = (AnchorPoint) in.readObject();
 		dashed = in.readBoolean();
 	}
 

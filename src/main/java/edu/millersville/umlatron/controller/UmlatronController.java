@@ -71,6 +71,10 @@ public class UmlatronController {
                         case USER:
                             setUserState();
                             break;
+                            
+                        case USE_CASE:
+                            setCircleState();
+                            break;
                     }
 
                 });
@@ -106,6 +110,10 @@ public class UmlatronController {
 
                             case USER:
                                 model.setSelectState(SelectState.USER);
+                                break;
+                            
+                            case USE_CASE:
+                                model.setSelectState(SelectState.USE_CASE);
                                 break;
 
                             default:
@@ -188,6 +196,9 @@ public class UmlatronController {
                         }
                         if (last_selected instanceof User) {
                             ((User) last_selected).removeActions();
+                        }
+                        if (last_selected instanceof UseCase) {
+                            ((UseCase) last_selected).removeActions();
                         }
                         if (last_selected.getParent() instanceof UMLLine) {
                             last_selected = (UMLLine) last_selected.getParent();
@@ -322,6 +333,22 @@ public class UmlatronController {
         };
 
         view.getEditPane().setOnMouseClicked(createUser);
+    }
+    
+     /**
+     * Sets the panes clicks to create class boxes
+     */
+    private void setCircleState() {
+        EventHandler<MouseEvent> createCircle = (event) -> {
+            double x = event.getX();
+            double y = event.getY();
+            //System.out.println("You created a ClassBox at " + x + " , " + y);
+            view.getEditPane().getChildren().add(new UseCase(x, y));
+            model.projectSaved = false;
+
+        };
+
+        view.getEditPane().setOnMouseClicked(createCircle);
     }
 
     /**

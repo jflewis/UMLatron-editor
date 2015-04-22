@@ -51,7 +51,7 @@ public class UmlView extends BorderPane {
     public UmlView(UmlatronController controller) {
         super();
         this.controller = controller;
-        this.fileOps = new FileOperations(editPane, controller.stage);
+        this.fileOps = new FileOperations(editPane, controller);
         mainApp = applicationBar();
         createUmlClassToggleButtons();
         currentlySelectedPanel = createCurrentlySelectedPanel();
@@ -242,7 +242,7 @@ public class UmlView extends BorderPane {
         tb2.setMaxWidth(Double.MAX_VALUE);
 
         ToggleButton tb3 = new ToggleButton("Use Case");
-        tb3.setUserData(SelectState.CIRCLE);
+        tb3.setUserData(SelectState.USE_CASE);
         tb3.setToggleGroup(stateToggle);
         tb3.setMaxWidth(Double.MAX_VALUE);
 
