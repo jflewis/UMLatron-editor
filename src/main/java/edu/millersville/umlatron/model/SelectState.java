@@ -12,6 +12,6 @@ package edu.millersville.umlatron.model;
  */
 public enum SelectState {
 
-    LINE, CLASSBOX, SELECT, ASSOCIATION, GENERALIZATION,USER,CIRCLE
+    LINE, CLASSBOX, SELECT, ASSOCIATION, GENERALIZATION,USER,USE_CASE
 
 }

@@ -1,8 +1,7 @@
 package edu.millersville.umlatron.view.umlRecursiveLines;
 
-import edu.millersville.umlatron.view.ClassBox;
+import edu.millersville.umlatron.view.AnchorPoint;
 import edu.millersville.umlatron.view.SelectedPanel;
-import edu.millersville.umlatron.view.umlRecursiveLines.UMLRecursiveLine;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -33,7 +32,7 @@ public class UMLRecursiveArrowLine extends UMLRecursiveLine implements
 	 * @param node
 	 *            The node that this association is recursively pointing to.
 	 */
-	public UMLRecursiveArrowLine(ClassBox node) {
+	public UMLRecursiveArrowLine(AnchorPoint node) {
 		super(node);
 		createPolygon();
 	}

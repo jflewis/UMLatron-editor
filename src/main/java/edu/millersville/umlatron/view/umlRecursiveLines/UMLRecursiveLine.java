@@ -6,6 +6,7 @@ import java.io.ObjectOutput;
 import java.util.ArrayList;
 
 import edu.millersville.umlatron.Util.AnchorInfo;
+import edu.millersville.umlatron.view.AnchorPoint;
 import edu.millersville.umlatron.view.ClassBox;
 import javafx.beans.binding.DoubleBinding;
 import javafx.beans.value.ChangeListener;
@@ -24,7 +25,7 @@ public class UMLRecursiveLine extends Group implements java.io.Externalizable {
 
 	AnchorInfo startPoint;
 	AnchorInfo endPoint;
-	ClassBox node;
+	AnchorPoint node;
 	DoubleBinding deltaX, deltaY, distance;
 	protected boolean dashed = false;
 	protected ArrayList<Line> lines = new ArrayList<Line>();
@@ -39,7 +40,7 @@ public class UMLRecursiveLine extends Group implements java.io.Externalizable {
 	 * @param node
 	 *            The node that this association is recursively pointing to.
 	 */
-	public UMLRecursiveLine(ClassBox node) {
+	public UMLRecursiveLine(AnchorPoint node) {
 		super();
 
 		this.node = node;
@@ -150,13 +151,13 @@ public class UMLRecursiveLine extends Group implements java.io.Externalizable {
 
 		lines.get(1).setStartX(lines.get(0).getEndX());
 		lines.get(1).setStartY(lines.get(0).getEndY());
-		lines.get(1).setEndX(lines.get(0).getEndX() - (node.getWidth() / 2 + 25));
+		lines.get(1).setEndX(lines.get(0).getEndX() - (node.getWidthAnchorPoint() / 2 + 25));
 		lines.get(1).setEndY(lines.get(0).getEndY());
 
 		lines.get(2).setStartX(lines.get(1).getEndX());
 		lines.get(2).setStartY(lines.get(1).getEndY());
 		lines.get(2).setEndX(lines.get(1).getEndX());
-		lines.get(2).setEndY(lines.get(1).getEndY() + (node.getHeight() / 2 + 25));
+		lines.get(2).setEndY(lines.get(1).getEndY() + (node.getHeightAnchorPoint() / 2 + 25));
 
 		lines.get(3).setStartX(lines.get(2).getEndX());
 		lines.get(3).setStartY(lines.get(2).getEndY());
@@ -167,7 +168,7 @@ public class UMLRecursiveLine extends Group implements java.io.Externalizable {
 	@Override
 	public void readExternal(ObjectInput in) throws IOException,
 			ClassNotFoundException {
-		node = (ClassBox) in.readObject();
+		node = (AnchorPoint) in.readObject();
 		dashed = in.readBoolean();
 	}
 

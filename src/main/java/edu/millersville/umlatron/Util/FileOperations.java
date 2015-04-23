@@ -5,8 +5,12 @@
  */
 package edu.millersville.umlatron.Util;
 
+import edu.millersville.umlatron.controller.UmlatronController;
+import edu.millersville.umlatron.model.ViewState;
 import edu.millersville.umlatron.view.ClassBox;
 import edu.millersville.umlatron.view.EditPane;
+import edu.millersville.umlatron.view.UseCase;
+import edu.millersville.umlatron.view.User;
 import edu.millersville.umlatron.view.umlLines.UMLLine;
 import edu.millersville.umlatron.view.umlRecursiveLines.UMLRecursiveLine;
 import java.io.EOFException;
@@ -30,15 +34,17 @@ public class FileOperations {
     EditPane pane;
     Stage mainStage;
     File currentFile;
+    UmlatronController controller;
     
     /**
      * The constructor for this object
      * @param pane The EditPane were objects are located at
      * @param mainStage The JavaFx stage used for presenting the file chooser
      */
-    public FileOperations(EditPane pane, Stage mainStage){
+    public FileOperations(EditPane pane,UmlatronController controller){
         this.pane = pane;
-        this.mainStage = mainStage;
+        this.mainStage = controller.stage;
+        this.controller = controller;
     }
     
     
@@ -57,6 +63,8 @@ public class FileOperations {
             try {
                 FileInputStream fileIn = new FileInputStream(selectedFile);
                 ObjectInputStream in = new ObjectInputStream(fileIn);
+                ViewState viewState = (ViewState)in.readObject();
+                controller.getModel().setViewState(viewState);
                 Node node = null;
                 while (true) {
                     try {
@@ -100,8 +108,9 @@ public class FileOperations {
                 FileOutputStream fileOut
                         = new FileOutputStream(selectedFile);
                 ObjectOutputStream out = new ObjectOutputStream(fileOut);
+                out.writeObject(controller.getModel().getViewStateProperty().getValue());
                 for (Node n : pane.getChildren()) {
-                    if (n instanceof ClassBox) {
+                    if (n instanceof ClassBox || n instanceof User || n instanceof UseCase) {
                         out.writeObject(n);
                     }
                 }

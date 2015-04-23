@@ -21,7 +21,6 @@ import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.control.Toggle;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.input.ScrollEvent;
 import javafx.stage.Stage;
 
 /**
@@ -68,11 +67,18 @@ public class UmlatronController {
                         case CLASSBOX:
                             setClassBoxState();
                             break;
+
+                        case USER:
+                            setUserState();
+                            break;
+                            
+                        case USE_CASE:
+                            setCircleState();
+                            break;
                     }
 
                 });
-        
-        
+
         // Monitors the change of the toggle buttons
         view.getStateToggle().selectedToggleProperty().addListener(
                 (ObservableValue<? extends Toggle> ov, Toggle toggle,
@@ -102,6 +108,14 @@ public class UmlatronController {
                                 model.setSelectState(SelectState.GENERALIZATION);
                                 break;
 
+                            case USER:
+                                model.setSelectState(SelectState.USER);
+                                break;
+                            
+                            case USE_CASE:
+                                model.setSelectState(SelectState.USE_CASE);
+                                break;
+
                             default:
                                 // something went wrong
                                 break;
@@ -123,18 +137,18 @@ public class UmlatronController {
                     model.getCurrentlySelectedNodeProperty().setValue(filteredNode);
                     //if we are in the line state and the node clicked on is able to have a line attached to it continue
                     if ((model.getSelectStateProperty().get() == SelectState.LINE || model.getSelectStateProperty().get() == SelectState.ASSOCIATION
-                            || model.getSelectStateProperty().get() == SelectState.GENERALIZATION)&& filteredNode instanceof AnchorPoint) {                    	
-                    		clickedNodes.add(filteredNode);        
+                            || model.getSelectStateProperty().get() == SelectState.GENERALIZATION) && filteredNode instanceof AnchorPoint) {
+                        clickedNodes.add(filteredNode);
                         if (clickedNodes.size() == 2) {
                             UMLLine line;
                             switch (model.getSelectStateProperty().get()) {
                                 case ASSOCIATION:
                                     if (clickedNodes.get(0) != clickedNodes.get(1)) {
-                                        line = new Association((ClassBox) (clickedNodes.get(0)), (ClassBox) (clickedNodes.get(1)));
+                                        line = new Association((AnchorPoint) (clickedNodes.get(0)), (AnchorPoint) (clickedNodes.get(1)));
                                         view.getEditPane().getChildren().add(line);
                                         clickedNodes.clear();
                                     } else {
-                                        view.getEditPane().getChildren().add(new RecursiveAssociation((ClassBox) clickedNodes.get(0)));
+                                        view.getEditPane().getChildren().add(new RecursiveAssociation((AnchorPoint) clickedNodes.get(0)));
                                         clickedNodes.clear();
                                     }
                                     model.projectSaved = false;
@@ -142,11 +156,11 @@ public class UmlatronController {
 
                                 case LINE:
                                     if (clickedNodes.get(0) != clickedNodes.get(1)) {
-                                        line = new UMLArrowLine((ClassBox) (clickedNodes.get(0)), (ClassBox) (clickedNodes.get(1)));
+                                        line = new UMLArrowLine((AnchorPoint) (clickedNodes.get(0)), (AnchorPoint) (clickedNodes.get(1)));
                                         view.getEditPane().getChildren().add(line);
                                         clickedNodes.clear();
                                     } else {
-                                        view.getEditPane().getChildren().add(new UMLRecursiveArrowLine((ClassBox) clickedNodes.get(0)));
+                                        view.getEditPane().getChildren().add(new UMLRecursiveArrowLine((AnchorPoint) clickedNodes.get(0)));
                                         clickedNodes.clear();
                                     }
                                     model.projectSaved = false;
@@ -154,11 +168,11 @@ public class UmlatronController {
 
                                 case GENERALIZATION:
                                     if (clickedNodes.get(0) != clickedNodes.get(1)) {
-                                        line = new Generalization((ClassBox) (clickedNodes.get(0)), (ClassBox) (clickedNodes.get(1)));
+                                        line = new Generalization((AnchorPoint) (clickedNodes.get(0)), (AnchorPoint) (clickedNodes.get(1)));
                                         view.getEditPane().getChildren().add(line);
                                         clickedNodes.clear();
                                     } else {
-                                        view.getEditPane().getChildren().add(new RecursiveGeneralization((ClassBox) clickedNodes.get(0)));
+                                        view.getEditPane().getChildren().add(new RecursiveGeneralization((AnchorPoint) clickedNodes.get(0)));
                                         clickedNodes.clear();
                                     }
                                     model.projectSaved = false;
@@ -175,26 +189,30 @@ public class UmlatronController {
         model.getCurrentlySelectedNodeProperty().addListener((ObservableValue<? extends Node> ov,
                 Node last_selected, Node new_selected) -> {
 
-                	if (last_selected != null) {
-                		//do stuff
-                		if (last_selected instanceof ClassBox) {
+                    if (last_selected != null) {
+                        //do stuff
+                        if (last_selected instanceof ClassBox) {
                             ((ClassBox) last_selected).removeActions();
                         }
+                        if (last_selected instanceof User) {
+                            ((User) last_selected).removeActions();
+                        }
+                        if (last_selected instanceof UseCase) {
+                            ((UseCase) last_selected).removeActions();
+                        }
                         if (last_selected.getParent() instanceof UMLLine) {
-                        	last_selected = (UMLLine) last_selected.getParent();
-                             ((UMLLine) last_selected).removeSelection();
-                         }
+                            last_selected = (UMLLine) last_selected.getParent();
+                            ((UMLLine) last_selected).removeSelection();
+                        }
                         if (new_selected instanceof ClassBox) {
-                        	((ClassBox) new_selected).applySelection();
+                            ((ClassBox) new_selected).applySelection();
                         }
 
                         if (new_selected.getParent() instanceof UMLLine) {
                             new_selected = (UMLLine) new_selected.getParent();
                             ((UMLLine) new_selected).applySelection();
                         }
-                	}
-                    
-                    
+                    }
 
                     if (new_selected.getParent() instanceof UMLRecursiveLine) {
                         new_selected = (UMLRecursiveLine) new_selected.getParent();
@@ -209,19 +227,20 @@ public class UmlatronController {
         /**
          * almost scrolling because why not
          */
-        view.getEditPane().setOnScroll(new EventHandler<ScrollEvent>() {
-            @Override
-            public void handle(ScrollEvent event) {
-                double scaleFactor = (event.getDeltaY() > 0) ? 1.5 : 1 / 1.5;
+        /*
+         view.getEditPane().setOnScroll(new EventHandler<ScrollEvent>() {
+         @Override
+         public void handle(ScrollEvent event) {
+         double scaleFactor = (event.getDeltaY() > 0) ? 1.5 : 1 / 1.5;
 
-                if (view.getEditPane().getScaleX() * scaleFactor >= 1.0) {
-                    view.getEditPane().setScaleX(view.getEditPane().getScaleX() * scaleFactor);
-                    view.getEditPane().setScaleY(view.getEditPane().getScaleY() * scaleFactor);
-                }
+         if (view.getEditPane().getScaleX() * scaleFactor >= 1.0) {
+         view.getEditPane().setScaleX(view.getEditPane().getScaleX() * scaleFactor);
+         view.getEditPane().setScaleY(view.getEditPane().getScaleY() * scaleFactor);
+         }
 
-            }
-        });
-
+         }
+         });
+         */
         model.getViewStateProperty().addListener((ObservableValue<? extends ViewState> ov,
                 ViewState old_state, ViewState new_state) -> {
 
@@ -298,6 +317,38 @@ public class UmlatronController {
         };
 
         view.getEditPane().setOnMouseClicked(createClassBox);
+    }
+
+    /**
+     * Sets the panes clicks to create class boxes
+     */
+    private void setUserState() {
+        EventHandler<MouseEvent> createUser = (event) -> {
+            double x = event.getX();
+            double y = event.getY();
+            //System.out.println("You created a ClassBox at " + x + " , " + y);
+            view.getEditPane().getChildren().add(new User(x, y));
+            model.projectSaved = false;
+
+        };
+
+        view.getEditPane().setOnMouseClicked(createUser);
+    }
+    
+     /**
+     * Sets the panes clicks to create class boxes
+     */
+    private void setCircleState() {
+        EventHandler<MouseEvent> createCircle = (event) -> {
+            double x = event.getX();
+            double y = event.getY();
+            //System.out.println("You created a ClassBox at " + x + " , " + y);
+            view.getEditPane().getChildren().add(new UseCase(x, y));
+            model.projectSaved = false;
+
+        };
+
+        view.getEditPane().setOnMouseClicked(createCircle);
     }
 
     /**

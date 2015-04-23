@@ -1,5 +1,6 @@
 package edu.millersville.umlatron.view.umlRecursiveLines;
 
+import edu.millersville.umlatron.view.AnchorPoint;
 import edu.millersville.umlatron.view.ClassBox;
 import edu.millersville.umlatron.view.SelectedPanel;
 import edu.millersville.umlatron.view.umlRecursiveLines.UMLRecursiveLine;
@@ -31,7 +32,7 @@ public class RecursiveGeneralization extends UMLRecursiveLine implements
 	 * @param node
 	 *            The node that this association is recursively pointing to.
 	 */
-	public RecursiveGeneralization(ClassBox node) {
+	public RecursiveGeneralization(AnchorPoint node) {
 		super(node);
 		createPolygon();
 	}

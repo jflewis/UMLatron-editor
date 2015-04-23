@@ -55,7 +55,7 @@ public class UmlView extends BorderPane {
     	
         super();
         this.controller = controller;
-        this.fileOps = new FileOperations(editPane, controller.stage);
+        this.fileOps = new FileOperations(editPane, controller);
         mainApp = applicationBar();
         createUmlClassToggleButtons();
         editPane.setId("pane");
@@ -73,7 +73,6 @@ public class UmlView extends BorderPane {
         menuBar.getStylesheets().add("/styles/MenuBar.css");
 
         Menu fileOperations = new Menu("File");
-        MenuItem newThing = new MenuItem("New");
         MenuItem saveButton = new MenuItem("Save");
         saveButton.setOnAction((event) -> {
             fileOps.save();
@@ -124,7 +123,7 @@ public class UmlView extends BorderPane {
             }
 
         });
-        fileOperations.getItems().addAll(newThing, new SeparatorMenuItem(),newItem, saveButton, load, new SeparatorMenuItem(), exit);
+        fileOperations.getItems().addAll(newItem, saveButton, load, new SeparatorMenuItem(), exit);
 
         Menu views = new Menu("Views");
         MenuItem umlClass = new MenuItem("Class diagrahm");
@@ -274,7 +273,7 @@ public class UmlView extends BorderPane {
         tb2.setMaxWidth(Double.MAX_VALUE);
 
         ToggleButton tb3 = new ToggleButton("Use Case");
-        tb3.setUserData(SelectState.CIRCLE);
+        tb3.setUserData(SelectState.USE_CASE);
         tb3.setToggleGroup(stateToggle);
         tb3.setMaxWidth(Double.MAX_VALUE);
 

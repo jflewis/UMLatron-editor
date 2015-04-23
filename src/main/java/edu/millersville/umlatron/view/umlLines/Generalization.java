@@ -5,6 +5,7 @@
  */
 package edu.millersville.umlatron.view.umlLines;
 
+import edu.millersville.umlatron.view.AnchorPoint;
 import edu.millersville.umlatron.view.ClassBox;
 import edu.millersville.umlatron.view.SelectedPanel;
 import edu.millersville.umlatron.view.umlLines.UMLLine;
@@ -32,7 +33,7 @@ public class Generalization extends UMLLine implements SelectedPanel,java.io.Ser
     Rotate rotate = new Rotate();
     Polygon polygon = new Polygon();
 
-    public Generalization(ClassBox a1, ClassBox a2) {
+    public Generalization(AnchorPoint a1, AnchorPoint a2) {
         super(a1, a2);
         createLine();
     }
