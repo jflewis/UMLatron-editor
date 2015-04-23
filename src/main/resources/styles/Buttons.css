@@ -1,0 +1,184 @@
+#pane, .root {
+	-fx-background-color: #aaaaaa;
+}
+
+.toggle-button {
+	-fx-padding: 10 22 10 22;
+	-fx-background-radius: 0;
+	-fx-background-color: #19689B;
+	-fx-font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+	-fx-font-size: 11pt;
+	-fx-text-fill: #d8d8d8;
+	-fx-background-insets: 0 0 0 0, 0, 1, 2;
+}
+
+.toggle-button:selected {
+	-fx-padding: 10 22 10 22; -fx-background-radius : 0;
+	-fx-background-color: #084166;
+	-fx-font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+	-fx-font-size: 11pt;
+	-fx-text-fill: #d8d8d8;
+	-fx-background-insets: 0 0 0 0, 0, 1, 2;
+	-fx-background-radius: 0;
+}
+
+.toggle-button:hover {
+	-fx-background-color: #3a3a3a;
+}
+
+.toggle-button:pressed, .button:default:hover:pressed {
+	-fx-background-color: black;
+	-fx-text-fill: white;
+}
+
+.toggle-button:focused {
+	
+}
+
+.toggle-button:disabled, .button:default:disabled {
+	-fx-opacity: 0.4;
+	-fx-background-color: #1d1d1d;
+	-fx-text-fill: white;
+}
+
+.toggle-button:default {
+	-fx-background-color: -fx-focus-color;
+	-fx-text-fill: #ffffff;
+}
+
+.toggle-button:default:hover {
+	-fx-background-color: derive(-fx-focus-color, 30%);
+}
+
+.button {
+	-fx-padding: 8 22 8 22;
+	-fx-background-radius: 0;
+	-fx-background-color: #778899;
+	-fx-font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+	-fx-font-size: 11pt;
+	-fx-text-fill: white;
+	-fx-background-insets: 0 0 0 0, 0, 1, 2;
+	-fx-max-width: 200px;
+}
+
+.button:selected {
+	-fx-padding: 8 22 8 22;
+	-fx-background-radius: 0;
+	-fx-background-color: #0E333C;
+	-fx-font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+	-fx-font-size: 11pt;
+	-fx-text-fill: #d8d8d8;
+	-fx-background-insets: 0 0 0 0, 0, 1, 2;
+	-fx-max-width: 200px;
+	-fx-height: 80px;
+}
+
+.button:hover {
+	-fx-background-color: #3a3a3a;
+}
+
+.button:pressed, .button:default:hover:pressed {
+	-fx-background-color: black;
+	-fx-text-fill: white;
+}
+
+.button:focused {
+	-fx-border-radius: 0, 0;
+	-fx-border-insets: 1 1 1 1, 0;
+}
+
+.button:disabled, .button:default:disabled {
+	-fx-opacity: 0.4;
+	-fx-background-color: #1d1d1d;
+	-fx-text-fill: white;
+}
+
+.button:default {
+	-fx-background-color: -fx-focus-color;
+	-fx-text-fill: #ffffff;
+}
+
+.button:default:hover {
+	-fx-background-color: derive(-fx-focus-color, 30%);
+}
+
+.text-area .scroll-bar:vertical {
+	-fx-opacity: 0;
+	-fx-vbar-policy: never;
+}
+
+.scroll-pane {
+	-fx-vbar-policy: never;
+	-fx-background-color: transparent;
+	-fx-hbar-policy: never;
+}
+
+#currentPanel {
+	-fx-background-color: #366B8D;
+	-fx-text-fill: white;
+	-fx-max-width: 300px;
+	-fx-padding: 10 10 10 10;
+	-fx-text-alignment: center;
+}
+
+.vbox {
+	-fx-background-color: transparent;
+}
+
+.ClassBox {
+	-fx-background-color: transparent;
+}
+#focusedBox:focused .content {
+	-fx-background-color: #084166;
+	-fx-border-color: #084166;
+	-fx-text-box-border: #084166;
+	-fx-focus-color: #084166;
+	-fx-background-insets: 0, 0, 0, 0;
+	-fx-border-radius: 0 0 0 0;
+	-fx-background-radius: 0 0 0 0;
+	-fx-control-inner-background: #084166;
+	-fx-text-fill: white;
+}
+.text-area {
+	-fx-background-color: #7F92FF;
+	-fx-border-color: #7F92FF;
+	-fx-text-box-border: #7F92FF;
+	-fx-focus-color: #7F92FF;
+	-fx-background-insets: 0, 0, 0, 0;
+	-fx-border-radius: 0 0 0 0;
+	-fx-background-radius: 0 0 0 0;
+	-fx-control-inner-background: #7F92FF;
+	-fx-text-fill: white;
+	
+}
+.text-area .scrollpane .viewport{
+    -fx-border-color: transparent;
+}
+
+
+.text-area:focused .content {
+	-fx-background-color: #7F92FF;
+	-fx-border-color: #7F92FF;
+	-fx-text-box-border: #7F92FF;
+	-fx-focus-color: #7F92FF;
+	-fx-background-insets: 0, 0, 0, 0;
+	-fx-border-radius: 0 0 0 0;
+	-fx-background-radius: 0 0 0 0;
+	-fx-control-inner-background: #7F92FF;
+	-fx-text-fill: white;
+}
+
+.text-area .content {
+	-fx-background-color: #7F92FF;
+	-fx-border-color: #7F92FF;
+	-fx-text-box-border: #7F92FF;
+	-fx-focus-color: #7F92FF;
+	-fx-background-insets: 0, 0, 0, 0;
+	-fx-border-radius: 0 0 0 0;
+	-fx-background-radius: 0 0 0 0;
+	-fx-control-inner-background: #7F92FF;
+	-fx-text-fill: white;
+}
+.image {
+	-fx-padding: 5, 5, 5, 5;
+}

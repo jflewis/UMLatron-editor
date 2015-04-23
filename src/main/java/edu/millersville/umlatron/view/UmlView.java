@@ -13,11 +13,14 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import edu.millersville.umlatron.model.SelectState;
 import edu.millersville.umlatron.model.ViewState;
+
 import java.util.Optional;
+
 import javafx.geometry.Insets;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
@@ -49,11 +52,13 @@ public class UmlView extends BorderPane {
     private FileOperations fileOps;
 
     public UmlView(UmlatronController controller) {
+    	
         super();
         this.controller = controller;
         this.fileOps = new FileOperations(editPane, controller.stage);
         mainApp = applicationBar();
         createUmlClassToggleButtons();
+        editPane.setId("pane");
         currentlySelectedPanel = createCurrentlySelectedPanel();
         this.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
         editPane.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
@@ -187,28 +192,53 @@ public class UmlView extends BorderPane {
         stateToggle.getToggles().clear();
         toggleButtons.getChildren().clear();
 
-        ToggleButton tb1 = new ToggleButton("Select");
+        ToggleButton tb1 = new ToggleButton("Select  ");
+        Image selectImg = new Image("/images/Select.png");
+        ImageView iv1 = new ImageView();
+        iv1.setImage(selectImg);
+        tb1.setContentDisplay(ContentDisplay.RIGHT);
+        tb1.setGraphic(new ImageView(selectImg));
         tb1.setUserData(SelectState.SELECT);
         tb1.setToggleGroup(stateToggle);
         tb1.setSelected(true);
         tb1.setMaxWidth(Double.MAX_VALUE);
 
-        ToggleButton tb2 = new ToggleButton("ClassBox");
+        ToggleButton tb2 = new ToggleButton("ClassBox  ");
+        Image cBox = new Image("/images/PlainClassBox.png");
+        ImageView iv2 = new ImageView();
+        iv2.setImage(cBox);
+        tb2.setContentDisplay(ContentDisplay.RIGHT);
+        tb2.setGraphic(new ImageView(cBox));
         tb2.setUserData(SelectState.CLASSBOX);
         tb2.setToggleGroup(stateToggle);
         tb2.setMaxWidth(Double.MAX_VALUE);
 
-        ToggleButton tb3 = new ToggleButton("Line");
+        ToggleButton tb3 = new ToggleButton("Line  ");
+        Image lineImg = new Image("/images/SolidLine.png");
+        ImageView iv3 = new ImageView();
+        iv3.setImage(lineImg);
+        tb3.setContentDisplay(ContentDisplay.RIGHT);
+        tb3.setGraphic(new ImageView(lineImg));
         tb3.setUserData(SelectState.LINE);
         tb3.setToggleGroup(stateToggle);
         tb3.setMaxWidth(Double.MAX_VALUE);
 
-        ToggleButton tb4 = new ToggleButton("Association");
+        ToggleButton tb4 = new ToggleButton("Association  ");
+        Image assImg = new Image("/images/Association.png");
+        ImageView iv4 = new ImageView();
+        iv4.setImage(assImg);
+        tb4.setContentDisplay(ContentDisplay.RIGHT);
+        tb4.setGraphic(new ImageView(assImg));
         tb4.setUserData(SelectState.ASSOCIATION);
         tb4.setToggleGroup(stateToggle);
         tb4.setMaxWidth(Double.MAX_VALUE);
 
-        ToggleButton tb5 = new ToggleButton("Generalization");
+        ToggleButton tb5 = new ToggleButton("Generalization  ");
+        Image genImg = new Image("/images/Generelization.png");
+        ImageView iv5 = new ImageView();
+        iv5.setImage(genImg);
+        tb5.setContentDisplay(ContentDisplay.RIGHT);
+        tb5.setGraphic(new ImageView(genImg));
         tb5.setUserData(SelectState.GENERALIZATION);
         tb5.setToggleGroup(stateToggle);
         tb5.setMaxWidth(Double.MAX_VALUE);
@@ -223,6 +253,7 @@ public class UmlView extends BorderPane {
         HBox.setHgrow(tb3, Priority.ALWAYS);
         HBox.setHgrow(tb4, Priority.ALWAYS);
         HBox.setHgrow(tb5, Priority.ALWAYS);
+       
 
     }
 

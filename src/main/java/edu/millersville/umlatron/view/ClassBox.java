@@ -12,12 +12,17 @@ import java.util.ArrayList;
 import javafx.beans.binding.DoubleBinding;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.ToggleButton;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.VBox;
 import javafx.geometry.Bounds;
+import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
 import javafx.scene.Cursor;
 import javafx.scene.control.Button;
@@ -78,24 +83,26 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel,java.io
         setTranslateX(x);
         setTranslateY(y);
         isResizable();
+        setSpacing(5);
         //System.out.println(computePrefHeight(height));
-        setStyle("-fx-border-style: solid;" + "-fx-border-width: 2;"
-                + "-fx-border-color: black;");
+        //setStyle("-fx-border-style: solid;" + "-fx-border-width: 2;"
+        //        + "-fx-border-color: black;");
         
         //highlight for currently selected classbox
         borderGlow = new DropShadow();
-    	borderGlow.setColor(Color.BLUE);
+    	borderGlow.setColor(Color.NAVY);
     	borderGlow.setOffsetX(0f);
     	borderGlow.setOffsetY(0f);
-    	borderGlow.setWidth(20);
-    	borderGlow.setHeight(20);
+    	borderGlow.setWidth(30);
+    	borderGlow.setHeight(30);
     	//remove highlighting
     	noGlow = new DropShadow();
-    	noGlow.setColor(Color.BLUE);
+    	noGlow.setColor(Color.NAVY);
     	noGlow.setOffsetX(0f);
     	noGlow.setOffsetY(0f);
     	noGlow.setWidth(0);
     	noGlow.setHeight(0);
+    	
 
         /*
          * Children of ClassBox Consists of 3 TextAreas with default column and
@@ -107,8 +114,8 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel,java.io
         
         classTextName = new TextArea();
         classTextName.setPromptText(name);
-        classTextName.setPrefRowCount(1);
-        classTextName.setPrefColumnCount(10);
+        classTextName.setPrefRowCount(2);
+        classTextName.setPrefColumnCount(11);
         classTextName.setWrapText(true);
         classTextName.setMouseTransparent(true);
         classTextName.setEditable(false);
@@ -124,7 +131,7 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel,java.io
                     System.out.println("newValue = " + newValue.getHeight());
                     textNameHeight = newValue.getHeight();
                     classTextName.setPrefHeight(nameHolder.getLayoutBounds().getHeight() + 20); // +20 is for paddings
-                    setHeight(heightProperty().getValue()+20);
+                   //setHeight(heightProperty().getValue());
                     updateAnchorPoints();
                     
                 }
@@ -137,7 +144,7 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel,java.io
         classMethods = new TextArea();
         classMethods.setPromptText(methods);
         classMethods.setPrefRowCount(2);
-        classMethods.setPrefColumnCount(10);
+        classMethods.setPrefColumnCount(11);
         classMethods.setWrapText(true);
         classMethods.setMouseTransparent(true);
         classMethods.setEditable(false);
@@ -155,7 +162,7 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel,java.io
                     classMethods.setPrefHeight(methodsHolder.getLayoutBounds().getHeight() + 20); // +20 is for paddings
                    // width = widthProperty().getValue();
                     //height = heightProperty().getValue();
-                    setHeight(heightProperty().getValue());
+                  //  setHeight(heightProperty().getValue());
                     updateAnchorPoints();
                 }  
             }
@@ -163,8 +170,8 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel,java.io
 
         classFunctions = new TextArea();
         classFunctions.setPromptText(functions);
-        classFunctions.setPrefRowCount(3);
-        classFunctions.setPrefColumnCount(10);
+        classFunctions.setPrefRowCount(2);
+        classFunctions.setPrefColumnCount(11);
         classFunctions.setWrapText(true);
         classFunctions.setMouseTransparent(true);
         classFunctions.setEditable(false);
@@ -181,7 +188,7 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel,java.io
                     functionsHeight = newValue.getHeight();
                     classFunctions.setPrefHeight(functionsHolder.getLayoutBounds().getHeight() + 20); // +20 is for paddings
                  //   width = widthProperty().getValue();
-                    setHeight(heightProperty().getValue());
+                //    setHeight(heightProperty().getValue());
                     updateAnchorPoints();
                 }
                 
@@ -367,6 +374,7 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel,java.io
     		line.resetAnchorPoints();
     		line.calculateAnchorPoints();
     	}
+    	
     }
 
     
@@ -389,9 +397,12 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel,java.io
     }
     public void applySelection(){
     	this.setEffect(borderGlow);
+    	this.setId("");
+    	
     }
     public void removeSelection(){
     	this.setEffect(noGlow);
+    	this.setId("");
     }
     	
   //*********************************************************************************************
@@ -464,6 +475,15 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel,java.io
         pane.getChildren().remove(this);
     }
 
+    public void defaultLabel(Label label) {
+    	label.setId("currentPanel");
+    	Image TopClassBox = new Image("/images/TopClassBox.png");
+        ImageView iv2 = new ImageView();
+        iv2.setImage(TopClassBox);
+        label.setContentDisplay(ContentDisplay.RIGHT);
+        label.setGraphic(new ImageView(TopClassBox));
+    	
+    }
     /**
      * creates the currently selected panel for this Node
      *
@@ -474,14 +494,31 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel,java.io
 
         h.getChildren().clear();
         DropShadow shadow = new DropShadow();
-
-        Button editName = new Button("Edit Name");
+        
+        h.setPadding(new Insets(8, 0, 0, 0));
+        Label label = new Label("Currently On: ");
+        label.setId("currentPanel");
+        Image PlainClassBox = new Image("/images/PlainClassBox.png");
+        ImageView iv1 = new ImageView();
+        iv1.setImage(PlainClassBox);
+        label.setContentDisplay(ContentDisplay.RIGHT);
+        label.setGraphic(new ImageView(PlainClassBox));
+       
+        
+        Button editName = new Button("Edit Name  ");
+        Image TopClassBox = new Image("/images/TopClassBox.png");
+        ImageView iv2 = new ImageView();
+        iv2.setImage(TopClassBox);
+        editName.setContentDisplay(ContentDisplay.RIGHT);
+        editName.setGraphic(new ImageView(TopClassBox));
         editName.setMaxWidth(Double.MAX_VALUE);
         HBox.setHgrow(editName, Priority.ALWAYS);
         editName.setOnAction((ActionEvent e) -> {
         	TextArea text = classTextName;
         	applyActions(text);
         	revertActions(text);
+        	label.setContentDisplay(ContentDisplay.BOTTOM);
+            label.setGraphic(new ImageView(TopClassBox));
 
           
         });
@@ -492,6 +529,7 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel,java.io
                         editName.setEffect(shadow);
                     }
                 });
+        
         editName.addEventHandler(MouseEvent.MOUSE_EXITED,
                 new EventHandler<MouseEvent>() {
                     @Override
@@ -500,13 +538,20 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel,java.io
                     }
                 });
 
-        Button editAttr = new Button("Edit attributes");
+        Button editAttr = new Button("Edit attributes  ");
+        Image MidClassBox = new Image("/images/MidClassBox.png");
+        ImageView iv3 = new ImageView();
+        iv3.setImage(MidClassBox);
+        editAttr.setContentDisplay(ContentDisplay.RIGHT);
+        editAttr.setGraphic(new ImageView(MidClassBox));
         editAttr.setMaxWidth(Double.MAX_VALUE);
         HBox.setHgrow(editAttr, Priority.ALWAYS);
         editAttr.setOnAction((ActionEvent e) -> {
             TextArea text = classMethods;
             applyActions(text);
             revertActions(text);
+            label.setContentDisplay(ContentDisplay.BOTTOM);
+            label.setGraphic(new ImageView(MidClassBox));
         });
         editAttr.addEventHandler(MouseEvent.MOUSE_ENTERED,
                 new EventHandler<MouseEvent>() {
@@ -515,6 +560,7 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel,java.io
                         editAttr.setEffect(shadow);
                     }
                 });
+        
         editAttr.addEventHandler(MouseEvent.MOUSE_EXITED,
                 new EventHandler<MouseEvent>() {
                     @Override
@@ -523,13 +569,20 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel,java.io
                     }
                 });
 
-        Button editOps = new Button("Edit operations");
+        Button editOps = new Button("Edit operations  ");
+        Image BottomClassBox = new Image("/images/BottomClassBox.png");
+        ImageView iv4 = new ImageView();
+        iv4.setImage(BottomClassBox);
+        editOps.setContentDisplay(ContentDisplay.RIGHT);
+        editOps.setGraphic(new ImageView(BottomClassBox));
         editOps.setMaxWidth(Double.MAX_VALUE);
         HBox.setHgrow(editOps, Priority.ALWAYS);
         editOps.setOnAction((ActionEvent e) -> {
             TextArea text = classFunctions;
             applyActions(text);
             revertActions(text);
+            label.setContentDisplay(ContentDisplay.BOTTOM);
+            label.setGraphic(new ImageView(BottomClassBox));
         });
         editOps.addEventHandler(MouseEvent.MOUSE_ENTERED,
                 new EventHandler<MouseEvent>() {
@@ -538,6 +591,7 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel,java.io
                         editOps.setEffect(shadow);
                     }
                 });
+        
         editOps.addEventHandler(MouseEvent.MOUSE_EXITED,
                 new EventHandler<MouseEvent>() {
                     @Override
@@ -545,7 +599,39 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel,java.io
                         editOps.setEffect(null);
                     }
                 });
-
+        editName.addEventHandler(MouseEvent.MOUSE_CLICKED,
+                new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent e) {
+                        editName.setId("currentPanel");
+                        editAttr.setId("");
+                        editOps.setId("");
+                        classTextName.setId("focusedBox");
+                    }
+                });
+        editAttr.addEventHandler(MouseEvent.MOUSE_CLICKED,
+                new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent e) {
+                        editAttr.setId("currentPanel");
+                        editOps.setId("");
+                        editName.setId("");
+                        classMethods.setId("focusedBox");
+                        
+                    }
+                });
+        
+        editOps.addEventHandler(MouseEvent.MOUSE_CLICKED,
+                new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent e) {
+                        editOps.setId("currentPanel");
+                        editAttr.setId("");
+                        editName.setId("");
+                        classFunctions.setId("focusedBox");
+                    }
+                });
+        
         Button deleteB = new Button("Delete");
         deleteB.setMaxWidth(Double.MAX_VALUE);
         HBox.setHgrow(deleteB, Priority.ALWAYS);
@@ -571,7 +657,6 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel,java.io
                     }
                 });
 
-        Label label = new Label("Currently selected node : Class Box ");
         h.getChildren().addAll(label, editName, editAttr, editOps, deleteB);
     }
     

@@ -23,38 +23,7 @@ public class CheckCorrectToggledTest {
     
     @Rule
     public JavaFXThreadingRule javafxRule = new JavaFXThreadingRule();
-   
-<<<<<<< HEAD
-    @Test
-    public void checkInitialStateIsSelect(){
-        UmlatronController controller = new UmlatronController(new Stage());
-        UmlModel model = controller.getModel();
-        assertEquals(model.getStateProperty().get(), State.SELECT);
-    }
 
-    @Test
-    public void checkIfSelectIsToggled(){
-        UmlatronController controller = new UmlatronController(new Stage());
-        UmlModel model = controller.getModel();
-        HBox toggleButtons = controller.getView().getToggleButtons();
-        ToggleButton tb = (ToggleButton)toggleButtons.getChildren().get(0);
-        tb.fire();
-        tb.setSelected(true);
-        assertEquals(model.getStateProperty().get(), State.SELECT);
-    }
-
-    @Test
-    public void checkIfClassboxIsToggled(){
-        UmlatronController controller = new UmlatronController(new Stage());
-        UmlModel model = controller.getModel();
-        HBox toggleButtons = controller.getView().getToggleButtons();
-        ToggleButton tb = (ToggleButton)toggleButtons.getChildren().get(1);
-        tb.fire();
-        tb.setSelected(true);
-        assertEquals(model.getStateProperty().get(), State.CLASSBOX);
-    }
-=======
-   
 @Test
 public void checkInitialStateIsSelect(){
     UmlatronController controller = new UmlatronController(new Stage());
@@ -116,38 +85,6 @@ public void checkIfGeneralizationIsToggled(){
     tb.setSelected(true);
     assertEquals(model.getSelectStateProperty().get(), SelectState.GENERALIZATION);    
 }
->>>>>>> f59b407b13eae471259b07593dd32599e8bcc899
 
-    @Test
-    public void checkIfLineIsToggled(){
-        UmlatronController controller = new UmlatronController(new Stage());
-        UmlModel model = controller.getModel();
-        HBox toggleButtons = controller.getView().getToggleButtons();
-        ToggleButton tb = (ToggleButton)toggleButtons.getChildren().get(2);
-        tb.fire();
-        tb.setSelected(true);
-        assertEquals(model.getStateProperty().get(), State.LINE);
-    }
-    
-    @Test
-    public void checkIfAssociationIsToggled(){
-        UmlatronController controller = new UmlatronController(new Stage());
-        UmlModel model = controller.getModel();
-        HBox toggleButtons = controller.getView().getToggleButtons();
-        ToggleButton tb = (ToggleButton)toggleButtons.getChildren().get(3);
-        tb.fire();
-        tb.setSelected(true);
-        assertEquals(model.getStateProperty().get(), State.ASSOCIATION);    
-    }
 
-    @Test
-    public void checkIfGeneralizationIsToggled(){
-        UmlatronController controller = new UmlatronController(new Stage());
-        UmlModel model = controller.getModel();
-        HBox toggleButtons = controller.getView().getToggleButtons();
-        ToggleButton tb = (ToggleButton)toggleButtons.getChildren().get(4);
-        tb.fire();
-        tb.setSelected(true);
-        assertEquals(model.getStateProperty().get(), State.GENERALIZATION);    
-    }
 }
