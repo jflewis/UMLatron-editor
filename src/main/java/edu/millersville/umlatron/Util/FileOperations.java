@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package edu.millersville.umlatron.Util;
 
 import edu.millersville.umlatron.controller.UmlatronController;
@@ -25,9 +21,8 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 /**
- *
- * @author John Lewis
  * This class wraps all file operation logic in a single place
+ * @author John Lewis
  */
 public class FileOperations {
     
@@ -39,7 +34,7 @@ public class FileOperations {
     /**
      * The constructor for this object
      * @param pane The EditPane were objects are located at
-     * @param mainStage The JavaFx stage used for presenting the file chooser
+     * @param controller The controller 
      */
     public FileOperations(EditPane pane,UmlatronController controller){
         this.pane = pane;
@@ -52,6 +47,7 @@ public class FileOperations {
     /**
      * The open operation.
      * Prompts a user with a file chooser to open a saved  project
+     * Depending on the file the correct view is opened
      */
     public void open(){
         FileChooser fileChooser = new FileChooser();

@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package edu.millersville.umlatron.controller;
 
 import edu.millersville.umlatron.view.umlRecursiveLines.RecursiveAssociation;
@@ -24,7 +20,10 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 /**
- *
+ * The Main Controller.
+ * This listens to changes from the model.
+ * Handles listening to the clicks on the editpane and depending on 
+ * which state the model is in, handles the action according.
  * @author John Lewis
  */
 public class UmlatronController {
@@ -224,23 +223,7 @@ public class UmlatronController {
 
                 });
 
-        /**
-         * almost scrolling because why not
-         */
-        /*
-         view.getEditPane().setOnScroll(new EventHandler<ScrollEvent>() {
-         @Override
-         public void handle(ScrollEvent event) {
-         double scaleFactor = (event.getDeltaY() > 0) ? 1.5 : 1 / 1.5;
-
-         if (view.getEditPane().getScaleX() * scaleFactor >= 1.0) {
-         view.getEditPane().setScaleX(view.getEditPane().getScaleX() * scaleFactor);
-         view.getEditPane().setScaleY(view.getEditPane().getScaleY() * scaleFactor);
-         }
-
-         }
-         });
-         */
+     
         model.getViewStateProperty().addListener((ObservableValue<? extends ViewState> ov,
                 ViewState old_state, ViewState new_state) -> {
 
@@ -265,7 +248,7 @@ public class UmlatronController {
     }
 
     /**
-     * return the view
+     * Return the view.
      *
      * @return view
      */
@@ -274,7 +257,7 @@ public class UmlatronController {
     }
 
     /**
-     * returns the model
+     * Returns the model.
      *
      * @return UmlModel
      */
@@ -283,7 +266,7 @@ public class UmlatronController {
     }
 
     /**
-     * Checks if what you clicked on is the pane
+     * Checks if what you clicked on is the pane.
      *
      * @param n what you clicked on
      * @return the node or null if the pane
@@ -297,14 +280,15 @@ public class UmlatronController {
     }
 
     /**
-     * sets the panes clicked state to null
+     * Sets the panes clicked state to null.
+     * This ensures that all clicks will not effect the editpane.s
      */
     private void setLineState() {
         view.getEditPane().setOnMouseClicked(null);
     }
 
     /**
-     * Sets the panes clicks to create class boxes
+     * Sets clicks on the editpane to create ClassBoxes.
      */
     private void setClassBoxState() {
         EventHandler<MouseEvent> createClassBox = (event) -> {
@@ -320,7 +304,7 @@ public class UmlatronController {
     }
 
     /**
-     * Sets the panes clicks to create class boxes
+     * Sets clicks on the editpane to create Users.
      */
     private void setUserState() {
         EventHandler<MouseEvent> createUser = (event) -> {
@@ -336,7 +320,7 @@ public class UmlatronController {
     }
     
      /**
-     * Sets the panes clicks to create class boxes
+     * Sets clicks on the editpane to create use cases.
      */
     private void setCircleState() {
         EventHandler<MouseEvent> createCircle = (event) -> {
@@ -352,7 +336,8 @@ public class UmlatronController {
     }
 
     /**
-     * sets the panes clicks to null
+     * Sets the panes clicks to null.
+     * Will ensure that when the user is in the select state clicks will not effect anything
      */
     private void setSelectState() {
         view.getEditPane().setOnMouseClicked(null);

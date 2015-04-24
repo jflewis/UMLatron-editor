@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package edu.millersville.umlatron.view;
 
 import edu.millersville.umlatron.Util.FileOperations;
@@ -13,9 +9,7 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import edu.millersville.umlatron.model.SelectState;
 import edu.millersville.umlatron.model.ViewState;
-
 import java.util.Optional;
-
 import javafx.geometry.Insets;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -37,20 +31,22 @@ import javafx.scene.paint.Color;
 
 /**
  * This class creates and supplies the view for the program.
- *
- *
  * @author John Lewis
  */
 public class UmlView extends BorderPane {
 
-    private ToggleGroup stateToggle = new ToggleGroup();
-    private MenuBar mainApp;
-    private HBox toggleButtons = new HBox();
-    private HBox currentlySelectedPanel;
-    private EditPane editPane = new EditPane();
-    private UmlatronController controller;
-    private FileOperations fileOps;
+    private final ToggleGroup stateToggle = new ToggleGroup();
+    private final  MenuBar mainApp;
+    private final HBox toggleButtons = new HBox();
+    private final  HBox currentlySelectedPanel;
+    private final EditPane editPane = new EditPane();
+    private final UmlatronController controller;
+    private final FileOperations fileOps;
 
+    /**
+     * Class constructor 
+     * @param controller The UMLController passed to the constructor through the controller
+     */
     public UmlView(UmlatronController controller) {
     	
         super();
@@ -66,6 +62,10 @@ public class UmlView extends BorderPane {
         this.setTop(createTopPanel(mainApp, toggleButtons, currentlySelectedPanel));
     }
 
+    /**
+     * A private method to initialize the application bar of the view
+     * @return A menu bar containing menuitems
+     */
     private MenuBar applicationBar() {
 
         MenuBar menuBar = new MenuBar();
@@ -126,7 +126,7 @@ public class UmlView extends BorderPane {
         fileOperations.getItems().addAll(newItem, saveButton, load, new SeparatorMenuItem(), exit);
 
         Menu views = new Menu("Views");
-        MenuItem umlClass = new MenuItem("Class diagrahm");
+        MenuItem umlClass = new MenuItem("Class diagram");
         umlClass.setOnAction((event) -> {
             if (controller.getModel().getViewStateProperty().get() == ViewState.CLASS_UML) {
                 //do nothing
@@ -152,7 +152,7 @@ public class UmlView extends BorderPane {
                 }
             }
         });
-        MenuItem useCase = new MenuItem("Use case diagrahm");
+        MenuItem useCase = new MenuItem("Use case diagram");
         useCase.setOnAction((event) -> {
             if (controller.getModel().getViewStateProperty().get() == ViewState.USE_CASE_UML) {
                 //do nothing
@@ -187,6 +187,12 @@ public class UmlView extends BorderPane {
 
     }
 
+    /**
+     * Creates the menu bars for the view state Class uml.
+     * Toggle buttons are created and placed in a toggle group
+     * to be listened to by the controller to change the selected state.
+     * This is the default toggle buttons on first load of program
+     */
     final public void createUmlClassToggleButtons() {
         stateToggle.getToggles().clear();
         toggleButtons.getChildren().clear();
@@ -256,6 +262,11 @@ public class UmlView extends BorderPane {
 
     }
 
+    /**
+     * Creates the toggle buttons for the Use case view.
+     * Toggle buttons are created and placed in a toggle group
+     * to be listened to by the controller to change the selected state.
+     */
     final public void createUmlUseCaseButtons() {
         stateToggle.getToggles().clear();
         toggleButtons.getChildren().clear();
@@ -292,6 +303,10 @@ public class UmlView extends BorderPane {
         HBox.setHgrow(tb4, Priority.ALWAYS);
     }
 
+    /**
+     * Creates the HBox for the currently selected node panel.
+     * @return An Empty HBox. This HBox is filled when a node is selected.
+     */
     private HBox createCurrentlySelectedPanel() {
         HBox hbox = new HBox();
         hbox.setPadding(new Insets(4, 12, 4, 12));
@@ -300,16 +315,27 @@ public class UmlView extends BorderPane {
         return hbox;
     }
 
+    /**
+     * A helper function to clear the pane of all nodes.
+     */
     public void clearPane() {
         editPane.getChildren().clear();
     }
 
+    /**
+     * Private helper method to initialize the top panels in the view.
+     * @param mainApp The menu Bar 
+     * @param states The toggle buttons
+     * @param selectedPanel The currently selected panel
+     * @return 
+     */
     private VBox createTopPanel(MenuBar mainApp, HBox states, HBox selectedPanel) {
         VBox panel = new VBox();
         panel.getChildren().addAll(mainApp, states, selectedPanel);
         return panel;
     }
 
+    
     public ToggleGroup getStateToggle() {
         return stateToggle;
     }
