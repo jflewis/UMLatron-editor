@@ -136,7 +136,7 @@ public class UMLArrowLine extends UMLLine implements SelectedPanel {
             setDashed();
             label.setContentDisplay(ContentDisplay.BOTTOM);
             label.setGraphic(new ImageView(DashedLine));
-
+            setDashed.setId("selectedButton");
 
         });
         setDashed.addEventHandler(MouseEvent.MOUSE_ENTERED,
@@ -166,6 +166,7 @@ public class UMLArrowLine extends UMLLine implements SelectedPanel {
             setSolid();
             label.setContentDisplay(ContentDisplay.BOTTOM);
             label.setGraphic(new ImageView(SolidLine));
+            setSolid.setId("selectedButton");
         });
         setSolid.addEventHandler(MouseEvent.MOUSE_ENTERED,
                 new EventHandler<MouseEvent>() {
@@ -203,7 +204,24 @@ public class UMLArrowLine extends UMLLine implements SelectedPanel {
                         deleteB.setEffect(null);
                     }
                 });
-        
+        setSolid.addEventHandler(MouseEvent.MOUSE_CLICKED,
+                new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent e) {
+                    	setSolid.setId("selectedButton");
+                        setDashed.setId("");
+                    }
+                });
+        setDashed.addEventHandler(MouseEvent.MOUSE_CLICKED,
+                new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent e) {
+                    	setDashed.setId("selectedButton");
+                    	setSolid.setId("");	                        
+                    }
+                });
+       
+
        
 
 

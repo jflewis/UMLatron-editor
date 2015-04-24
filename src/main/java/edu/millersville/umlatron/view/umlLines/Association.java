@@ -215,8 +215,23 @@ public class Association extends UMLLine implements SelectedPanel,
 						deleteB.setEffect(null);
 					}
 				});
-
-
+		   aggregation.addEventHandler(MouseEvent.MOUSE_CLICKED,
+	                new EventHandler<MouseEvent>() {
+	                    @Override
+	                    public void handle(MouseEvent e) {
+	                    	aggregation.setId("selectedButton");
+	                        comp.setId("");
+	                    }
+	                });
+	        comp.addEventHandler(MouseEvent.MOUSE_CLICKED,
+	                new EventHandler<MouseEvent>() {
+	                    @Override
+	                    public void handle(MouseEvent e) {
+	                        comp.setId("selectedButton");
+	                        aggregation.setId("");	                        
+	                    }
+	                });
+	        
 		h.getChildren().addAll(label, aggregation, comp, deleteB);
 
 	}

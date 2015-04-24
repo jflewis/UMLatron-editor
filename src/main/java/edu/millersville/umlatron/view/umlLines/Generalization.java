@@ -117,6 +117,7 @@ public class Generalization extends UMLLine implements SelectedPanel,java.io.Ser
         ImageView iv1 = new ImageView();
         iv1.setImage(labelGeneralization);
         label.setContentDisplay(ContentDisplay.BOTTOM);
+        label.setGraphic(new ImageView(labelGeneralization));
         
         Button setDashed = new Button("Dashed  ");
         Image DashedGeneralization = new Image("/images/DashedGeneralization.png", 35, 35, false, false); 
@@ -130,7 +131,7 @@ public class Generalization extends UMLLine implements SelectedPanel,java.io.Ser
         setDashed.setOnAction((ActionEvent e) -> {
             setDashed();
             label.setContentDisplay(ContentDisplay.BOTTOM);
-            label.setGraphic(new ImageView(labelGeneralization));
+            label.setGraphic(new ImageView(DashedGeneralization));
 
         });
         setDashed.addEventHandler(MouseEvent.MOUSE_ENTERED,
@@ -160,6 +161,7 @@ public class Generalization extends UMLLine implements SelectedPanel,java.io.Ser
            setSolid();
            label.setContentDisplay(ContentDisplay.BOTTOM);
            label.setGraphic(new ImageView(Generalization));
+           
         });
         setSolid.addEventHandler(MouseEvent.MOUSE_ENTERED,
                 new EventHandler<MouseEvent>() {
@@ -197,7 +199,22 @@ public class Generalization extends UMLLine implements SelectedPanel,java.io.Ser
                         deleteB.setEffect(null);
                     }
                 });
-        
+        setSolid.addEventHandler(MouseEvent.MOUSE_CLICKED,
+                new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent e) {
+                    	setSolid.setId("selectedButton");
+                        setDashed.setId("");
+                    }
+                });
+        setDashed.addEventHandler(MouseEvent.MOUSE_CLICKED,
+                new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent e) {
+                    	setDashed.setId("selectedButton");
+                    	setSolid.setId("");	                        
+                    }
+                });
        
 
 
