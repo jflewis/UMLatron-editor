@@ -109,8 +109,6 @@ public class Generalization extends UMLLine implements SelectedPanel,java.io.Ser
         DropShadow shadow = new DropShadow();
 
         Button setDashed = new Button();
-        Image image = new Image("/images/solidgeneralization.png"); 
-        setDashed.setGraphic(new ImageView(image));
         setDashed.setMaxWidth(Double.MAX_VALUE);
         HBox.setHgrow(setDashed, Priority.ALWAYS);
         setDashed.setOnAction((ActionEvent e) -> {
@@ -132,7 +130,9 @@ public class Generalization extends UMLLine implements SelectedPanel,java.io.Ser
                     }
                 });
 
-        Button setSolid = new Button("Solid");
+        Button setSolid = new Button();
+        Image image = new Image("/images/solidgeneralization.png"); 
+        setSolid.setGraphic(new ImageView(image));
         setSolid.setMaxWidth(Double.MAX_VALUE);
         HBox.setHgrow(setSolid, Priority.ALWAYS);
         setSolid.setOnAction((ActionEvent e) -> {

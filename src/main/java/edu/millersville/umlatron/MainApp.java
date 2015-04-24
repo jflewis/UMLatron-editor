@@ -15,6 +15,7 @@ public class MainApp extends Application {
         
         UmlatronController controller = new UmlatronController(primaryStage);
         Scene scene = new Scene(controller.getView(), 950, 750);
+        scene.getStylesheets().add("/styles/Buttons.css");
         primaryStage.setTitle("UML'atron");
         primaryStage.setScene(scene);
         primaryStage.show();

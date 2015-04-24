@@ -1,4 +1,3 @@
-
 package edu.millersville.umlatron;
 
 import edu.millersville.umlatron.controller.UmlatronController;
