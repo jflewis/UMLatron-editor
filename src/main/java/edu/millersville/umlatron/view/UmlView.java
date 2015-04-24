@@ -180,7 +180,7 @@ public class UmlView extends BorderPane {
         views.getItems().addAll(umlClass, new SeparatorMenuItem(), useCase);
 
         menuBar.getMenus().addAll(fileOperations, views);
-        menuBar.prefWidthProperty().bind(editPane.widthProperty());
+        menuBar.prefWidthProperty().bind(editPane.widthProperty()); 
         menuBar.setStyle("-fx-padding: 2 2 2 5;");
 
         return menuBar;
@@ -192,7 +192,7 @@ public class UmlView extends BorderPane {
         toggleButtons.getChildren().clear();
 
         ToggleButton tb1 = new ToggleButton("Select  ");
-        Image selectImg = new Image("/images/Select.png");
+        Image selectImg = new Image("/images/Select.png", 35, 35, false, false);
         ImageView iv1 = new ImageView();
         iv1.setImage(selectImg);
         tb1.setContentDisplay(ContentDisplay.RIGHT);
@@ -203,7 +203,7 @@ public class UmlView extends BorderPane {
         tb1.setMaxWidth(Double.MAX_VALUE);
 
         ToggleButton tb2 = new ToggleButton("ClassBox  ");
-        Image cBox = new Image("/images/PlainClassBox.png");
+        Image cBox = new Image("/images/ClassBox.png", 35, 35, false, false);
         ImageView iv2 = new ImageView();
         iv2.setImage(cBox);
         tb2.setContentDisplay(ContentDisplay.RIGHT);
@@ -213,7 +213,7 @@ public class UmlView extends BorderPane {
         tb2.setMaxWidth(Double.MAX_VALUE);
 
         ToggleButton tb3 = new ToggleButton("Line  ");
-        Image lineImg = new Image("/images/SolidLine.png");
+        Image lineImg = new Image("/images/SolidLine.png", 35, 35, false, false);
         ImageView iv3 = new ImageView();
         iv3.setImage(lineImg);
         tb3.setContentDisplay(ContentDisplay.RIGHT);
@@ -223,7 +223,7 @@ public class UmlView extends BorderPane {
         tb3.setMaxWidth(Double.MAX_VALUE);
 
         ToggleButton tb4 = new ToggleButton("Association  ");
-        Image assImg = new Image("/images/Association.png");
+        Image assImg = new Image("/images/Association.png", 35, 35, false, false);
         ImageView iv4 = new ImageView();
         iv4.setImage(assImg);
         tb4.setContentDisplay(ContentDisplay.RIGHT);
@@ -233,7 +233,7 @@ public class UmlView extends BorderPane {
         tb4.setMaxWidth(Double.MAX_VALUE);
 
         ToggleButton tb5 = new ToggleButton("Generalization  ");
-        Image genImg = new Image("/images/Generelization.png");
+        Image genImg = new Image("/images/Generalization.png", 35, 35, false, false);
         ImageView iv5 = new ImageView();
         iv5.setImage(genImg);
         tb5.setContentDisplay(ContentDisplay.RIGHT);

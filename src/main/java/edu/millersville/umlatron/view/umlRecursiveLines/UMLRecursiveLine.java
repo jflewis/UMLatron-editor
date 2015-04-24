@@ -14,6 +14,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.scene.Cursor;
 import javafx.scene.Group;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 
 /**
@@ -48,7 +49,8 @@ public class UMLRecursiveLine extends Group implements java.io.Externalizable {
 		for (int i = 0; i < 4; ++i) {
 			lines.add(new Line());
 			lines.get(i).setCursor(Cursor.OPEN_HAND);
-			lines.get(i).setStrokeWidth(2.0);
+			lines.get(i).setStrokeWidth(3);
+			lines.get(i).setStroke(Color.NAVY);
 		}
 
 		node.addRecursiveLine(this);
@@ -86,7 +88,8 @@ public class UMLRecursiveLine extends Group implements java.io.Externalizable {
 		for (int i = 0; i < 4; ++i) {
 			lines.add(new Line());
 			lines.get(i).setCursor(Cursor.OPEN_HAND);
-			lines.get(i).setStrokeWidth(2.0);
+			lines.get(i).setStrokeWidth(3.0);
+			lines.get(i).setStroke(Color.NAVY);
 		}
 
 		deltaX = lines.get(0).endXProperty()

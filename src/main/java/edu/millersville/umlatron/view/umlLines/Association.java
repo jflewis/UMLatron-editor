@@ -8,8 +8,11 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
+import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
 import javafx.scene.effect.DropShadow;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
@@ -67,8 +70,8 @@ public class Association extends UMLLine implements SelectedPanel,
 				});
 
 		polygon.setFill(Color.WHITE);
-		polygon.setStrokeWidth(1);
-		polygon.setStroke(Color.BLACK);
+		polygon.setStrokeWidth(3.0);
+		polygon.setStroke(Color.NAVY);
 		polygon.getTransforms().add(rotate);
 		this.getChildren().add(polygon);
 		distance.removeListener(listener);
@@ -110,7 +113,7 @@ public class Association extends UMLLine implements SelectedPanel,
 	private void setFillBlack() {
 		if (polygon != null) {
 			filled = true;
-			polygon.setFill(Color.BLACK);
+			polygon.setFill(Color.NAVY);
 
 		}
 	}
@@ -127,12 +130,26 @@ public class Association extends UMLLine implements SelectedPanel,
 		h.getChildren().clear();
 		DropShadow shadow = new DropShadow();
 
+		Label label = new Label("Currently on:  ");
+        label.setId("currentPanel");
+        Image labelGeneralization = new Image("/images/Association.png", 35, 35, false, false);
+        ImageView iv1 = new ImageView();
+        iv1.setImage(labelGeneralization);
+        label.setContentDisplay(ContentDisplay.BOTTOM);
+        label.setGraphic(new ImageView(labelGeneralization));
+		
 		Button aggregation = new Button("Aggregation");
+		Image aggregationImg = new Image("/images/Association.png", 35, 35, false, false); 
+        ImageView iv3 = new ImageView();
+        iv3.setImage(aggregationImg);
+        aggregation.setContentDisplay(ContentDisplay.RIGHT);
+        aggregation.setGraphic(new ImageView(aggregationImg));
 		aggregation.setMaxWidth(Double.MAX_VALUE);
 		HBox.setHgrow(aggregation, Priority.ALWAYS);
 		aggregation.setOnAction((ActionEvent e) -> {
 			setFillWhite();
-
+			  label.setContentDisplay(ContentDisplay.BOTTOM);
+	            label.setGraphic(new ImageView(aggregationImg));
 		});
 		aggregation.addEventHandler(MouseEvent.MOUSE_ENTERED,
 				new EventHandler<MouseEvent>() {
@@ -150,10 +167,17 @@ public class Association extends UMLLine implements SelectedPanel,
 				});
 
 		Button comp = new Button("Composition");
+		Image composition = new Image("/images/Composition.png", 35, 35, false, false); 
+        ImageView iv4 = new ImageView();
+        iv4.setImage(composition);
+        comp.setContentDisplay(ContentDisplay.RIGHT);
+        comp.setGraphic(new ImageView(composition));
 		comp.setMaxWidth(Double.MAX_VALUE);
 		HBox.setHgrow(comp, Priority.ALWAYS);
 		comp.setOnAction((ActionEvent e) -> {
 			setFillBlack();
+			  label.setContentDisplay(ContentDisplay.BOTTOM);
+	            label.setGraphic(new ImageView(composition));
 		});
 		comp.addEventHandler(MouseEvent.MOUSE_ENTERED,
 				new EventHandler<MouseEvent>() {
@@ -192,7 +216,6 @@ public class Association extends UMLLine implements SelectedPanel,
 					}
 				});
 
-		Label label = new Label("Currently selected node : Association ");
 
 		h.getChildren().addAll(label, aggregation, comp, deleteB);
 

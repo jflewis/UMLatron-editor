@@ -487,7 +487,7 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel,java.io
 
     public void defaultLabel(Label label) {
     	label.setId("currentPanel");
-    	Image TopClassBox = new Image("/images/TopClassBox.png");
+    	Image TopClassBox = new Image("/images/ClassBox.png", 35, 35, false, false);
         ImageView iv2 = new ImageView();
         iv2.setImage(TopClassBox);
         label.setContentDisplay(ContentDisplay.RIGHT);
@@ -508,15 +508,17 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel,java.io
         h.setPadding(new Insets(8, 0, 0, 0));
         Label label = new Label("Currently On: ");
         label.setId("currentPanel");
-        Image PlainClassBox = new Image("/images/PlainClassBox.png");
+        Image PlainClassBox = new Image("/images/ClassBox.png", 35, 35, false, false);
         ImageView iv1 = new ImageView();
         iv1.setImage(PlainClassBox);
-        label.setContentDisplay(ContentDisplay.RIGHT);
+        label.setContentDisplay(ContentDisplay.BOTTOM);
         label.setGraphic(new ImageView(PlainClassBox));
+        HBox.setHgrow(label, Priority.ALWAYS);
+        label.setMaxWidth(Double.MAX_VALUE);
        
         
         Button editName = new Button("Edit Name  ");
-        Image TopClassBox = new Image("/images/TopClassBox.png");
+        Image TopClassBox = new Image("/images/TopClassBox.png", 35, 35, false, false);
         ImageView iv2 = new ImageView();
         iv2.setImage(TopClassBox);
         editName.setContentDisplay(ContentDisplay.RIGHT);
@@ -549,7 +551,7 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel,java.io
                 });
 
         Button editAttr = new Button("Edit attributes  ");
-        Image MidClassBox = new Image("/images/MidClassBox.png");
+        Image MidClassBox = new Image("/images/MiddleClassBox.png", 35, 35, false, false);
         ImageView iv3 = new ImageView();
         iv3.setImage(MidClassBox);
         editAttr.setContentDisplay(ContentDisplay.RIGHT);
@@ -580,7 +582,7 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel,java.io
                 });
 
         Button editOps = new Button("Edit operations  ");
-        Image BottomClassBox = new Image("/images/BottomClassBox.png");
+        Image BottomClassBox = new Image("/images/BottomClassBox.png", 35, 35, false, false);
         ImageView iv4 = new ImageView();
         iv4.setImage(BottomClassBox);
         editOps.setContentDisplay(ContentDisplay.RIGHT);
@@ -666,8 +668,13 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel,java.io
                         deleteB.setEffect(null);
                     }
                 });
-
-        h.getChildren().addAll(label, editName, editAttr, editOps, deleteB);
+        HBox.setHgrow(label, Priority.ALWAYS);
+        HBox.setHgrow(editName, Priority.ALWAYS);
+        HBox.setHgrow(editOps, Priority.ALWAYS);
+        HBox.setHgrow(editAttr, Priority.ALWAYS);
+        HBox.setHgrow(deleteB, Priority.ALWAYS);
+        h.getChildren().addAll(label, editName, editAttr, editOps, deleteB); 
+       
     }
     
     @Override

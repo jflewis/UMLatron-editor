@@ -13,6 +13,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
+import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
@@ -58,8 +59,8 @@ public class Generalization extends UMLLine implements SelectedPanel,java.io.Ser
 
         });
         polygon.setFill(Color.WHITE);
-        polygon.setStrokeWidth(1);
-        polygon.setStroke(Color.BLACK);
+        polygon.setStrokeWidth(3);
+        polygon.setStroke(Color.NAVY);
 
      
 
@@ -90,6 +91,8 @@ public class Generalization extends UMLLine implements SelectedPanel,java.io.Ser
         rotate.setAngle(-slopeInDegrees);
         polygon.setTranslateX(line.endXProperty().get());
         polygon.setTranslateY(line.endYProperty().get());
+        polygon.setStrokeWidth(3.0);
+        polygon.setStroke(Color.NAVY);
     }
     
     
@@ -107,12 +110,27 @@ public class Generalization extends UMLLine implements SelectedPanel,java.io.Ser
 
         h.getChildren().clear();
         DropShadow shadow = new DropShadow();
-
-        Button setDashed = new Button();
+        
+        Label label = new Label("Currently on:  ");
+        label.setId("currentPanel");
+        Image labelGeneralization = new Image("/images/Generalization.png", 35, 35, false, false);
+        ImageView iv1 = new ImageView();
+        iv1.setImage(labelGeneralization);
+        label.setContentDisplay(ContentDisplay.BOTTOM);
+        
+        Button setDashed = new Button("Dashed  ");
+        Image DashedGeneralization = new Image("/images/DashedGeneralization.png", 35, 35, false, false); 
+        ImageView iv3 = new ImageView();
+        iv3.setImage(DashedGeneralization);
+        setDashed.setContentDisplay(ContentDisplay.RIGHT);
+        setDashed.setGraphic(new ImageView(DashedGeneralization));
+        setDashed.setMaxWidth(Double.MAX_VALUE);
         setDashed.setMaxWidth(Double.MAX_VALUE);
         HBox.setHgrow(setDashed, Priority.ALWAYS);
         setDashed.setOnAction((ActionEvent e) -> {
             setDashed();
+            label.setContentDisplay(ContentDisplay.BOTTOM);
+            label.setGraphic(new ImageView(labelGeneralization));
 
         });
         setDashed.addEventHandler(MouseEvent.MOUSE_ENTERED,
@@ -130,13 +148,18 @@ public class Generalization extends UMLLine implements SelectedPanel,java.io.Ser
                     }
                 });
 
-        Button setSolid = new Button();
-        Image image = new Image("/images/solidgeneralization.png"); 
-        setSolid.setGraphic(new ImageView(image));
+        Button setSolid = new Button("Solid  ");
+        Image Generalization = new Image("/images/Generalization.png", 35, 35, false, false);
+        ImageView iv2 = new ImageView();
+        iv2.setImage(Generalization);
+        setSolid.setContentDisplay(ContentDisplay.RIGHT);
+        setSolid.setGraphic(new ImageView(Generalization));
         setSolid.setMaxWidth(Double.MAX_VALUE);
         HBox.setHgrow(setSolid, Priority.ALWAYS);
         setSolid.setOnAction((ActionEvent e) -> {
            setSolid();
+           label.setContentDisplay(ContentDisplay.BOTTOM);
+           label.setGraphic(new ImageView(Generalization));
         });
         setSolid.addEventHandler(MouseEvent.MOUSE_ENTERED,
                 new EventHandler<MouseEvent>() {
@@ -175,7 +198,7 @@ public class Generalization extends UMLLine implements SelectedPanel,java.io.Ser
                     }
                 });
         
-        Label label = new Label("Currently selected node : Generalization ");
+       
 
 
         h.getChildren().addAll(label,setDashed, setSolid,deleteB);

@@ -85,7 +85,8 @@ public class UMLLine extends Group implements java.io.Externalizable {
         distance.addListener(listener);
 
         line.setCursor(Cursor.OPEN_HAND);
-        line.setStrokeWidth(2.0);
+        line.setStrokeWidth(3);
+        line.setStroke(Color.NAVY);
         calculateAnchorPoints();
         this.getChildren().add(line);
         
@@ -130,7 +131,7 @@ public class UMLLine extends Group implements java.io.Externalizable {
         distance.addListener(listener);
 
         line.setCursor(Cursor.OPEN_HAND);
-        line.setStrokeWidth(2.0);
+        line.setStrokeWidth(3.0);
         calculateAnchorPoints();
         this.getChildren().add(line);
         return this;
