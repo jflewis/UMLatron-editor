@@ -126,7 +126,7 @@ public class UmlView extends BorderPane {
         fileOperations.getItems().addAll(newItem, saveButton, load, new SeparatorMenuItem(), exit);
 
         Menu views = new Menu("Views");
-        MenuItem umlClass = new MenuItem("Class diagrahm");
+        MenuItem umlClass = new MenuItem("Class diagram");
         umlClass.setOnAction((event) -> {
             if (controller.getModel().getViewStateProperty().get() == ViewState.CLASS_UML) {
                 //do nothing
@@ -152,7 +152,7 @@ public class UmlView extends BorderPane {
                 }
             }
         });
-        MenuItem useCase = new MenuItem("Use case diagrahm");
+        MenuItem useCase = new MenuItem("Use case diagram");
         useCase.setOnAction((event) -> {
             if (controller.getModel().getViewStateProperty().get() == ViewState.USE_CASE_UML) {
                 //do nothing
