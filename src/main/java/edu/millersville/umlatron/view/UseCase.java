@@ -44,13 +44,13 @@ public class UseCase extends StackPane implements AnchorPoint, SelectedPanel, ja
     ImageView circle;
     
     /**
-     * A public default constructor to implement the Externalizable interface
+     * A public default constructor to implement the Externalizable interface.
      */
     public UseCase(){this(0,0);}
     
     /**
      * A Circle holding a text area that is used to represent a use case in 
-     * a use case diagram
+     * a use case diagram.
      * @param x position
      * @param y position
      */

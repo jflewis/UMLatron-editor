@@ -1,13 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package edu.millersville.umlatron.model;
 
 /**
- *
- * @author John
+ *  This Enum class represents the view state that the user is in
+ * @author John Lewis
  */
 public enum ViewState {
     USE_CASE_UML,CLASS_UML

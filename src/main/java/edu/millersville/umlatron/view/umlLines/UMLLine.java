@@ -2,7 +2,6 @@ package edu.millersville.umlatron.view.umlLines;
 
 import edu.millersville.umlatron.Util.AnchorInfo;
 import edu.millersville.umlatron.view.AnchorPoint;
-import edu.millersville.umlatron.view.ClassBox;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
