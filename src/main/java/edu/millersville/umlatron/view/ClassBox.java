@@ -644,35 +644,36 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel,java.io
                     }
                 });
         
-        Button deleteB = new Button("Delete  ");
-        Image deleteImg = new Image("/images/TrashCanOpen.png", 35, 35, false, false); 
+         Button deleteB = new Button("Delete  ");
+        Image deleteClosed = new Image("/images/TrashCanClosed.png", 35, 35, false, false); 
+        Image deleteOpen = new Image("/images/TrashCanOpen.png", 35, 35, false, false);
         ImageView iv5 = new ImageView();
-        iv5.setImage(deleteImg);
+        iv5.setImage(deleteClosed);
         deleteB.setContentDisplay(ContentDisplay.RIGHT);
-        deleteB.setGraphic(new ImageView(deleteImg));
+        deleteB.setGraphic(new ImageView(deleteClosed));
         deleteB.setMaxWidth(Double.MAX_VALUE);
         HBox.setHgrow(deleteB, Priority.ALWAYS);
-        deleteB.setOnAction((ActionEvent e) -> {
-        	removeActions();
-            destroy();
+            deleteB.setOnAction((ActionEvent e) -> {
+                    destroy();
+                    h.getChildren().clear();
+            });
+            deleteB.addEventHandler(MouseEvent.MOUSE_ENTERED,
+                            new EventHandler<MouseEvent>() {
+                                    @Override
+                                    public void handle(MouseEvent e) {
+                                            deleteB.setEffect(shadow);
+                                            deleteB.setGraphic(new ImageView(deleteOpen));
+                                    }
+                            });
+            deleteB.addEventHandler(MouseEvent.MOUSE_EXITED,
+                            new EventHandler<MouseEvent>() {
+                                    @Override
+                                    public void handle(MouseEvent e) {
+                                            deleteB.setEffect(null);
+                                            deleteB.setGraphic(new ImageView(deleteClosed));
+                                    }
+                            });
 
-            h.getChildren().clear();
-            
-        });
-        deleteB.addEventHandler(MouseEvent.MOUSE_ENTERED,
-                new EventHandler<MouseEvent>() {
-                    @Override
-                    public void handle(MouseEvent e) {
-                        deleteB.setEffect(shadow);
-                    }
-                });
-        deleteB.addEventHandler(MouseEvent.MOUSE_EXITED,
-                new EventHandler<MouseEvent>() {
-                    @Override
-                    public void handle(MouseEvent e) {
-                        deleteB.setEffect(null);
-                    }
-                });
         HBox.setHgrow(label, Priority.ALWAYS);
         HBox.setHgrow(editName, Priority.ALWAYS);
         HBox.setHgrow(editOps, Priority.ALWAYS);

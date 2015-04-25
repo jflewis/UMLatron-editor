@@ -343,11 +343,12 @@ public class UseCase extends StackPane implements AnchorPoint, SelectedPanel, ja
                         });
 
         Button deleteB = new Button("Delete  ");
-        Image deleteImg = new Image("/images/TrashCanOpen.png", 35, 35, false, false); 
+        Image deleteClosed = new Image("/images/TrashCanClosed.png", 35, 35, false, false); 
+        Image deleteOpen = new Image("/images/TrashCanOpen.png", 35, 35, false, false);
         ImageView iv4 = new ImageView();
-        iv4.setImage(deleteImg);
+        iv4.setImage(deleteClosed);
         deleteB.setContentDisplay(ContentDisplay.RIGHT);
-        deleteB.setGraphic(new ImageView(deleteImg));
+        deleteB.setGraphic(new ImageView(deleteClosed));
         deleteB.setMaxWidth(Double.MAX_VALUE);
         HBox.setHgrow(deleteB, Priority.ALWAYS);
             deleteB.setOnAction((ActionEvent e) -> {
@@ -359,6 +360,7 @@ public class UseCase extends StackPane implements AnchorPoint, SelectedPanel, ja
                                     @Override
                                     public void handle(MouseEvent e) {
                                             deleteB.setEffect(shadow);
+                                            deleteB.setGraphic(new ImageView(deleteOpen));
                                     }
                             });
             deleteB.addEventHandler(MouseEvent.MOUSE_EXITED,
@@ -366,6 +368,7 @@ public class UseCase extends StackPane implements AnchorPoint, SelectedPanel, ja
                                     @Override
                                     public void handle(MouseEvent e) {
                                             deleteB.setEffect(null);
+                                            deleteB.setGraphic(new ImageView(deleteClosed));
                                     }
                             });
 
