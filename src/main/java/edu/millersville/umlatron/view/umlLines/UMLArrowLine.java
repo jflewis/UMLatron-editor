@@ -182,7 +182,12 @@ public class UMLArrowLine extends UMLLine implements SelectedPanel {
                     }
                 });
         
-        Button deleteB = new Button("Delete");
+        Button deleteB = new Button("Delete  ");
+        Image deleteImg = new Image("/images/TrashCanOpen.png", 35, 35, false, false); 
+        ImageView iv5 = new ImageView();
+        iv5.setImage(deleteImg);
+        deleteB.setContentDisplay(ContentDisplay.RIGHT);
+        deleteB.setGraphic(new ImageView(deleteImg));
         deleteB.setMaxWidth(Double.MAX_VALUE);
         HBox.setHgrow(deleteB, Priority.ALWAYS);
         deleteB.setOnAction((ActionEvent e) -> {

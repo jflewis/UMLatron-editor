@@ -6,6 +6,7 @@
 package edu.millersville.umlatron.view;
 
 import edu.millersville.umlatron.Util.AnchorInfo;
+import edu.millersville.umlatron.model.SelectState;
 import edu.millersville.umlatron.view.umlLines.UMLLine;
 import edu.millersville.umlatron.view.umlRecursiveLines.UMLRecursiveLine;
 import java.io.IOException;
@@ -19,8 +20,11 @@ import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.control.Button;
+import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleButton;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -42,6 +46,8 @@ public class UseCase extends StackPane implements AnchorPoint, SelectedPanel, ja
     private ArrayList<UMLRecursiveLine> recursiveLines = new ArrayList<>();
     TextField textField;
     ImageView circle;
+    private final ToggleGroup stateToggle = new ToggleGroup();
+    private final HBox toggleButtons = new HBox();
     
     /**
      * A public default constructor to implement the Externalizable interface.
@@ -124,6 +130,61 @@ public class UseCase extends StackPane implements AnchorPoint, SelectedPanel, ja
         setOnMouseClicked(event -> {
             event.consume();
         });
+
+    }
+    
+        /**
+     * Creates the menu bars for the view state Class uml.
+     * Toggle buttons are created and placed in a toggle group
+     * to be listened to by the controller to change the selected state.
+     * This is the default toggle buttons on first load of program
+     */
+    final public void createUmlClassToggleButtons() {
+        stateToggle.getToggles().clear();
+        toggleButtons.getChildren().clear();
+
+        ToggleButton tb1 = new ToggleButton("Select  ");
+        Image selectImg = new Image("/images/Select.png", 35, 35, false, false);
+        ImageView iv1 = new ImageView();
+        iv1.setImage(selectImg);
+        tb1.setContentDisplay(ContentDisplay.RIGHT);
+        tb1.setGraphic(new ImageView(selectImg));
+        tb1.setUserData(SelectState.SELECT);
+        tb1.setToggleGroup(stateToggle);
+        tb1.setSelected(true);
+        tb1.setMaxWidth(Double.MAX_VALUE);
+
+        ToggleButton tb2 = new ToggleButton("User  ");
+        Image userImg = new Image("/images/User.png", 35, 35, false, false);
+        ImageView iv2 = new ImageView();
+        iv2.setImage(userImg);
+        tb2.setContentDisplay(ContentDisplay.RIGHT);
+        tb2.setGraphic(new ImageView(userImg));
+        tb2.setUserData(SelectState.USER);
+        tb2.setToggleGroup(stateToggle);
+        tb2.setMaxWidth(Double.MAX_VALUE);
+        
+        ToggleButton tb3 = new ToggleButton("Use Case  ");
+        Image useCaseImg = new Image("/images/UseCase.png", 35, 35, false, false);
+        ImageView iv3 = new ImageView();
+        iv3.setImage(useCaseImg);
+        tb3.setContentDisplay(ContentDisplay.RIGHT);
+        tb3.setGraphic(new ImageView(useCaseImg));
+        tb3.setUserData(SelectState.USE_CASE);
+        tb3.setToggleGroup(stateToggle);
+        tb3.setMaxWidth(Double.MAX_VALUE);
+
+        toggleButtons.getChildren().add(tb1);
+        toggleButtons.getChildren().add(tb2);
+        toggleButtons.getChildren().add(tb3);
+       // toggleButtons.getChildren().add(tb4);
+       // toggleButtons.getChildren().add(tb5);
+        HBox.setHgrow(tb1, Priority.ALWAYS);
+        HBox.setHgrow(tb2, Priority.ALWAYS);
+        HBox.setHgrow(tb3, Priority.ALWAYS);
+       // HBox.setHgrow(tb4, Priority.ALWAYS);
+       // HBox.setHgrow(tb5, Priority.ALWAYS);
+       
 
     }
     
@@ -234,7 +295,7 @@ public class UseCase extends StackPane implements AnchorPoint, SelectedPanel, ja
         pane.getChildren().remove(this);
     }
     
-    //////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////
 /**
  * creates the currently selected panel for this Node
  *
@@ -242,64 +303,75 @@ public class UseCase extends StackPane implements AnchorPoint, SelectedPanel, ja
  */
 @Override
         public void createAndGeneratePanel(HBox h) {
-
         h.getChildren().clear();
         DropShadow shadow = new DropShadow();
 
-        Button editName = new Button("Edit Use Case");
-        editName.setMaxWidth(Double.MAX_VALUE);
-        HBox.setHgrow(editName, Priority.ALWAYS);
-        editName.setOnAction((ActionEvent e) -> {
-        	applyActions(textField);          
+        Label label = new Label("Currently on:  ");
+        label.setId("currentPanel");
+        Image labelUseCase = new Image("/images/UseCase.png", 35, 35, false, false);
+        ImageView iv1 = new ImageView();
+        iv1.setImage(labelUseCase);
+        label.setContentDisplay(ContentDisplay.BOTTOM);
+        label.setGraphic(new ImageView(labelUseCase));
+
+        Button useCase = new Button("User");
+        Image usecaseImg = new Image("/images/UseCase.png", 35, 35, false, false); 
+        ImageView iv3 = new ImageView();
+        iv3.setImage(usecaseImg);
+        useCase.setContentDisplay(ContentDisplay.RIGHT);
+        useCase.setGraphic(new ImageView(usecaseImg));
+        useCase.setMaxWidth(Double.MAX_VALUE);
+        HBox.setHgrow(useCase, Priority.ALWAYS);
+        useCase.setOnAction((ActionEvent e) -> {
+            //setFillWhite();
+            label.setContentDisplay(ContentDisplay.BOTTOM);
+            label.setGraphic(new ImageView(usecaseImg));
         });
-        editName.addEventHandler(MouseEvent.MOUSE_ENTERED,
-                new EventHandler<MouseEvent>() {
-                    @Override
-        public void handle(MouseEvent e) {
-                        editName.setEffect(shadow);
-                    }
-                });
-        editName.addEventHandler(MouseEvent.MOUSE_EXITED,
-                new EventHandler<MouseEvent>() {
-                    @Override
-        public void handle(MouseEvent e) {
-                        editName.setEffect(null);
-                    }
-                });
+        useCase.addEventHandler(MouseEvent.MOUSE_ENTERED,
+                        new EventHandler<MouseEvent>() {
+                                @Override
+                                public void handle(MouseEvent e) {
+                                        useCase.setEffect(shadow);
+                                }
+                        });
+        useCase.addEventHandler(MouseEvent.MOUSE_EXITED,
+                        new EventHandler<MouseEvent>() {
+                                @Override
+                                public void handle(MouseEvent e) {
+                                        useCase.setEffect(null);
+                                }
+                        });
 
-
-        Button deleteB = new Button("Delete");
+        Button deleteB = new Button("Delete  ");
+        Image deleteImg = new Image("/images/TrashCanOpen.png", 35, 35, false, false); 
+        ImageView iv4 = new ImageView();
+        iv4.setImage(deleteImg);
+        deleteB.setContentDisplay(ContentDisplay.RIGHT);
+        deleteB.setGraphic(new ImageView(deleteImg));
         deleteB.setMaxWidth(Double.MAX_VALUE);
         HBox.setHgrow(deleteB, Priority.ALWAYS);
-        deleteB.setOnAction((ActionEvent e) -> {
-        	removeActions();
-            destroy();
-            h.getChildren().clear();
-            
-        });
-        deleteB.addEventHandler(MouseEvent.MOUSE_ENTERED,
-                new EventHandler<MouseEvent>() {
-                    @Override
-        public void handle(MouseEvent e) {
-                        deleteB.setEffect(shadow);
-                    }
-                });
-        deleteB.addEventHandler(MouseEvent.MOUSE_EXITED,
-                new EventHandler<MouseEvent>() {
-                    @Override
-        public void handle(MouseEvent e) {
-                        deleteB.setEffect(null);
-                    }
-                });
+            deleteB.setOnAction((ActionEvent e) -> {
+                    destroy();
+                    h.getChildren().clear();
+            });
+            deleteB.addEventHandler(MouseEvent.MOUSE_ENTERED,
+                            new EventHandler<MouseEvent>() {
+                                    @Override
+                                    public void handle(MouseEvent e) {
+                                            deleteB.setEffect(shadow);
+                                    }
+                            });
+            deleteB.addEventHandler(MouseEvent.MOUSE_EXITED,
+                            new EventHandler<MouseEvent>() {
+                                    @Override
+                                    public void handle(MouseEvent e) {
+                                            deleteB.setEffect(null);
+                                    }
+                            });
 
-        Label label = new Label("Currently selected node : Use Case ");
-        h.getChildren().addAll(editName, deleteB);
-    }
-    
-    
-    
-    
-    
+            h.getChildren().addAll(label, useCase, deleteB);
+        }    
+        
     ////////////////////////////////////////////////////////////
     @Override
         public void writeExternal(ObjectOutput out) throws IOException {

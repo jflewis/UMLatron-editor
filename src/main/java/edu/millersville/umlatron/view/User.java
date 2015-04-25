@@ -18,6 +18,7 @@ import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
 import javafx.scene.Cursor;
 import javafx.scene.control.Button;
+import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.effect.DropShadow;
@@ -227,7 +228,6 @@ public class User extends VBox implements AnchorPoint, SelectedPanel, java.io.Ex
     }
 
 
-
 //////////////////////////////////////////////////////////////
 /**
  * creates the currently selected panel for this Node
@@ -236,64 +236,74 @@ public class User extends VBox implements AnchorPoint, SelectedPanel, java.io.Ex
  */
 @Override
         public void createAndGeneratePanel(HBox h) {
-
         h.getChildren().clear();
         DropShadow shadow = new DropShadow();
 
-        Button editName = new Button("Edit user id");
-        editName.setMaxWidth(Double.MAX_VALUE);
-        HBox.setHgrow(editName, Priority.ALWAYS);
-        editName.setOnAction((ActionEvent e) -> {
-        	applyActions(textField);          
+        Label label = new Label("Currently on:  ");
+        label.setId("currentPanel");
+        Image labelUser = new Image("/images/User.png", 35, 35, false, false);
+        ImageView iv1 = new ImageView();
+        iv1.setImage(labelUser);
+        label.setContentDisplay(ContentDisplay.BOTTOM);
+        label.setGraphic(new ImageView(labelUser));
+
+        Button user = new Button("User");
+        Image userImg = new Image("/images/User.png", 35, 35, false, false); 
+        ImageView iv3 = new ImageView();
+        iv3.setImage(userImg);
+        user.setContentDisplay(ContentDisplay.RIGHT);
+        user.setGraphic(new ImageView(userImg));
+        user.setMaxWidth(Double.MAX_VALUE);
+        HBox.setHgrow(user, Priority.ALWAYS);
+        user.setOnAction((ActionEvent e) -> {
+            //setFillWhite();
+            label.setContentDisplay(ContentDisplay.BOTTOM);
+            label.setGraphic(new ImageView(userImg));
         });
-        editName.addEventHandler(MouseEvent.MOUSE_ENTERED,
-                new EventHandler<MouseEvent>() {
-                    @Override
-        public void handle(MouseEvent e) {
-                        editName.setEffect(shadow);
-                    }
-                });
-        editName.addEventHandler(MouseEvent.MOUSE_EXITED,
-                new EventHandler<MouseEvent>() {
-                    @Override
-        public void handle(MouseEvent e) {
-                        editName.setEffect(null);
-                    }
-                });
+        user.addEventHandler(MouseEvent.MOUSE_ENTERED,
+                        new EventHandler<MouseEvent>() {
+                                @Override
+                                public void handle(MouseEvent e) {
+                                        user.setEffect(shadow);
+                                }
+                        });
+        user.addEventHandler(MouseEvent.MOUSE_EXITED,
+                        new EventHandler<MouseEvent>() {
+                                @Override
+                                public void handle(MouseEvent e) {
+                                        user.setEffect(null);
+                                }
+                        });
 
-
-        Button deleteB = new Button("Delete");
+        Button deleteB = new Button("Delete  ");
+        Image deleteImg = new Image("/images/TrashCanOpen.png", 35, 35, false, false); 
+        ImageView iv4 = new ImageView();
+        iv4.setImage(deleteImg);
+        deleteB.setContentDisplay(ContentDisplay.RIGHT);
+        deleteB.setGraphic(new ImageView(deleteImg));
         deleteB.setMaxWidth(Double.MAX_VALUE);
         HBox.setHgrow(deleteB, Priority.ALWAYS);
-        deleteB.setOnAction((ActionEvent e) -> {
-        	removeActions();
-            destroy();
+            deleteB.setOnAction((ActionEvent e) -> {
+                    destroy();
+                    h.getChildren().clear();
+            });
+            deleteB.addEventHandler(MouseEvent.MOUSE_ENTERED,
+                            new EventHandler<MouseEvent>() {
+                                    @Override
+                                    public void handle(MouseEvent e) {
+                                            deleteB.setEffect(shadow);
+                                    }
+                            });
+            deleteB.addEventHandler(MouseEvent.MOUSE_EXITED,
+                            new EventHandler<MouseEvent>() {
+                                    @Override
+                                    public void handle(MouseEvent e) {
+                                            deleteB.setEffect(null);
+                                    }
+                            });
 
-            h.getChildren().clear();
-            
-        });
-        deleteB.addEventHandler(MouseEvent.MOUSE_ENTERED,
-                new EventHandler<MouseEvent>() {
-                    @Override
-        public void handle(MouseEvent e) {
-                        deleteB.setEffect(shadow);
-                    }
-                });
-        deleteB.addEventHandler(MouseEvent.MOUSE_EXITED,
-                new EventHandler<MouseEvent>() {
-                    @Override
-        public void handle(MouseEvent e) {
-                        deleteB.setEffect(null);
-                    }
-                });
-
-        Label label = new Label("Currently selected node : User ");
-        h.getChildren().addAll(editName, deleteB);
+            h.getChildren().addAll(label, user, deleteB);
     }
-    
-    
-    
-    
     
     ////////////////////////////////////////////////////////////
     @Override
@@ -302,8 +312,7 @@ public class User extends VBox implements AnchorPoint, SelectedPanel, java.io.Ex
         out.writeDouble(this.getTranslateY());
         out.writeUTF(textField.getText());
         out.writeDouble(this.getHeight());
-        out.writeDouble(this.getWidth());
-        
+        out.writeDouble(this.getWidth());    
     }
 
     @Override
@@ -313,9 +322,6 @@ public class User extends VBox implements AnchorPoint, SelectedPanel, java.io.Ex
         textField.setText( in.readUTF());
         this.setHeight(in.readDouble());
         this.setWidth(in.readDouble());
-
     }
-	
-        
-    
+
 }
