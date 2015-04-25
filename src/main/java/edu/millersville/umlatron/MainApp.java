@@ -24,17 +24,13 @@ public class MainApp extends Application {
         Image applicationIcon256 = new Image("/images/Voltron256.png");
         Image applicationIcon512 = new Image("/images/Voltron512.png");
         */
-       // primaryStage.getIcons().add(new Image("/images/Voltron16.png"));
-      //  primaryStage.getIcons().add(new Image("/images/Voltron32.png"));
-      //  primaryStage.getIcons().add(new Image("/images/Voltron64.png"));
-      //  primaryStage.getIcons().add(new Image("/images/Voltron128.png"));
-      //  primaryStage.getIcons().add(new Image("/images/Voltron256.png"));
-      //  primaryStage.getIcons().add(new Image("/images/Voltron512.png"));
-        Image icon24 = new Image(getClass().getResource("Voltron16.png").toExternalForm());
-        Image icon32 = new Image(getClass().getResource("Voltron32.png").toExternalForm());
-        Image icon36 = new Image(getClass().getResource("Voltron64.png").toExternalForm());
-        Image icon48 = new Image(getClass().getResource("Voltron128.png").toExternalForm());
-        primaryStage.getIcons().addAll(icon24, icon32, icon36, icon48);
+       primaryStage.getIcons().add(new Image("/images/Voltron16.png"));
+       primaryStage.getIcons().add(new Image("/images/Voltron32.png"));
+       primaryStage.getIcons().add(new Image("/images/Voltron64.png"));
+       primaryStage.getIcons().add(new Image("/images/Voltron128.png"));
+       primaryStage.getIcons().add(new Image("/images/Voltron256.png"));
+       primaryStage.getIcons().add(new Image("/images/Voltron512.png"));
+       
         Scene scene = new Scene(controller.getView(), 950, 750);
         scene.getStylesheets().add("/styles/Buttons.css");
         primaryStage.setTitle("UML'atron");

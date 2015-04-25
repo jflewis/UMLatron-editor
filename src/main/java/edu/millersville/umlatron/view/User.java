@@ -247,7 +247,7 @@ public class User extends VBox implements AnchorPoint, SelectedPanel, java.io.Ex
         label.setContentDisplay(ContentDisplay.BOTTOM);
         label.setGraphic(new ImageView(labelUser));
 
-        Button user = new Button("User");
+        Button user = new Button("Edit User ID  ");
         Image userImg = new Image("/images/User.png", 35, 35, false, false); 
         ImageView iv3 = new ImageView();
         iv3.setImage(userImg);
@@ -256,7 +256,7 @@ public class User extends VBox implements AnchorPoint, SelectedPanel, java.io.Ex
         user.setMaxWidth(Double.MAX_VALUE);
         HBox.setHgrow(user, Priority.ALWAYS);
         user.setOnAction((ActionEvent e) -> {
-            //setFillWhite();
+            applyActions(textField);
             label.setContentDisplay(ContentDisplay.BOTTOM);
             label.setGraphic(new ImageView(userImg));
         });

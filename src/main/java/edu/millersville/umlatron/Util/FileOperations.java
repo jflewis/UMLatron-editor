@@ -45,10 +45,8 @@ public class FileOperations {
         this.controller = controller;
         
         if (OS.indexOf("win") >= 0) {
-            System.out.println("This is Windows");
             temp = new File(UserHome + "\\tempUML.uml");
 	} else if (OS.indexOf("mac") >= 0) {
-            System.out.println("This is Mac");
             temp = new File(UserHome + "/tempUML.uml");
 	} else {
             temp = new File(UserHome + "/tempUML.uml");

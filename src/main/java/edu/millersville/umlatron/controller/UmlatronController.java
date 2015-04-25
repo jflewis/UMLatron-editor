@@ -39,11 +39,7 @@ public class UmlatronController {
     public UmlatronController(Stage stage) {
 
         this.stage = stage;
-        Image icon24 = new Image(getClass().getResource("Voltron16.png").toExternalForm());
-        Image icon32 = new Image(getClass().getResource("Voltron32.png").toExternalForm());
-        Image icon36 = new Image(getClass().getResource("Voltron64.png").toExternalForm());
-        Image icon48 = new Image(getClass().getResource("Voltron128.png").toExternalForm());
-        stage.getIcons().addAll(icon24, icon32, icon36, icon48);
+       
         this.view = new UmlView(this);
         // set initial select state
         model.getSelectStateProperty().addListener(

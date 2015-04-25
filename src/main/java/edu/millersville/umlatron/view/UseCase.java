@@ -22,6 +22,7 @@ import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
@@ -44,7 +45,7 @@ public class UseCase extends StackPane implements AnchorPoint, SelectedPanel, ja
     private Point2D dragAnchor;
     private ArrayList<UMLLine> lines = new ArrayList<>();
     private ArrayList<UMLRecursiveLine> recursiveLines = new ArrayList<>();
-    TextField textField;
+    private TextField textField;
     ImageView circle;
     private final ToggleGroup stateToggle = new ToggleGroup();
     private final HBox toggleButtons = new HBox();
@@ -313,8 +314,10 @@ public class UseCase extends StackPane implements AnchorPoint, SelectedPanel, ja
         iv1.setImage(labelUseCase);
         label.setContentDisplay(ContentDisplay.BOTTOM);
         label.setGraphic(new ImageView(labelUseCase));
+       
 
-        Button useCase = new Button("User");
+        Button useCase = new Button("Edit use case  ");
+        
         Image usecaseImg = new Image("/images/UseCase.png", 35, 35, false, false); 
         ImageView iv3 = new ImageView();
         iv3.setImage(usecaseImg);
@@ -323,7 +326,7 @@ public class UseCase extends StackPane implements AnchorPoint, SelectedPanel, ja
         useCase.setMaxWidth(Double.MAX_VALUE);
         HBox.setHgrow(useCase, Priority.ALWAYS);
         useCase.setOnAction((ActionEvent e) -> {
-            //setFillWhite();
+            applyActions(textField);
             label.setContentDisplay(ContentDisplay.BOTTOM);
             label.setGraphic(new ImageView(usecaseImg));
         });
