@@ -19,6 +19,7 @@ import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
@@ -41,7 +42,7 @@ public class UmlView extends BorderPane {
     private final  HBox currentlySelectedPanel;
     private final EditPane editPane = new EditPane();
     private final UmlatronController controller;
-    private final FileOperations fileOps;
+    public final FileOperations fileOps;
 
     /**
      * Class constructor 
@@ -60,6 +61,12 @@ public class UmlView extends BorderPane {
         editPane.setBackground(new Background(new BackgroundFill(Color.WHITE, CornerRadii.EMPTY, Insets.EMPTY)));
         this.setCenter(editPane);
         this.setTop(createTopPanel(mainApp, toggleButtons, currentlySelectedPanel));
+        this.setOnKeyPressed(k ->{
+            if(k.isControlDown() && (k.getCode() == KeyCode.Z)){
+                editPane.getChildren().clear();
+                fileOps.ImCheatingLoad();
+            }
+        });
     }
 
     /**

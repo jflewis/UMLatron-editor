@@ -14,7 +14,7 @@ import edu.millersville.umlatron.view.*;
 import javafx.beans.value.ObservableValue;
 
 import java.util.ArrayList;
-
+import javafx.collections.ListChangeListener.Change;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.control.Toggle;
@@ -131,6 +131,18 @@ public class UmlatronController {
 
                     }
                 });
+        
+        view.getEditPane().getChildren().addListener((Change<? extends Node> changed) ->{
+            while(changed.next()){
+                if(changed.wasRemoved()){
+                    this.clickedNodes.removeAll(changed.getRemoved());
+                }
+                
+            }
+        });
+        
+        
+        
 
         // listens for all presses on the pane, we use this to see what nodes are being pressed on
         view.getEditPane().addEventFilter(MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>() {
@@ -159,6 +171,7 @@ public class UmlatronController {
                                         clickedNodes.clear();
                                     }
                                     model.projectSaved = false;
+                                    view.fileOps.ImCheatingSave();
                                     break;
 
                                 case LINE:
@@ -171,6 +184,7 @@ public class UmlatronController {
                                         clickedNodes.clear();
                                     }
                                     model.projectSaved = false;
+                                    view.fileOps.ImCheatingSave();
                                     break;
 
                                 case GENERALIZATION:
@@ -183,6 +197,7 @@ public class UmlatronController {
                                         clickedNodes.clear();
                                     }
                                     model.projectSaved = false;
+                                    view.fileOps.ImCheatingSave();
                                     break;
 
                             }
@@ -305,7 +320,7 @@ public class UmlatronController {
             //System.out.println("You created a ClassBox at " + x + " , " + y);
             view.getEditPane().getChildren().add(new ClassBox(x, y));
             model.projectSaved = false;
-
+            view.fileOps.ImCheatingSave();
         };
 
         view.getEditPane().setOnMouseClicked(createClassBox);
@@ -321,7 +336,7 @@ public class UmlatronController {
             //System.out.println("You created a ClassBox at " + x + " , " + y);
             view.getEditPane().getChildren().add(new User(x, y));
             model.projectSaved = false;
-
+            view.fileOps.ImCheatingSave();
         };
 
         view.getEditPane().setOnMouseClicked(createUser);
@@ -337,6 +352,7 @@ public class UmlatronController {
             //System.out.println("You created a ClassBox at " + x + " , " + y);
             view.getEditPane().getChildren().add(new UseCase(x, y));
             model.projectSaved = false;
+                                view.fileOps.ImCheatingSave();
 
         };
 
