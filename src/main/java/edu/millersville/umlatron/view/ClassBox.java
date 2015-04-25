@@ -615,7 +615,7 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel,java.io
                 new EventHandler<MouseEvent>() {
                     @Override
                     public void handle(MouseEvent e) {
-                        editName.setId("currentPanel");
+                        editName.setId("selectedButton");
                         editAttr.setId("");
                         editOps.setId("");
                         classTextName.setId("focusedBox");
@@ -625,7 +625,7 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel,java.io
                 new EventHandler<MouseEvent>() {
                     @Override
                     public void handle(MouseEvent e) {
-                        editAttr.setId("currentPanel");
+                        editAttr.setId("selectedButton");
                         editOps.setId("");
                         editName.setId("");
                         classMethods.setId("focusedBox");
@@ -637,7 +637,7 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel,java.io
                 new EventHandler<MouseEvent>() {
                     @Override
                     public void handle(MouseEvent e) {
-                        editOps.setId("currentPanel");
+                        editOps.setId("selectedButton");
                         editAttr.setId("");
                         editName.setId("");
                         classFunctions.setId("focusedBox");

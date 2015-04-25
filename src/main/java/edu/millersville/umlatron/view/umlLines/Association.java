@@ -172,6 +172,7 @@ public class Association extends UMLLine implements SelectedPanel,
         iv4.setImage(composition);
         comp.setContentDisplay(ContentDisplay.RIGHT);
         comp.setGraphic(new ImageView(composition));
+
         comp.setMaxWidth(Double.MAX_VALUE);
         HBox.setHgrow(comp, Priority.ALWAYS);
         comp.setOnAction((ActionEvent e) -> {
@@ -223,4 +224,5 @@ public class Association extends UMLLine implements SelectedPanel,
 
             h.getChildren().addAll(label, aggregation, comp, deleteB);
     }
+
 }

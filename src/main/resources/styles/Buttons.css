@@ -119,6 +119,13 @@
 	-fx-alignment: CENTER;
 	-fx-background-radius: 200,200,200,200;
 }
+#selectedButton {
+	-fx-background-color: #003f7f;
+	-fx-text-fill: white;
+	-fx-padding: 20 10 20 10;
+	-fx-alignment: CENTER;
+	-fx-background-radius: 200,200,200,200;
+}
 
 .vbox {
 	-fx-background-color: transparent;
