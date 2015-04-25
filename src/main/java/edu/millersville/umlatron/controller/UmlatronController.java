@@ -13,6 +13,7 @@ import edu.millersville.umlatron.model.*;
 import edu.millersville.umlatron.view.*;
 import javafx.beans.value.ObservableValue;
 import java.util.ArrayList;
+import javafx.collections.ListChangeListener.Change;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.control.Toggle;
@@ -123,6 +124,19 @@ public class UmlatronController {
 
                     }
                 });
+        
+        view.getEditPane().getChildren().addListener((Change<? extends Node> changed) ->{
+            while(changed.next()){
+                if(changed.wasRemoved()){
+                    this.clickedNodes.removeAll(changed.getRemoved());
+                }
+            }
+        
+        
+        });
+        
+        
+        
 
         // listens for all presses on the pane, we use this to see what nodes are being pressed on
         view.getEditPane().addEventFilter(MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>() {
