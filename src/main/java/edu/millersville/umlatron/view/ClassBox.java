@@ -84,9 +84,6 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel,java.io
         setTranslateY(y);
         isResizable();
         setSpacing(5);
-        //System.out.println(computePrefHeight(height));
-        //setStyle("-fx-border-style: solid;" + "-fx-border-width: 2;"
-        //        + "-fx-border-color: black;");
         
         //highlight for currently selected classbox
         borderGlow = new DropShadow();
@@ -128,7 +125,6 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel,java.io
             public void changed(ObservableValue<? extends Bounds> observable, Bounds oldValue, Bounds newValue) {
             	nameHolder.setWrappingWidth(classTextName.getWidth() - 25);
                 if (textNameHeight != newValue.getHeight() ) {
-                    System.out.println("newValue = " + newValue.getHeight());
                     textNameHeight = newValue.getHeight();
                     classTextName.setPrefHeight(nameHolder.getLayoutBounds().getHeight() + 20); // +20 is for paddings
                    //setHeight(heightProperty().getValue());
@@ -157,7 +153,6 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel,java.io
             public void changed(ObservableValue<? extends Bounds> observable, Bounds oldValue, Bounds newValue) {
             	methodsHolder.setWrappingWidth(classMethods.getWidth() - 25);
                 if (methodsHeight != newValue.getHeight() ) {
-                    System.out.println("newValue = " + newValue.getHeight());
                     methodsHeight = newValue.getHeight();
                     classMethods.setPrefHeight(methodsHolder.getLayoutBounds().getHeight() + 20); // +20 is for paddings
                    // width = widthProperty().getValue();
@@ -184,7 +179,6 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel,java.io
             public void changed(ObservableValue<? extends Bounds> observable, Bounds oldValue, Bounds newValue) {
             	functionsHolder.setWrappingWidth(classFunctions.getWidth() - 25);
                 if (functionsHeight != newValue.getHeight() ) {
-                    System.out.println("newValue = " + newValue.getHeight());
                     functionsHeight = newValue.getHeight();
                     classFunctions.setPrefHeight(functionsHolder.getLayoutBounds().getHeight() + 20); // +20 is for paddings
                  //   width = widthProperty().getValue();
@@ -224,15 +218,12 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel,java.io
                     && (newXPosition <= this.sceneProperty().get().getWidth()
                     - (this.sceneProperty().get().getX() + widthProperty()
                     .getValue()))) {
-            	System.out.println("Width: " + getWidth());
 
                 setTranslateX(newXPosition);
             } else if (newXPosition >= this.sceneProperty().get().getX()) {
                 setTranslateX(this.sceneProperty().get().getWidth()
                         - widthProperty().getValue());
-                System.out.println("Width: " + getWidth());
             } else {
-            	System.out.println("Width: " + getWidth());
                 setTranslateX(0);
             }
 
@@ -242,16 +233,13 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel,java.io
                     .getValue()))) {
 
                 setTranslateY(newYPosition);
-                System.out.println("Height: " + getHeight());
 
             } else if (newYPosition >= this.sceneProperty().get().getY()) {
                 setTranslateY(this.sceneProperty().get().getHeight()
                         - heightProperty().getValue());
-                System.out.println("Height: " + getHeight());
 
             } else {
                 setTranslateY(0);
-                System.out.println("Height: " + getHeight());
             }
 
             event.consume();
@@ -277,7 +265,6 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel,java.io
         // ****************************************/
         classTextName.setOnMouseClicked(event -> {
             if (event.getButton() == MouseButton.SECONDARY) {
-                System.out.println("right click registered");
                 contextMenu.show(this, event.getScreenX(),
                         event.getScreenY() - 35);
             } else {
@@ -288,7 +275,6 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel,java.io
 
         classFunctions.setOnMouseClicked(event -> {
             if (event.getButton() == MouseButton.SECONDARY) {
-                // System.out.println("hello");
                 contextMenu.show(this, event.getScreenX(),
                         event.getScreenY() - 35);
             } else {
@@ -299,7 +285,6 @@ public class ClassBox extends VBox implements AnchorPoint, SelectedPanel,java.io
 
         classMethods.setOnMouseClicked(event -> {
             if (event.getButton() == MouseButton.SECONDARY) {
-                // System.out.println("hello");
                 contextMenu.show(this, event.getScreenX(),
                         event.getScreenY() - 35);
             } else {

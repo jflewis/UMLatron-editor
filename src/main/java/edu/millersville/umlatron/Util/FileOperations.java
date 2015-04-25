@@ -67,8 +67,6 @@ public class FileOperations {
                 out.writeObject(controller.getModel().getViewStateProperty().getValue());
                 for (Node n : pane.getChildren()) {
                     if (n instanceof ClassBox || n instanceof User || n instanceof UseCase) {
-                                        System.out.println("saved node");
-
                         out.writeObject(n);
                     }
                 }
@@ -104,8 +102,6 @@ public class FileOperations {
                         } else if (n instanceof UMLRecursiveLine) {
                             pane.getChildren().add(((UMLRecursiveLine) n).createLineFromLoad());
                         } else {
-                            System.out.println("load  anchor");
-
                             pane.getChildren().add(n);
                         }
                     } catch (EOFException exc) {
