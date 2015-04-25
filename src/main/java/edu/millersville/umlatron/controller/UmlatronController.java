@@ -130,9 +130,8 @@ public class UmlatronController {
                 if(changed.wasRemoved()){
                     this.clickedNodes.removeAll(changed.getRemoved());
                 }
+                
             }
-        
-        
         });
         
         
@@ -165,6 +164,7 @@ public class UmlatronController {
                                         clickedNodes.clear();
                                     }
                                     model.projectSaved = false;
+                                    view.fileOps.ImCheatingSave();
                                     break;
 
                                 case LINE:
@@ -177,6 +177,7 @@ public class UmlatronController {
                                         clickedNodes.clear();
                                     }
                                     model.projectSaved = false;
+                                    view.fileOps.ImCheatingSave();
                                     break;
 
                                 case GENERALIZATION:
@@ -189,6 +190,7 @@ public class UmlatronController {
                                         clickedNodes.clear();
                                     }
                                     model.projectSaved = false;
+                                    view.fileOps.ImCheatingSave();
                                     break;
 
                             }
@@ -311,7 +313,7 @@ public class UmlatronController {
             //System.out.println("You created a ClassBox at " + x + " , " + y);
             view.getEditPane().getChildren().add(new ClassBox(x, y));
             model.projectSaved = false;
-
+            view.fileOps.ImCheatingSave();
         };
 
         view.getEditPane().setOnMouseClicked(createClassBox);
@@ -327,7 +329,7 @@ public class UmlatronController {
             //System.out.println("You created a ClassBox at " + x + " , " + y);
             view.getEditPane().getChildren().add(new User(x, y));
             model.projectSaved = false;
-
+            view.fileOps.ImCheatingSave();
         };
 
         view.getEditPane().setOnMouseClicked(createUser);
@@ -343,6 +345,7 @@ public class UmlatronController {
             //System.out.println("You created a ClassBox at " + x + " , " + y);
             view.getEditPane().getChildren().add(new UseCase(x, y));
             model.projectSaved = false;
+                                view.fileOps.ImCheatingSave();
 
         };
 
