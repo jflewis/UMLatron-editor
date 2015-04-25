@@ -39,6 +39,7 @@ public class UmlatronController {
     public UmlatronController(Stage stage) {
 
         this.stage = stage;
+
         this.view = new UmlView(this);
         // set initial select state
         model.getSelectStateProperty().addListener(
