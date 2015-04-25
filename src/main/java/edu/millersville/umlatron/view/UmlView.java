@@ -248,6 +248,7 @@ public class UmlView extends BorderPane {
         tb5.setToggleGroup(stateToggle);
         tb5.setMaxWidth(Double.MAX_VALUE);
 
+
         toggleButtons.getChildren().add(tb1);
         toggleButtons.getChildren().add(tb2);
         toggleButtons.getChildren().add(tb3);
@@ -257,8 +258,7 @@ public class UmlView extends BorderPane {
         HBox.setHgrow(tb2, Priority.ALWAYS);
         HBox.setHgrow(tb3, Priority.ALWAYS);
         HBox.setHgrow(tb4, Priority.ALWAYS);
-        HBox.setHgrow(tb5, Priority.ALWAYS);
-       
+        HBox.setHgrow(tb5, Priority.ALWAYS);    
 
     }
 
@@ -271,24 +271,45 @@ public class UmlView extends BorderPane {
         stateToggle.getToggles().clear();
         toggleButtons.getChildren().clear();
 
-        ToggleButton tb1 = new ToggleButton("Select");
+        ToggleButton tb1 = new ToggleButton("Select  ");
+        Image selectImg = new Image("/images/Select.png", 35, 35, false, false);
+        ImageView iv1 = new ImageView();
+        iv1.setImage(selectImg);
+        tb1.setContentDisplay(ContentDisplay.RIGHT);
+        tb1.setGraphic(new ImageView(selectImg));
         tb1.setUserData(SelectState.SELECT);
         tb1.setToggleGroup(stateToggle);
         tb1.setSelected(true);
         tb1.setMaxWidth(Double.MAX_VALUE);
 
-        ToggleButton tb2 = new ToggleButton("User");
+        ToggleButton tb2 = new ToggleButton("User  ");
+        Image userImg = new Image("/images/User.png", 35, 35, false, false);
+        ImageView iv2 = new ImageView();
+        iv2.setImage(userImg);
+        tb2.setContentDisplay(ContentDisplay.RIGHT);
+        tb2.setGraphic(new ImageView(userImg));
         tb2.setUserData(SelectState.USER);
         tb2.setToggleGroup(stateToggle);
         tb2.setSelected(true);
         tb2.setMaxWidth(Double.MAX_VALUE);
 
-        ToggleButton tb3 = new ToggleButton("Use Case");
+        ToggleButton tb3 = new ToggleButton("Use Case  ");
+        Image usecaseImg = new Image("/images/UseCase.png", 35, 35, false, false);
+        ImageView iv3 = new ImageView();
+        iv3.setImage(usecaseImg);
+        tb3.setContentDisplay(ContentDisplay.RIGHT);
+        tb3.setGraphic(new ImageView(usecaseImg));
         tb3.setUserData(SelectState.USE_CASE);
         tb3.setToggleGroup(stateToggle);
+        tb3.setSelected(true);
         tb3.setMaxWidth(Double.MAX_VALUE);
 
-        ToggleButton tb4 = new ToggleButton("Line");
+        ToggleButton tb4 = new ToggleButton("Line  ");
+        Image lineImg = new Image("/images/SolidLine.png", 35, 35, false, false);
+        ImageView iv4 = new ImageView();
+        iv4.setImage(lineImg);
+        tb4.setContentDisplay(ContentDisplay.RIGHT);
+        tb4.setGraphic(new ImageView(lineImg));
         tb4.setUserData(SelectState.LINE);
         tb4.setToggleGroup(stateToggle);
         tb4.setMaxWidth(Double.MAX_VALUE);
