@@ -13,7 +13,7 @@ import org.junit.Rule;
 
 /**
  *
- * @author Bill Barr
+ * @author Bill "Puke Lord" Barr
  */
 public class CheckCorrectToggledTest {
 
